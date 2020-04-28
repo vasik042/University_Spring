@@ -1,6 +1,6 @@
 package com.example.demo.Services;
 
-import com.example.demo.entities.Application;
+import com.example.demo.entities.*;
 import com.example.demo.repositories.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,18 @@ public class ApplicationService {
         this.applicationRepo = applicationRepo;
     }
 
-    public void save(Application application){
+    public void save(Entrant entrant, Faculty faculty){
+        float gpa = 0;
+        for (FacultySubject fs: faculty.getFacultySubjects()) {
+            for (EntrantSubject es: entrant.getSubjects()) {
+                if(es.getSubjectName().equals(fs.getSubjectName())){
+                    gpa += es.getGrade()*fs.getCoefficient();
+                }
+            }
+        }
+        gpa += entrant.getSchoolGPA()/1.2;
+
+        Application application = new Application(gpa, entrant, faculty);
         applicationRepo.save(application);
     }
 
@@ -29,7 +40,7 @@ public class ApplicationService {
         return applicationRepo.findAll();
     }
 
-    List<Application> findByEntrantId(int id){
+    public List<Application> findByEntrantId(int id){
         return applicationRepo.findByEntrantId(id);
     }
 

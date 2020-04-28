@@ -31,13 +31,14 @@ public class Faculty {
 
     public Faculty(){}
 
-    public void setNecessarySubjects(String firstSub, float firstCoef,
-                                     String secondSub, float secondCoef,
-                                     String thirdSub, float thirdCoef){
+    public void setNecessarySubjects(FacultySubject fs1, FacultySubject fs2, FacultySubject fs3, FacultySubject fs4) {
         facultySubjects = new HashSet<>();
-        facultySubjects.add(new FacultySubject(firstSub, firstCoef, this));
-        facultySubjects.add(new FacultySubject(secondSub, secondCoef, this));
-        facultySubjects.add(new FacultySubject(thirdSub, thirdCoef, this));
+        facultySubjects.add(fs1);
+        facultySubjects.add(fs2);
+        facultySubjects.add(fs3);
+        if (fs4 != null){
+            facultySubjects.add(fs4);
+        }
     }
 
     public int getId() {
@@ -79,4 +80,6 @@ public class Faculty {
     public void setFacultySubjects(Set<FacultySubject> facultySubjects) {
         this.facultySubjects = facultySubjects;
     }
+
+
 }

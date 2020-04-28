@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,6 +37,16 @@ public class Entrant {
     }
 
     public Entrant(){}
+
+    public void setSubjects(EntrantSubject es1, EntrantSubject es2, EntrantSubject es3, EntrantSubject es4) {
+        subjects = new HashSet<>();
+        subjects.add(es1);
+        subjects.add(es2);
+        subjects.add(es3);
+        if(es4 != null){
+            subjects.add(es4);
+        }
+    }
 
     public int getId() {
         return id;
@@ -84,4 +95,6 @@ public class Entrant {
     public void setSubjects(Set<EntrantSubject> subjects) {
         this.subjects = subjects;
     }
+
+
 }

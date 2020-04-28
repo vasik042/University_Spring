@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface ApplicationRepository  extends JpaRepository<Application, Integer> {
 
-    @Query("select a from application a where a.entrant_id = ?1")
+    @Query(value = "SELECT * FROM application  WHERE entrant_id = ?1", nativeQuery = true)
     List<Application> findByEntrantId(int id);
 
-    @Query("select a from application a where a.faculty_id = ?1 ordered by a.GPA ASC")
+    @Query(value = "SELECT * FROM application  WHERE faculty_id = ?1 ORDERED BY GPA ASC", nativeQuery = true)
     List<Application> findByFacultyId(int id);
 }
