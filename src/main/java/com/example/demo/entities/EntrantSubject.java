@@ -20,6 +20,12 @@ public class EntrantSubject {
     @JoinColumn(name="entrant_id", nullable=false)
     Entrant entrant;
 
+    public EntrantSubject(String subjectName, int grade, Entrant entrant) {
+        this.subjectName = subjectName;
+        this.grade = grade;
+        this.entrant = entrant;
+    }
+
     public EntrantSubject(){}
 
     public int getId() {
