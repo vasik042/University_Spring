@@ -4,13 +4,13 @@ let email = false;
 let password = false;
 let date = false;
 let schoolGPA = false;
-let zno1grade = false;
-let zno2 = "MATH";
-let zno2grade = false;
-let zno3 = "HISTORY";
-let zno3grade = false;
-let zno4 = false;
-let zno4grade = false;
+let subjectGrade1 = false;
+let subjectName2 = "MATH";
+let subjectGrade2 = false;
+let subjectName3 = "HISTORY";
+let subjectGrade3 = false;
+let subjectName4 = false;
+let subjectGrade4 = false;
 
 
 
@@ -49,80 +49,77 @@ document.getElementById('schoolGPA').onchange = function(){
         console.log(schoolGPA);
 }
 
-document.getElementById('UKRAINIAN').onchange = function(){
-    zno1grade = document.getElementById('UKRAINIAN').value;
+document.getElementById('subjectGrade1').onchange = function(){
+    subjectGrade1 = document.getElementById('subjectGrade1').value;
     
-    if (zno1grade > 200 || zno1grade < 100  || zno1grade%1 != 0){
+    if (subjectGrade1 > 200 || subjectGrade1 < 100  || subjectGrade1%1 != 0){
         alert("Оцінка повинна бути цілим числом від 100 до 200!");
-        zno1grade = false;
-    }
-        console.log(zno1grade);
-}
-
-document.getElementById('subject2grade').onchange = function(){
-    zno2grade = document.getElementById('subject2grade').value;
-    
-    if (zno2grade > 200 || zno2grade < 100  || zno2grade%1 != 0){
-        alert("Оцінка повинна бути цілим числом від 100 до 200!");
-        zno2grade = false;
-    }
-        console.log(zno2grade);
-}
-
-document.getElementById('subject3grade').onchange = function(){
-    zno3grade = document.getElementById('subject3grade').value;
-    
-    if (zno3grade > 200 || zno3grade < 100  || zno3grade%1 != 0){
-        alert("Оцінка повинна бути цілим числом від 100 до 200!");
-        zno3grade = false;
-    }
-        console.log(zno3grade);
-}
-
-document.getElementById('subject4grade').onchange = function(){
-    zno4grade = document.getElementById('subject4grade').value;
-    
-    if (zno4grade > 200 || zno4grade < 100  || zno4grade%1 != 0){
-        alert("Оцінка повинна бути цілим числом від 100 до 200!");
-        zno4grade = false;
+        subjectGrade1 = false;
     }
 }
 
-document.getElementById('subject2').onchange = function(){
-    subject2 = document.getElementById('subject2').value;
+document.getElementById('subjectGrade2').onchange = function(){
+    subjectGrade2 = document.getElementById('subjectGrade2').value;
     
-    if (subject2 == subject3 || subject2 == subject4){
+    if (subjectGrade2 > 200 || subjectGrade2 < 100  || subjectGrade2%1 != 0){
+        alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        subjectGrade2 = false;
+    }
+}
+
+document.getElementById('subjectGrade3').onchange = function(){
+    subjectGrade3 = document.getElementById('subjectGrade3').value;
+    
+    if (subjectGrade3 > 200 || subjectGrade3 < 100  || subjectGrade3%1 != 0){
+        alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        subjectGrade3 = false;
+    }
+}
+
+document.getElementById('subjectGrade4').onchange = function(){
+    subjectGrade4 = document.getElementById('subjectGrade4').value;
+    
+    if (subjectGrade4 > 200 || subjectGrade4 < 100  || subjectGrade4%1 != 0){
+        alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        subjectGrade4 = false;
+    }
+}
+
+document.getElementById('subjectName2').onchange = function(){
+    subjectName2 = document.getElementById('subjectName2').value;
+    
+    if (subjectName2 == subjectName3 || subjectName2 == subjectName4){
         alert("Не можна вибирати однакові предмети");
-        subject2 = false;
+        document.getElementById('subjectName2').value = false;
+        subjectName2 = false;
     }
-        console.log(subject2);
 }
 
-document.getElementById('subject3').onchange = function(){
-    subject3 = document.getElementById('subject3').value;
+document.getElementById('subjectName3').onchange = function(){
+    subjectName3 = document.getElementById('subjectName3').value;
     
-    if (subject2 == subject3 || subject3 == subject4){
+    if (subjectName2 == subjectName3 || subjectName3 == subjectName4){
         alert("Не можна вибирати однакові предмети");
-        subject3 = false;
+        document.getElementById('subjectName3').value = false
+        subjectName3 = false;
     }
-    console.log(subject3);
 }
 
-document.getElementById('subject4').onchange = function(){
-    subject4 = document.getElementById('subject4').value;
+document.getElementById('subjectName4').onchange = function(){
+    subjectName4 = document.getElementById('subjectName4').value;
     
-    if (subject4 == subject3 || subject2 == subject4){
+    if (subjectName4 == subjectName4 || subject2 == subjectName4){
         alert("Не можна вибирати однакові предмети");
-        subject4 = false;
+        document.getElementById('subjectName4').value = false
+        subjectName4 = false;
     }
-    console.log(subject4);
 }
 
 
 
 document.body.onmousemove = function(){
     
-    if (name && surname && email && password && date && schoolGPA && zno1grade && zno2 && zno2grade && zno3 && zno3grade){
+    if (name && surname && email && password && date && schoolGPA && subjectGrade1 && subjectName2 && subjectGrade2 && subjectName3 && subjectGrade3){
         document.getElementById('btn').removeAttribute("disabled");
         document.getElementById('btn').style.backgroundColor = "forestgreen";
     }else{

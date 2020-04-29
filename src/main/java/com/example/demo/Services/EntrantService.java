@@ -1,6 +1,9 @@
 package com.example.demo.Services;
 
+import com.example.demo.Dtos.EntrantDto;
+import com.example.demo.Subjects;
 import com.example.demo.entities.Entrant;
+import com.example.demo.entities.EntrantSubject;
 import com.example.demo.repositories.EntrantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +14,12 @@ import java.util.List;
 public class EntrantService {
 
     private EntrantRepository entrantRepo;
+    private EntrantSubjectService entrantSubjectService;
 
     @Autowired
-    public EntrantService(EntrantRepository entrantRepo) {
+    public EntrantService(EntrantRepository entrantRepo, EntrantSubjectService entrantSubjectService) {
         this.entrantRepo = entrantRepo;
+        this.entrantSubjectService = entrantSubjectService;
     }
 
     public void save(Entrant entrant){
@@ -31,5 +36,30 @@ public class EntrantService {
 
     public List<Entrant> getAll(){
         return entrantRepo.findAll();
+    }
+
+    public void save(EntrantDto entrantDto) {
+        Entrant entrant = new Entrant(entrantDto.getName(), entrantDto.getSurname(),
+                entrantDto.getDateOfBirth(), entrantDto.getSchoolGPA());
+        EntrantSubject sub1 = new EntrantSubject(Subjects.UKRAINIAN.name(), entrantDto.getSubjectGrade1(), entrant);
+        EntrantSubject sub2 = new EntrantSubject(entrantDto.getSubjectName2(), entrantDto.getSubjectGrade2(), entrant);
+        EntrantSubject sub3 = new EntrantSubject(entrantDto.getSubjectName3(), entrantDto.getSubjectGrade3(), entrant);
+        EntrantSubject sub4 = null;
+        for (Subjects s: Subjects.values()) {
+            if (s.name().equals(entrantDto.getSubjectName4())) {
+                sub4 = new EntrantSubject(entrantDto.getSubjectName4(), entrantDto.getSubjectGrade4(), entrant);
+            }
+        }
+
+        entrant.setSubjects(sub1, sub2, sub3, sub4);
+
+        entrantRepo.save(entrant);
+
+        entrantSubjectService.save(sub1);
+        entrantSubjectService.save(sub2);
+        entrantSubjectService.save(sub3);
+        if(sub4 != null){
+            entrantSubjectService.save(sub4);
+        }
     }
 }

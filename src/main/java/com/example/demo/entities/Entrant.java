@@ -19,7 +19,7 @@ public class Entrant {
     @Column(name = "surname")
     String surname;
     @Column(name = "date_of_birth")
-    Date dateOfBirth;
+    String dateOfBirth;
     @Column(name = "school_GPA")
     float schoolGPA;
 
@@ -29,7 +29,7 @@ public class Entrant {
     @OneToMany(mappedBy = "entrant")
     Set<Application> applications;
 
-    public Entrant(String name, String surname, Date dateOfBirth, float schoolGPA) {
+    public Entrant(String name, String surname, String dateOfBirth, float schoolGPA) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
@@ -72,11 +72,11 @@ public class Entrant {
         this.surname = surname;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
