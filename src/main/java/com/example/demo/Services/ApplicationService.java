@@ -26,7 +26,7 @@ public class ApplicationService {
                 }
             }
         }
-        gpa += entrant.getSchoolGPA()/1.2;
+        gpa += (entrant.getSchoolGPA()/12 + 1) * 10;
 
         Application application = new Application(gpa, entrant, faculty);
         applicationRepo.save(application);
