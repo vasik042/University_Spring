@@ -22,18 +22,33 @@ public class Entrant {
     String dateOfBirth;
     @Column(name = "school_GPA")
     float schoolGPA;
+    @Column(name = "email")
+    String email;
+    @Column(name = "password")
+    String password;
+    @Column(name = "role")
+    int role;
 
-    @OneToMany(mappedBy = "entrant")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
     Set<EntrantSubject> subjects;
 
-    @OneToMany(mappedBy = "entrant")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
     Set<Application> applications;
 
-    public Entrant(String name, String surname, String dateOfBirth, float schoolGPA) {
+    public Entrant(String name, String surname, String dateOfBirth, float schoolGPA, String email, String password) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.schoolGPA = schoolGPA;
+        this.email = email;
+        this.password = password;
+        this.role = 0;
+    }
+
+    public Entrant(String email, String password) {
+        this.email = email;
+        this.password = password;
+        this.role = -1;
     }
 
     public Entrant(){}
@@ -96,5 +111,35 @@ public class Entrant {
         this.subjects = subjects;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public Set<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
+    }
 }

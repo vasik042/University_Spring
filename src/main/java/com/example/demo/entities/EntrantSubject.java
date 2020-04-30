@@ -15,6 +15,8 @@ public class EntrantSubject {
     String subjectName;
     @Column(name="grade")
     int grade;
+    @Column(name="entrantSavedId")
+    int entrantSavedId;
 
     @ManyToOne
     @JoinColumn(name="entrant_id", nullable=false)
@@ -24,6 +26,7 @@ public class EntrantSubject {
         this.subjectName = subjectName;
         this.grade = grade;
         this.entrant = entrant;
+        this.entrantSavedId = entrant.getId();
     }
 
     public EntrantSubject(){}
@@ -58,5 +61,13 @@ public class EntrantSubject {
 
     public void setEntrant(Entrant entrant) {
         this.entrant = entrant;
+    }
+
+    public int getEntrantSavedId() {
+        return entrantSavedId;
+    }
+
+    public void setEntrantSavedId(int entrantSavedId) {
+        this.entrantSavedId = entrantSavedId;
     }
 }

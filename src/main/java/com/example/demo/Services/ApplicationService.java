@@ -44,7 +44,7 @@ public class ApplicationService {
         return applicationRepo.findByEntrantId(id);
     }
 
-    List<Application> findByFacultyId(int id){
+    public List<Application> findByFacultyId(int id){
         return applicationRepo.findByFacultyId(id);
     }
 }

@@ -25,7 +25,7 @@ public class EntrantSubjectService {
         entrantSubjectRepo.deleteById(id);
     }
 
-    public List<EntrantSubject> getEntrantSubjects(int id){
+    public List<EntrantSubject> findByEntrantId(int id){
         return entrantSubjectRepo.findByEntrantId(id);
     }
 }

@@ -18,10 +18,10 @@ public class Faculty {
     @Column(name = "places")
     int places;
 
-    @OneToMany(mappedBy = "faculty")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
     Set<Application> applications;
 
-    @OneToMany(mappedBy = "faculty")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
     Set<FacultySubject> facultySubjects;
 
     public Faculty(String name, int places) {

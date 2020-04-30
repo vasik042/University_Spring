@@ -44,6 +44,7 @@ document.getElementById('schoolGPA').onchange = function(){
     
     if (schoolGPA > 12 || schoolGPA < 1){
         alert("Середня оцінка не може бути менше 1 або більше 12!");
+        document.getElementById('schoolGPA').value = false;
         schoolGPA = false;
     }
         console.log(schoolGPA);
@@ -54,6 +55,7 @@ document.getElementById('subjectGrade1').onchange = function(){
     
     if (subjectGrade1 > 200 || subjectGrade1 < 100  || subjectGrade1%1 != 0){
         alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        document.getElementById('subjectGrade1').value = false;
         subjectGrade1 = false;
     }
 }
@@ -63,6 +65,7 @@ document.getElementById('subjectGrade2').onchange = function(){
     
     if (subjectGrade2 > 200 || subjectGrade2 < 100  || subjectGrade2%1 != 0){
         alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        document.getElementById('subjectGrade2').value = false;
         subjectGrade2 = false;
     }
 }
@@ -72,6 +75,7 @@ document.getElementById('subjectGrade3').onchange = function(){
     
     if (subjectGrade3 > 200 || subjectGrade3 < 100  || subjectGrade3%1 != 0){
         alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        document.getElementById('subjectGrade3').value = false;
         subjectGrade3 = false;
     }
 }
@@ -81,6 +85,7 @@ document.getElementById('subjectGrade4').onchange = function(){
     
     if (subjectGrade4 > 200 || subjectGrade4 < 100  || subjectGrade4%1 != 0){
         alert("Оцінка повинна бути цілим числом від 100 до 200!");
+        document.getElementById('subjectGrade4').value = false;
         subjectGrade4 = false;
     }
 }
@@ -108,7 +113,7 @@ document.getElementById('subjectName3').onchange = function(){
 document.getElementById('subjectName4').onchange = function(){
     subjectName4 = document.getElementById('subjectName4').value;
     
-    if (subjectName4 == subjectName4 || subject2 == subjectName4){
+    if (subjectName4 == subjectName3 || subjectName2 == subjectName4){
         alert("Не можна вибирати однакові предмети");
         document.getElementById('subjectName4').value = false
         subjectName4 = false;

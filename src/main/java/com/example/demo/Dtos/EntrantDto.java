@@ -8,6 +8,8 @@ public class EntrantDto {
     private String surname;
     private String dateOfBirth;
     private float schoolGPA;
+    private String email;
+    private String password;
 
     private String subjectName2;
     private String subjectName3;
@@ -107,5 +109,21 @@ public class EntrantDto {
 
     public void setSubjectGrade4(int subjectGrade4) {
         this.subjectGrade4 = subjectGrade4;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

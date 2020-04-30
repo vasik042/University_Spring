@@ -13,6 +13,7 @@ public interface ApplicationRepository  extends JpaRepository<Application, Integ
     @Query(value = "SELECT * FROM application  WHERE entrant_id = ?1", nativeQuery = true)
     List<Application> findByEntrantId(int id);
 
-    @Query(value = "SELECT * FROM application  WHERE faculty_id = ?1 ORDERED BY GPA ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM application  WHERE faculty_id = ?1 ORDER BY GPA DESC", nativeQuery = true)
     List<Application> findByFacultyId(int id);
+
 }

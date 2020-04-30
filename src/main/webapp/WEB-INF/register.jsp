@@ -31,10 +31,10 @@
                 <input type="date" placeholder="type here..." required id="dateOfBirth" name ="dateOfBirth" value="${entrant.dateOfBirth}">
             </label>
             <label for="email">Електронна пошта
-                <input type="email" placeholder="type here..." required id="email" name ="email">
+                <input type="email" placeholder="type here..." required id="email" name ="email" value="${entrant.email}">
             </label>
             <label for="password">Пароль
-                <input type="text" placeholder="type here..." required id="password" name ="password">
+                <input type="text" placeholder="type here..." required id="password" name ="password" value="${entrant.password}">
             </label>
 
             <label for="schoolGPA">Середня оцінка в атестаті

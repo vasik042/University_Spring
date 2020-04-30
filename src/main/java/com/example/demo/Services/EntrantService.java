@@ -38,9 +38,10 @@ public class EntrantService {
         return entrantRepo.findAll();
     }
 
-    public void save(EntrantDto entrantDto) {
-        Entrant entrant = new Entrant(entrantDto.getName(), entrantDto.getSurname(),
-                entrantDto.getDateOfBirth(), entrantDto.getSchoolGPA());
+    public Entrant save(EntrantDto entrantDto) {
+        Entrant entrant = entrantRepo.save(new Entrant(entrantDto.getName(), entrantDto.getSurname(),
+                entrantDto.getDateOfBirth(), entrantDto.getSchoolGPA(), entrantDto.getEmail(), entrantDto.getPassword()));
+
         EntrantSubject sub1 = new EntrantSubject(Subjects.UKRAINIAN.name(), entrantDto.getSubjectGrade1(), entrant);
         EntrantSubject sub2 = new EntrantSubject(entrantDto.getSubjectName2(), entrantDto.getSubjectGrade2(), entrant);
         EntrantSubject sub3 = new EntrantSubject(entrantDto.getSubjectName3(), entrantDto.getSubjectGrade3(), entrant);
@@ -51,15 +52,28 @@ public class EntrantService {
             }
         }
 
-        entrant.setSubjects(sub1, sub2, sub3, sub4);
-
-        entrantRepo.save(entrant);
-
         entrantSubjectService.save(sub1);
         entrantSubjectService.save(sub2);
         entrantSubjectService.save(sub3);
         if(sub4 != null){
             entrantSubjectService.save(sub4);
         }
+        return entrant;
+    }
+
+    public Integer findIdByEmailAndPassword(String email, String password){
+        return entrantRepo.findIdByEmailAndPassword(email, password);
+    }
+
+    public Integer findRoleByEmailAndPassword(String email, String password){
+        return entrantRepo.findRoleByEmailAndPassword(email, password);
+    }
+
+    public List<Entrant> findByRole(){
+        return entrantRepo.findByRole();
+    }
+
+    public void changeRole(int id, int role){
+        entrantRepo.changeRole(role, id);
     }
 }
