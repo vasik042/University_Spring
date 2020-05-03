@@ -22,20 +22,12 @@ public class EntrantService {
         this.entrantSubjectService = entrantSubjectService;
     }
 
-    public void save(Entrant entrant){
-        entrantRepo.save(entrant);
-    }
-
     public void deleteById(int id){
         entrantRepo.deleteById(id);
     }
 
     public Entrant findById(int id){
         return entrantRepo.findById(id).get();
-    }
-
-    public List<Entrant> getAll(){
-        return entrantRepo.findAll();
     }
 
     public Entrant save(EntrantDto entrantDto) {

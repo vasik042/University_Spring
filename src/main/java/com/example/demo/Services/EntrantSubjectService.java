@@ -21,10 +21,6 @@ public class EntrantSubjectService {
         entrantSubjectRepo.save(entrantSubject);
     }
 
-    public void deleteById(int id){
-        entrantSubjectRepo.deleteById(id);
-    }
-
     public List<EntrantSubject> findByEntrantId(int id){
         return entrantSubjectRepo.findByEntrantId(id);
     }

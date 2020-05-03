@@ -20,12 +20,6 @@ public class FacultySubject {
     @JoinColumn(name="faculty_id", nullable=false)
     Faculty faculty;
 
-    public FacultySubject(String subjectName, float coefficient, Faculty faculty) {
-        this.subjectName = subjectName;
-        this.coefficient = coefficient;
-        this.faculty = faculty;
-    }
-
     public FacultySubject(){}
 
     public int getId() {

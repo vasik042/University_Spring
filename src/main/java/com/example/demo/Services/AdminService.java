@@ -5,8 +5,6 @@ import com.example.demo.repositories.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class AdminService {
 
@@ -15,10 +13,6 @@ public class AdminService {
     @Autowired
     public AdminService(AdminRepo adminRepo){
         this.adminRepo = adminRepo;
-    }
-
-    public void save(Admin admin){
-        adminRepo.save(admin);
     }
 
     public Integer findIdByEmailAndPassword(String email, String password){

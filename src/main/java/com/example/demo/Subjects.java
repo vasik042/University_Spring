@@ -12,6 +12,4 @@ public enum Subjects {
     SPANISH,
     GERMAN,
     FRENCH
-
-
 }

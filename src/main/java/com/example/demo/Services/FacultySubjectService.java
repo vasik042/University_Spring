@@ -17,14 +17,6 @@ public class FacultySubjectService {
         this.facultySubjectRepo = facultySubjectRepo;
     }
 
-    public void save(FacultySubject facultySubject){
-        facultySubjectRepo.save(facultySubject);
-    }
-
-    public void deleteById(int id){
-        facultySubjectRepo.deleteById(id);
-    }
-
     public List<FacultySubject> getFacultySubjects(int id){
         return facultySubjectRepo.findByFacultyId(id);
     }

@@ -20,6 +20,7 @@ public class ApplicationService {
 
     public void save(Entrant entrant, Faculty faculty){
         float gpa = 0;
+
         for (FacultySubject fs: faculty.getFacultySubjects()) {
             for (EntrantSubject es: entrant.getSubjects()) {
                 if(es.getSubjectName().equals(fs.getSubjectName())){
@@ -27,6 +28,7 @@ public class ApplicationService {
                 }
             }
         }
+
         gpa += (entrant.getSchoolGPA()/12 + 1) * 10;
 
         Application application = new Application(gpa, entrant, faculty);
@@ -35,10 +37,6 @@ public class ApplicationService {
 
     public void deleteById(int id){
         applicationRepo.deleteById(id);
-    }
-
-    public List<Application> getAll(){
-        return applicationRepo.findAll();
     }
 
     public List<Application> findByEntrantId(int id){

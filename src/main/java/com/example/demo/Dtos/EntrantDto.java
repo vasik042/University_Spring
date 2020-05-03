@@ -1,7 +1,5 @@
 package com.example.demo.Dtos;
 
-import java.util.Date;
-
 public class EntrantDto {
 
     private String name;
