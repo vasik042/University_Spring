@@ -18,6 +18,9 @@ public interface EntrantRepository  extends JpaRepository<Entrant, Integer> {
     @Query(value = "SELECT * FROM entrant WHERE role = ?1", nativeQuery = true)
     public List<Entrant> findByRole(String role);
 
+    @Query(value = "SELECT email FROM entrant WHERE entrant_id = ?1", nativeQuery = true)
+    public String findEmailById(int id);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE entrant SET role = ?1 WHERE entrant_id = ?2", nativeQuery = true)

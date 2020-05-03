@@ -1,9 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.Services.ApplicationService;
-import com.example.demo.Services.EntrantService;
-import com.example.demo.Services.EntrantSubjectService;
-import com.example.demo.Services.FacultyService;
+import com.example.demo.Services.*;
 import com.example.demo.entities.EntrantSubject;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
@@ -24,16 +21,19 @@ public class CabinetController {
     private EntrantSubjectService entrantSubjectService;
     private ApplicationService applicationService;
     private FacultyService facultyService;
+    private MailSenderService mailSenderService;
 
     @Autowired
     public CabinetController(EntrantService entrantService,
                              EntrantSubjectService entrantSubjectService,
                              ApplicationService applicationService,
-                             FacultyService facultyService) {
+                             FacultyService facultyService,
+                             MailSenderService mailSenderService) {
         this.entrantService = entrantService;
         this.entrantSubjectService = entrantSubjectService;
         this.applicationService = applicationService;
         this.facultyService = facultyService;
+        this.mailSenderService = mailSenderService;
     }
 
     @RequestMapping(value = "/cabinet", method = RequestMethod.GET)
@@ -61,7 +61,37 @@ public class CabinetController {
 
     @RequestMapping(value = "/activate", method = RequestMethod.GET)
     public String activate(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
         entrantService.changeRole(id, Roles.ENTRANT.name());
+
+        String email = entrantService.findEmailById(id);
+
+        String subject = "Вашу анкету підтверджено";
+        String text = "Тепер ви можете подавати заявки на вступ до факультетів нашого навчального закладу.";
+
+        mailSenderService.message(email, subject, text);
+
+        return getCabinet(request);
+    }
+
+    @RequestMapping(value = "/deleteEntrant", method = RequestMethod.GET)
+    public String deleteEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
+        entrantService.deleteById(id);
+
+        String email = entrantService.findEmailById(id);
+
+        String subject = "Вашу анкету відхилено";
+        String text = "Ваша анкета була неправильно заповнена або містила неправдиві данні.";
+
+        mailSenderService.message(email, subject, text);
+
+        return getCabinet(request);
+    }
+
+    @RequestMapping(value = "/deleteApplication", method = RequestMethod.GET)
+    public String deleteApplication(@RequestParam(name = "id") int id, HttpServletRequest request) {
+        applicationService.deleteById(id);
         return getCabinet(request);
     }
 }

@@ -76,4 +76,8 @@ public class EntrantService {
     public void changeApplicationsLeft(int id, int applications){
         entrantRepo.changeApplicationsLeft(applications, id);
     }
+
+    public String findEmailById(int id){
+        return entrantRepo.findEmailById(id);
+    }
 }

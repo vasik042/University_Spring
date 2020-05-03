@@ -45,7 +45,7 @@
                   <tr>
                       <td class ="number">${сounter.count}</td>
                       <td><a href="/faculty?id=${application.facultySavedId}">${application.facultyName}</a></td>
-                      <td>${application.GPA}</td><td><a href="/deleteApplication?id=${entrant.id}" style="color: red">Відхилити заявку</a></td>
+                      <td>${application.GPA}</td><td><a href="/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
                   </tr>
              </c:forEach>
         </table>
