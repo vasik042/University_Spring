@@ -2,7 +2,7 @@ package com.example.demo.Services;
 
 import com.example.demo.Dtos.EntrantDto;
 import com.example.demo.Subjects;
-import com.example.demo.entities.Entrant;
+import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.EntrantSubject;
 import com.example.demo.repositories.EntrantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,19 +61,19 @@ public class EntrantService {
         return entrant;
     }
 
-    public Integer findIdByEmailAndPassword(String email, String password){
-        return entrantRepo.findIdByEmailAndPassword(email, password);
+    public Entrant findByEmailAndPassword(String email, String password){
+        return entrantRepo.findByEmailAndPassword(email, password);
     }
 
-    public Integer findRoleByEmailAndPassword(String email, String password){
-        return entrantRepo.findRoleByEmailAndPassword(email, password);
+    public List<Entrant> findByRole(String role){
+        return entrantRepo.findByRole(role);
     }
 
-    public List<Entrant> findByRole(){
-        return entrantRepo.findByRole();
-    }
-
-    public void changeRole(int id, int role){
+    public void changeRole(int id, String role){
         entrantRepo.changeRole(role, id);
+    }
+
+    public void changeApplicationsLeft(int id, int applications){
+        entrantRepo.changeApplicationsLeft(applications, id);
     }
 }

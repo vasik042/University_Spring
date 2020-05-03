@@ -14,7 +14,10 @@
 </head>
 <body>
     <jsp:include page="header.jsp"></jsp:include>
-    <c:if test="${role >= 0}">
+    <c:if test="${role == 'NOT_VERIFIER_ENTRANT'}">
+        <p>Для подачі заявок адміністратр повинен підтвердити вашу заяву</p>
+    </c:if>
+    <c:if test="${role == 'ENTRANT'}">
         <table>
              <tr>
                 <th>№</th>
@@ -30,7 +33,7 @@
              </c:forEach>
         </table>
     </c:if>
-    <c:if test="${role < 0}">
+    <c:if test="${role == 'ADMIN'}">
         <table>
              <tr>
                 <th>№</th>

@@ -3,8 +3,9 @@ package com.example.demo;
 import com.example.demo.Dtos.EntrantDto;
 import com.example.demo.Dtos.EntrantLoginDto;
 import com.example.demo.Services.*;
-import com.example.demo.Subjects;
 import com.example.demo.entities.*;
+import com.example.demo.entities.userEntities.Entrant;
+import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,6 +32,8 @@ public class MainController {
     private FacultyService facultyService;
     @Autowired
     private FacultySubjectService facultySubjectService;
+    @Autowired
+    private AdminService adminService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getIndex(HttpServletRequest request) {
@@ -40,7 +43,6 @@ public class MainController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegister(HttpServletRequest request) {
-
         return "register";
     }
 
@@ -72,14 +74,22 @@ public class MainController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute EntrantLoginDto entrantloginDto, HttpServletRequest request){
         HttpSession session = request.getSession(true);
-        Integer id = entrantService.findIdByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
-        Integer role = entrantService.findRoleByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
-        if(id != null){
-            session.setAttribute("UserId", id);
-            session.setAttribute("role", role);
-            return getCabinet(request);
+
+        Entrant entrant = entrantService.findByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
+        if (entrant == null){
+            Integer id = adminService.findIdByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
+            if (id != null){
+                session.setAttribute("UserId", id);
+                session.setAttribute("role", Roles.ADMIN.name());
+                return getCabinet(request);
+            }else {
+                return "login";
+            }
         }else {
-            return "login";
+            session.setAttribute("UserId", entrant.getId());
+            session.setAttribute("role", entrant.getRole());
+            session.setAttribute("applicationsLeft", entrant.getApplicationsLeft());
+            return getCabinet(request);
         }
     }
 
@@ -96,35 +106,40 @@ public class MainController {
         request.setAttribute("entrants", applicationService.findByFacultyId(id));
         request.setAttribute("faculties", facultyService.findAll());
         request.setAttribute("facultyId", id);
-        Integer role = (Integer)request.getSession().getAttribute("role");
-        if (role != null){
-            if (role == 0){
+        String role = (String) request.getSession().getAttribute("role");
+        if (role != null) {
+            if (role.equals(Roles.NOT_VERIFIER_ENTRANT.name())) {
                 request.setAttribute("canReg", 1);
-            }else if (role >= 4){
-                request.setAttribute("canReg", 2);
-            }else if(role > 0 ){
-                int i = 0;
-                List<FacultySubject> facultySubjects = facultySubjectService.getFacultySubjects(id);
-                List<EntrantSubject> entrantSubjects = entrantSubjectService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
-                for (FacultySubject fs: facultySubjects) {
-                    for (EntrantSubject es: entrantSubjects) {
-                        if(fs.getSubjectName().equals(es.getSubjectName())){
-                            i++;
+            } else if (role.equals(Roles.ENTRANT.name())) {
+                Integer applicationsLeft = (Integer) request.getSession().getAttribute("applicationsLeft");
+                if (applicationsLeft > 0) {
+                    int i = 0;
+                    List<FacultySubject> facultySubjects = facultySubjectService.getFacultySubjects(id);
+                    List<EntrantSubject> entrantSubjects = entrantSubjectService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
+                    for (FacultySubject fs : facultySubjects) {
+                        for (EntrantSubject es : entrantSubjects) {
+                            if (fs.getSubjectName().equals(es.getSubjectName())) {
+                                i++;
+                            }
                         }
                     }
-                }
-                if(i == facultySubjects.size()){
-                    request.setAttribute("canReg", 0);
-                }else {
-                    request.setAttribute("canReg", 4);
-                }
-                List<Application> applications = applicationService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
-                for (Application a : applications) {
-                    if (a.getFacultySavedId() == id){
-                        request.setAttribute("canReg", 3);
+                    if (i == facultySubjects.size()) {
+                        request.setAttribute("canReg", 0);
+                    } else {
+                        request.setAttribute("canReg", 4);
                     }
+                    List<Application> applications = applicationService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
+                    for (Application a : applications) {
+                        if (a.getFacultySavedId() == id) {
+                            request.setAttribute("canReg", 3);
+                        }
+                    }
+                } else {
+                    request.setAttribute("canReg", 2);
                 }
             }
+        }else {
+            request.setAttribute("canReg", 5);
         }
         return "faculty";
     }
@@ -143,23 +158,24 @@ public class MainController {
 
         applicationService.save(entrant, faculty);
 
-        entrantService.changeRole(entrant.getId(), entrant.getRole()+1);
+        entrantService.changeApplicationsLeft(entrant.getId(), entrant.getApplicationsLeft()-1);
 
         return getFaculty(id, request);
     }
 
     @RequestMapping(value = "/activate", method = RequestMethod.GET)
     public String activate(@RequestParam(name = "id") int id, HttpServletRequest request) {
-        entrantService.changeRole(id, 1);
+        entrantService.changeRole(id, Roles.ENTRANT.name());
         return getCabinet(request);
     }
 
     @RequestMapping(value = "/cabinet", method = RequestMethod.GET)
     public String getCabinet(HttpServletRequest request) {
-        if((Integer)request.getSession().getAttribute("role") >= 0){
+
+        if(((String) request.getSession().getAttribute("role")).equals(Roles.ENTRANT.name())){
             request.setAttribute("applications", applicationService.findByEntrantId((Integer)request.getSession().getAttribute("UserId")));
-        }else if ((Integer)request.getSession().getAttribute("role") < 0){
-            List<Entrant> entrants = entrantService.findByRole();
+        }else if (((String) request.getSession().getAttribute("role")).equals(Roles.ADMIN.name())){
+            List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIER_ENTRANT.name());
             request.setAttribute("entrants", entrants);
             List<EntrantSubject> subjects = new ArrayList<>();
             for (Entrant e:entrants) {

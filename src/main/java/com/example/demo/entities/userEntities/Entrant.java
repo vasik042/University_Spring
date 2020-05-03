@@ -1,13 +1,15 @@
-package com.example.demo.entities;
+package com.example.demo.entities.userEntities;
+
+import com.example.demo.entities.Application;
+import com.example.demo.entities.EntrantSubject;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "entrant")
-public class Entrant {
+public class Entrant{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,16 +20,15 @@ public class Entrant {
     String name;
     @Column(name = "surname")
     String surname;
+    String email;
+    String password;
+    String role;
     @Column(name = "date_of_birth")
     String dateOfBirth;
     @Column(name = "school_GPA")
     float schoolGPA;
-    @Column(name = "email")
-    String email;
-    @Column(name = "password")
-    String password;
-    @Column(name = "role")
-    int role;
+    @Column(name = "applications_left")
+    int applicationsLeft;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
     Set<EntrantSubject> subjects;
@@ -42,13 +43,8 @@ public class Entrant {
         this.schoolGPA = schoolGPA;
         this.email = email;
         this.password = password;
-        this.role = 0;
-    }
-
-    public Entrant(String email, String password) {
-        this.email = email;
-        this.password = password;
-        this.role = -1;
+        this.role = Roles.NOT_VERIFIER_ENTRANT.name();
+        this.applicationsLeft = 3;
     }
 
     public Entrant(){}
@@ -127,11 +123,11 @@ public class Entrant {
         this.password = password;
     }
 
-    public int getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -141,5 +137,30 @@ public class Entrant {
 
     public void setApplications(Set<Application> applications) {
         this.applications = applications;
+    }
+
+    public int getApplicationsLeft() {
+        return applicationsLeft;
+    }
+
+    public void setApplicationsLeft(int applicationsLeft) {
+        this.applicationsLeft = applicationsLeft;
+    }
+
+    @Override
+    public String toString() {
+        return "Entrant{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", schoolGPA=" + schoolGPA +
+                ", applicationsLeft=" + applicationsLeft +
+                ", subjects=" + subjects +
+                ", applications=" + applications +
+                '}';
     }
 }
