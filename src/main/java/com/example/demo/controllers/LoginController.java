@@ -19,11 +19,13 @@ public class LoginController {
 
     private EntrantService entrantService;
     private AdminService adminService;
+    private CabinetController cabinetController;
 
     @Autowired
-    public LoginController(EntrantService entrantService, AdminService adminService) {
+    public LoginController(EntrantService entrantService, AdminService adminService, CabinetController cabinetController) {
         this.entrantService = entrantService;
         this.adminService = adminService;
+        this.cabinetController = cabinetController;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -45,7 +47,7 @@ public class LoginController {
                 session.setAttribute("UserId", id);
                 session.setAttribute("role", Roles.ADMIN.name());
 
-                return "cabinet";
+                return cabinetController.getCabinet(request);
             }else {
                 return "login";
             }
@@ -54,7 +56,7 @@ public class LoginController {
             session.setAttribute("role", entrant.getRole());
             session.setAttribute("applicationsLeft", entrant.getApplicationsLeft());
 
-            return "cabinet";
+            return cabinetController.getCabinet(request);
         }
     }
 

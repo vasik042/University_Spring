@@ -12,8 +12,8 @@
 </head>
 <body>
 <div class="navbar" style="width: 100%">
-  <div class="navbar-inner">
-    <div class="container">
+  <div class="navbar-inner" style="width: 100%">
+    <div class="container" style="width: 100%">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>

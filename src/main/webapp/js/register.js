@@ -1,4 +1,4 @@
-let name = false;
+﻿let name = false;
 let surname = false;
 let email = false;
 let password = false;
@@ -16,27 +16,22 @@ let subjectGrade4 = false;
 
 document.getElementById('name').onchange = function(){
     name = document.getElementById('name').value;
-    console.log(name);
 }
 
 document.getElementById('surname').onchange = function(){
     surname = document.getElementById('surname').value;
-    console.log(surname);
 }
 
 document.getElementById('dateOfBirth').onchange = function(){
     date = document.getElementById('dateOfBirth').value;
-    console.log(date);
 }
 
 document.getElementById('email').onchange = function(){
     email = document.getElementById('email').value;
-    console.log(email);
 }
 
 document.getElementById('password').onchange = function(){
     password = document.getElementById('password').value;
-        console.log(password);
 }
 
 document.getElementById('schoolGPA').onchange = function(){
@@ -47,7 +42,6 @@ document.getElementById('schoolGPA').onchange = function(){
         document.getElementById('schoolGPA').value = false;
         schoolGPA = false;
     }
-        console.log(schoolGPA);
 }
 
 document.getElementById('subjectGrade1').onchange = function(){
@@ -126,9 +120,9 @@ document.body.onmousemove = function(){
     
     if (name && surname && email && password && date && schoolGPA && subjectGrade1 && subjectName2 && subjectGrade2 && subjectName3 && subjectGrade3){
         document.getElementById('btn').removeAttribute("disabled");
-        document.getElementById('btn').style.backgroundColor = "forestgreen";
+        document.getElementById('btn').style.color = "black";
     }else{
         document.getElementById('btn').setAttribute("disabled", "true");
-        document.getElementById('btn').style.backgroundColor = "lightgreen";
+        document.getElementById('btn').style.color = "grey";
     }
 }
