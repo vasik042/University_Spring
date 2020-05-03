@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface EntrantSubjectRepository  extends JpaRepository<EntrantSubject, Integer> {
 
-//    @Query(value = "SELECT * FROM entrant_subject  WHERE entrant_id = ?1", nativeQuery = true)
     public List<EntrantSubject> findByEntrantId(int id);
 }

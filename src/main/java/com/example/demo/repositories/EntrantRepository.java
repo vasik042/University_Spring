@@ -12,10 +12,8 @@ import java.util.List;
 @Repository
 public interface EntrantRepository  extends JpaRepository<Entrant, Integer> {
 
-    @Query(value = "SELECT * FROM entrant WHERE email = ?1 AND password = ?2", nativeQuery = true)
     public Entrant findByEmailAndPassword(String email, String password);
 
-    @Query(value = "SELECT * FROM entrant WHERE role = ?1", nativeQuery = true)
     public List<Entrant> findByRole(String role);
 
     @Query(value = "SELECT email FROM entrant WHERE entrant_id = ?1", nativeQuery = true)
