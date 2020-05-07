@@ -66,7 +66,7 @@
                 <th style="width: 150px;"></th>
                 <th style="width: 150px;"></th>
              </tr>
-             
+
              <c:forEach var="entrant" items="${entrants}" varStatus="сounter">
                   <tr>
                       <td class ="number">${сounter.count}</td>
@@ -80,8 +80,8 @@
                               <td>${subject.subjectName} - ${subject.grade}</td>
                           </c:if>
                       </c:forEach>
-                      
-                      <td><a href="/activate?id=${entrant.id}" style="color: green">Підтвердити</a></td>
+
+                      <td><a href="/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
                       <td><a href="/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
                   </tr>
              </c:forEach>

@@ -24,4 +24,8 @@ public class EntrantSubjectService {
     public List<EntrantSubject> findByEntrantId(int id){
         return entrantSubjectRepo.findByEntrantId(id);
     }
+
+    public List<EntrantSubject> findAll() {
+        return entrantSubjectRepo.findAll();
+    }
 }

@@ -13,9 +13,8 @@ public class Faculty {
     @Column(name = "faculty_id")
     int id;
 
-    @Column(name = "name")
     String name;
-    @Column(name = "places")
+    String description;
     int places;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
@@ -76,5 +75,11 @@ public class Faculty {
         this.facultySubjects = facultySubjects;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

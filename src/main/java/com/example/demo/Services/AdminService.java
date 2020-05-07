@@ -5,6 +5,8 @@ import com.example.demo.repositories.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminService {
 
@@ -17,5 +19,17 @@ public class AdminService {
 
     public Admin findByEmailAndPassword(String email, String password) {
         return adminRepo.findByEmailAndPassword(email, password);
+    }
+
+    public List<Admin> findAll() {
+        return adminRepo.findAll();
+    }
+
+    public void deleteById(int id) {
+        adminRepo.deleteById(id);
+    }
+
+    public Admin findById(int id) {
+        return adminRepo.findById(id).get();
     }
 }

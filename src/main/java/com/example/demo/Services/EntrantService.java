@@ -77,4 +77,8 @@ public class EntrantService {
     public Integer findIdByHash(String hash){
         return entrantRepo.findIdByHash(hash);
     }
+
+    public List<Entrant> findAll() {
+        return entrantRepo.findAll();
+    }
 }

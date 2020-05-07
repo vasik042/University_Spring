@@ -22,18 +22,21 @@ public class CabinetController {
     private ApplicationService applicationService;
     private FacultyService facultyService;
     private MailSenderService mailSenderService;
+    private SuperAdminController superAdminController;
 
     @Autowired
     public CabinetController(EntrantService entrantService,
                              EntrantSubjectService entrantSubjectService,
                              ApplicationService applicationService,
                              FacultyService facultyService,
-                             MailSenderService mailSenderService) {
+                             MailSenderService mailSenderService,
+                             SuperAdminController superAdminController) {
         this.entrantService = entrantService;
         this.entrantSubjectService = entrantSubjectService;
         this.applicationService = applicationService;
         this.facultyService = facultyService;
         this.mailSenderService = mailSenderService;
+        this.superAdminController = superAdminController;
     }
 
     @RequestMapping(value = "/cabinet", method = RequestMethod.GET)
@@ -63,8 +66,8 @@ public class CabinetController {
         return "cabinet";
     }
 
-    @RequestMapping(value = "/activate", method = RequestMethod.GET)
-    public String activate(@RequestParam(name = "id") int id, HttpServletRequest request) {
+    @RequestMapping(value = "/activateEntrant", method = RequestMethod.GET)
+    public String activateEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
         entrantService.changeRole(id, Roles.ENTRANT.name());
 
@@ -75,7 +78,11 @@ public class CabinetController {
 
         mailSenderService.message(email, subject, text);
 
-        return getCabinet(request);
+        if (request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name())){
+            return superAdminController.superAdminCabinetEntrants(request);
+        }else {
+            return getCabinet(request);
+        }
     }
 
     @RequestMapping(value = "/deleteEntrant", method = RequestMethod.GET)
@@ -90,7 +97,11 @@ public class CabinetController {
 
         mailSenderService.message(email, subject, text);
 
-        return getCabinet(request);
+        if (request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name())){
+            return superAdminController.superAdminCabinetEntrants(request);
+        }else {
+            return getCabinet(request);
+        }
     }
 
     @RequestMapping(value = "/deleteApplication", method = RequestMethod.GET)

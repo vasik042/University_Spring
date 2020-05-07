@@ -17,6 +17,10 @@ public class FacultySubjectService {
         this.facultySubjectRepo = facultySubjectRepo;
     }
 
+    public List<FacultySubject> findAll(){
+        return facultySubjectRepo.findAll();
+    }
+
     public List<FacultySubject> getFacultySubjects(int id){
         return facultySubjectRepo.findByFacultyId(id);
     }
