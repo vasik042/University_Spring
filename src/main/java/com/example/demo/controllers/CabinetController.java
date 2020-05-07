@@ -38,10 +38,15 @@ public class CabinetController {
 
     @RequestMapping(value = "/cabinet", method = RequestMethod.GET)
     public String getCabinet(HttpServletRequest request) {
+        request.setAttribute("faculties", facultyService.findAll());
 
-        if(((String) request.getSession().getAttribute("role")).equals(Roles.ENTRANT.name())){
+        if (request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name())){
+            return "superAdminCabinet";
+        }
+
+        if(request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
             request.setAttribute("applications", applicationService.findByEntrantId((Integer)request.getSession().getAttribute("UserId")));
-        }else if (((String) request.getSession().getAttribute("role")).equals(Roles.ADMIN.name())){
+        }else if (request.getSession().getAttribute("role").equals(Roles.ADMIN.name())){
 
             List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIED_ENTRANT.name());
             List<EntrantSubject> subjects = new ArrayList<>();
@@ -54,7 +59,6 @@ public class CabinetController {
 
             request.setAttribute("subjects", subjects);
         }
-        request.setAttribute("faculties", facultyService.findAll());
 
         return "cabinet";
     }

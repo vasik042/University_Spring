@@ -15,10 +15,19 @@ public class FacultySubject {
     String subjectName;
     @Column(name="coefficient")
     float coefficient;
+    @Column(name="facultySavedId")
+    int facultySavedId;
 
     @ManyToOne
     @JoinColumn(name="faculty_id", nullable=false)
     Faculty faculty;
+
+    public FacultySubject(String subjectName, int coef, Faculty faculty) {
+        this.subjectName = subjectName;
+        this.coefficient = coef;
+        this.faculty = faculty;
+        this.facultySavedId = faculty.getId();
+    }
 
     public FacultySubject(){}
 
@@ -52,5 +61,13 @@ public class FacultySubject {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    public int getFacultySavedId() {
+        return facultySavedId;
+    }
+
+    public void setFacultySavedId(int facultySavedId) {
+        this.facultySavedId = facultySavedId;
     }
 }

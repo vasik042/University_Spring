@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.Dtos.EntrantLoginDto;
 import com.example.demo.Services.AdminService;
 import com.example.demo.Services.EntrantService;
+import com.example.demo.entities.userEntities.Admin;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,11 @@ public class LoginController {
         Entrant entrant = entrantService.findByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
 
         if (entrant == null){
-            Integer id = adminService.findIdByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
+            Admin admin = adminService.findByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
 
-            if (id != null){
-                session.setAttribute("UserId", id);
-                session.setAttribute("role", Roles.ADMIN.name());
+            if (admin != null){
+                session.setAttribute("UserId", admin.getId());
+                session.setAttribute("role", admin.getRole());
 
                 return cabinetController.getCabinet(request);
             }else {

@@ -15,7 +15,7 @@ public class AdminService {
         this.adminRepo = adminRepo;
     }
 
-    public Integer findIdByEmailAndPassword(String email, String password){
-        return adminRepo.findIdByEmailAndPassword(email, password);
+    public Admin findByEmailAndPassword(String email, String password) {
+        return adminRepo.findByEmailAndPassword(email, password);
     }
 }

@@ -13,17 +13,17 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
   
     <style>
-
-        th{
+       th{
             border: 1px solid black;
             border-bottom: 2px solid black;
         }
         td{
             border: 1px solid black;
-        
+            font-family: sans-serif;
+
         }table{
             border: 2px solid black;
-            border-radius: 20px;
+            border-collapse: collapse;
         }
     </style>
 </head>
@@ -36,10 +36,10 @@
         <table>
             <p style="font-size: 30px">Подані заявки:</p>
              <tr>
-                <th>№</th>
-                <th>Факультет</th>
-                <th>Кількість балів</th>
-                <th></th>
+                <th style="width: 50px;">№</th>
+                <th style="width: 300px;">Факультет</th>
+                <th style="width: 150px;">Кількість балів</th>
+                <th style="width: 150px;"></th>
              </tr>
              <c:forEach var="application" items="${applications}" varStatus="сounter">
                   <tr>
@@ -54,17 +54,17 @@
        <p style="font-size: 30px">Подані заявки:</p>
         <table>
              <tr>
-                <th>№</th>
-                <th>Прізвище</th>
-                <th>Імя</th>
-                <th>Електронна пошта</th>
-                <th>Середня оцінка в атестаті</th>
-                <th>Предмет№1</th>
-                <th>Предмет№2</th>
-                <th>Предмет№3</th>
-                <th>Предмет№4</th>
-                <th></th>
-                <th></th>
+                <th style="width: 50px;">№</th>
+                <th style="width: 150px;">Прізвище</th>
+                <th style="width: 150px;">Імя</th>
+                <th style="width: 150px;">Електронна пошта</th>
+                <th style="width: 50px;">Середня оцінка</th>
+                <th style="width: 150px;">Предмет№1</th>
+                <th style="width: 150px;">Предмет№2</th>
+                <th style="width: 150px;">Предмет№3</th>
+                <th style="width: 150px;">Предмет№4</th>
+                <th style="width: 150px;"></th>
+                <th style="width: 150px;"></th>
              </tr>
              
              <c:forEach var="entrant" items="${entrants}" varStatus="сounter">
