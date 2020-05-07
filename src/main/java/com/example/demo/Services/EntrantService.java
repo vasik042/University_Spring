@@ -32,7 +32,8 @@ public class EntrantService {
 
     public Entrant save(EntrantDto entrantDto) {
         Entrant entrant = entrantRepo.save(new Entrant(entrantDto.getName(), entrantDto.getSurname(),
-                entrantDto.getDateOfBirth(), entrantDto.getSchoolGPA(), entrantDto.getEmail(), entrantDto.getPassword()));
+                entrantDto.getDateOfBirth(), entrantDto.getSchoolGPA(), entrantDto.getEmail(),
+                entrantDto.getPassword(), entrantDto.getEmailHash()));
 
         EntrantSubject sub1 = new EntrantSubject(Subjects.UKRAINIAN.name(), entrantDto.getSubjectGrade1(), entrant);
         EntrantSubject sub2 = new EntrantSubject(entrantDto.getSubjectName2(), entrantDto.getSubjectGrade2(), entrant);
@@ -71,5 +72,9 @@ public class EntrantService {
 
     public String findEmailById(int id){
         return entrantRepo.findEmailById(id);
+    }
+
+    public Integer findIdByHash(String hash){
+        return entrantRepo.findIdByHash(hash);
     }
 }

@@ -29,6 +29,8 @@ public class Entrant{
     float schoolGPA;
     @Column(name = "applications_left")
     int applicationsLeft;
+    @Column(name = "email_verify_hash")
+    String emailHash;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
     Set<EntrantSubject> subjects;
@@ -36,14 +38,16 @@ public class Entrant{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
     Set<Application> applications;
 
-    public Entrant(String name, String surname, String dateOfBirth, float schoolGPA, String email, String password) {
+    public Entrant(String name, String surname, String dateOfBirth, float schoolGPA,
+                   String email, String password, String emailHash) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.schoolGPA = schoolGPA;
         this.email = email;
         this.password = password;
-        this.role = Roles.NOT_VERIFIER_ENTRANT.name();
+        this.emailHash = emailHash;
+        this.role = Roles.NOT_VERIFIED_EMAIL_ENTRANT.name();
         this.applicationsLeft = 3;
     }
 
@@ -147,20 +151,11 @@ public class Entrant{
         this.applicationsLeft = applicationsLeft;
     }
 
-    @Override
-    public String toString() {
-        return "Entrant{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", schoolGPA=" + schoolGPA +
-                ", applicationsLeft=" + applicationsLeft +
-                ", subjects=" + subjects +
-                ", applications=" + applications +
-                '}';
+    public String getEmailHash() {
+        return emailHash;
+    }
+
+    public void setEmailHash(String emailHash) {
+        this.emailHash = emailHash;
     }
 }

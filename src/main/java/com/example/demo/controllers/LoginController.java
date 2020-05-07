@@ -52,11 +52,15 @@ public class LoginController {
                 return "login";
             }
         }else {
-            session.setAttribute("UserId", entrant.getId());
-            session.setAttribute("role", entrant.getRole());
-            session.setAttribute("applicationsLeft", entrant.getApplicationsLeft());
+            if(entrant.getRole().equals(Roles.NOT_VERIFIED_EMAIL_ENTRANT.name())){
+                return "login";
+            }else {
+                session.setAttribute("UserId", entrant.getId());
+                session.setAttribute("role", entrant.getRole());
+                session.setAttribute("applicationsLeft", entrant.getApplicationsLeft());
 
-            return cabinetController.getCabinet(request);
+                return cabinetController.getCabinet(request);
+            }
         }
     }
 

@@ -43,7 +43,7 @@ public class CabinetController {
             request.setAttribute("applications", applicationService.findByEntrantId((Integer)request.getSession().getAttribute("UserId")));
         }else if (((String) request.getSession().getAttribute("role")).equals(Roles.ADMIN.name())){
 
-            List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIER_ENTRANT.name());
+            List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIED_ENTRANT.name());
             List<EntrantSubject> subjects = new ArrayList<>();
 
             request.setAttribute("entrants", entrants);

@@ -8,6 +8,7 @@ public class EntrantDto {
     private float schoolGPA;
     private String email;
     private String password;
+    private String emailHash;
 
     private String subjectName2;
     private String subjectName3;
@@ -123,5 +124,13 @@ public class EntrantDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmailHash() {
+        return emailHash;
+    }
+
+    public void setEmailHash(String emailHash) {
+        this.emailHash = emailHash;
     }
 }

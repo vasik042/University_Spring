@@ -50,7 +50,7 @@ public class FacultyController {
         //check if logged
         if (role != null) {
             //check if entrant is verified
-            if (role.equals(Roles.NOT_VERIFIER_ENTRANT.name())) {
+            if (role.equals(Roles.NOT_VERIFIED_ENTRANT.name())) {
                 request.setAttribute("canReg", 1);
             } else if (role.equals(Roles.ENTRANT.name())) {
                 //check if entrant able to make application

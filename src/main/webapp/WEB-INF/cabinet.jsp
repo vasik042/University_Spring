@@ -29,7 +29,7 @@
 </head>
 <body>
     <jsp:include page="header.jsp"></jsp:include>
-    <c:if test="${role == 'NOT_VERIFIER_ENTRANT'}">
+    <c:if test="${role == 'NOT_VERIFIED_ENTRANT'}">
         <p>Для подачі заявок адміністратр повинен підтвердити вашу заяву</p>
     </c:if>
     <c:if test="${role == 'ENTRANT'}">
