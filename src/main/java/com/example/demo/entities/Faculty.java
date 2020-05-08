@@ -23,6 +23,12 @@ public class Faculty {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
     Set<FacultySubject> facultySubjects;
 
+    public Faculty(String name, String description, int places) {
+        this.name = name;
+        this.description = description;
+        this.places = places;
+    }
+
     public Faculty(){}
 
     public void setNecessarySubjects(FacultySubject fs1, FacultySubject fs2, FacultySubject fs3, FacultySubject fs4) {

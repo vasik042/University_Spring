@@ -22,7 +22,7 @@ public class FacultySubject {
     @JoinColumn(name="faculty_id", nullable=false)
     Faculty faculty;
 
-    public FacultySubject(String subjectName, int coef, Faculty faculty) {
+    public FacultySubject(String subjectName, float coef, Faculty faculty) {
         this.subjectName = subjectName;
         this.coefficient = coef;
         this.faculty = faculty;

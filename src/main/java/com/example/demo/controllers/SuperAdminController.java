@@ -1,14 +1,22 @@
 package com.example.demo.controllers;
 
+import com.example.demo.Dtos.EmailAndPasswordDto;
+import com.example.demo.Dtos.FacultyDto;
 import com.example.demo.Services.*;
+import com.example.demo.entities.Application;
+import com.example.demo.entities.Faculty;
+import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class SuperAdminController {
@@ -18,16 +26,18 @@ public class SuperAdminController {
     private FacultyService facultyService;
     private FacultySubjectService facultySubjectService;
     private AdminService adminService;
+    private ApplicationService applicationService;
 
     @Autowired
     public SuperAdminController(EntrantService entrantService, EntrantSubjectService entrantSubjectService,
                                 FacultyService facultyService, FacultySubjectService facultySubjectService,
-                                AdminService adminService) {
+                                AdminService adminService, ApplicationService applicationService) {
         this.entrantService = entrantService;
         this.entrantSubjectService = entrantSubjectService;
         this.facultyService = facultyService;
         this.facultySubjectService = facultySubjectService;
         this.adminService = adminService;
+        this.applicationService = applicationService;
     }
 
     @RequestMapping(value = "/superAdminCabinetFaculties", method = RequestMethod.GET)
@@ -63,15 +73,50 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/addFaculty", method = RequestMethod.GET)
     public String addFaculty(HttpServletRequest request) {
-        return "addFaculty";
+
+        request.setAttribute("create", true);
+
+        return "facultyCreate";
+    }
+
+    @RequestMapping(value = "/addFaculty", method = RequestMethod.POST)
+    public String addFaculty(@ModelAttribute FacultyDto facultyDto, HttpServletRequest request) {
+
+        facultyService.save(facultyDto);
+
+        return superAdminCabinetFaculties(request);
     }
 
     @RequestMapping(value = "/editFaculty", method = RequestMethod.GET)
     public String editFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
         request.setAttribute("faculty", facultyService.findById(id));
+        request.setAttribute("subjects", facultySubjectService.getFacultySubjects(id));
+        request.setAttribute("create", false);
 
-        return "addFaculty";
+        return "facultyCreate";
+    }
+
+    @RequestMapping(value = "/editFaculty", method = RequestMethod.POST)
+    public String editFaculty(@ModelAttribute FacultyDto facultyDto, HttpServletRequest request) {
+
+        facultyService.edit(facultyDto);
+        Faculty faculty = facultyService.findById(facultyDto.getDtoId());
+        facultySubjectService.edit(facultyDto, faculty);
+
+        List<Application> applications = applicationService.findByFacultyId(faculty.getId());
+        List<Entrant> entrants = new ArrayList<>();
+        for (Application a: applications) {
+            entrants.add(a.getEntrant());
+        }
+
+        applicationService.deleteAll(applications);
+
+        for (Entrant e: entrants) {
+            applicationService.save(e, faculty);
+        }
+
+        return superAdminCabinetFaculties(request);
     }
 
     @RequestMapping(value = "/addAdmin", method = RequestMethod.GET)

@@ -1,5 +1,6 @@
 package com.example.demo.Services;
 
+import com.example.demo.Dtos.FacultyDto;
 import com.example.demo.entities.*;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.repositories.ApplicationRepository;
@@ -20,19 +21,25 @@ public class ApplicationService {
 
     public void save(Entrant entrant, Faculty faculty){
         float gpa = 0;
+        int count = faculty.getFacultySubjects().size();
 
         for (FacultySubject fs: faculty.getFacultySubjects()) {
             for (EntrantSubject es: entrant.getSubjects()) {
                 if(es.getSubjectName().equals(fs.getSubjectName())){
                     gpa += es.getGrade()*fs.getCoefficient();
+                    count--;
                 }
             }
         }
 
         gpa += (entrant.getSchoolGPA()/12 + 1) * 10;
 
-        Application application = new Application(gpa, entrant, faculty);
-        applicationRepo.save(application);
+        if(count == 0){
+            Application application = new Application(gpa, entrant, faculty);
+            applicationRepo.save(application);
+        }else {
+            //TODO mail send
+        }
     }
 
     public void deleteById(int id){
@@ -45,5 +52,9 @@ public class ApplicationService {
 
     public List<Application> findByFacultyId(int id){
         return applicationRepo.findByFacultyId(id);
+    }
+
+    public void deleteAll(List<Application> applications) {
+        applicationRepo.deleteAll(applications);
     }
 }
