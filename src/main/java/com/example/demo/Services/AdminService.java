@@ -32,4 +32,12 @@ public class AdminService {
     public Admin findById(int id) {
         return adminRepo.findById(id).get();
     }
+
+    public void save(String email, String password){
+        adminRepo.save(new Admin(email, password));
+    }
+
+    public void edit(String email, String password, int id){
+        adminRepo.edit(email, password, id);
+    }
 }

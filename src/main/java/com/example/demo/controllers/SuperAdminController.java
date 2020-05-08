@@ -121,15 +121,39 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/addAdmin", method = RequestMethod.GET)
     public String addAdmin(HttpServletRequest request) {
-        return "addAdmin";
+
+        request.setAttribute("create", true);
+
+        return "adminCreate";
+    }
+
+    @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
+    public String addAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
+
+        adminService.save(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword());
+
+        return superAdminCabinetAdmins(request);
     }
 
     @RequestMapping(value = "/editAdmin", method = RequestMethod.GET)
     public String editAdmin(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
         request.setAttribute("admin", adminService.findById(id));
+        request.setAttribute("create", false);
 
-        return "addAdmin";
+        return "adminCreate";
+    }
+
+    @RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
+    public String editAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
+
+        System.out.println(emailAndPasswordDto.getEmail());
+        System.out.println(emailAndPasswordDto.getPassword());
+        System.out.println(emailAndPasswordDto.getDtoId());
+
+        adminService.edit(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword(), emailAndPasswordDto.getDtoId());
+
+        return superAdminCabinetAdmins(request);
     }
 
     @RequestMapping(value = "/deleteAdmin", method = RequestMethod.GET)

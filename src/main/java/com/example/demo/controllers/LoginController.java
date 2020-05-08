@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.Dtos.EntrantLoginDto;
+import com.example.demo.Dtos.EmailAndPasswordDto;
 import com.example.demo.Services.AdminService;
 import com.example.demo.Services.EntrantService;
 import com.example.demo.entities.userEntities.Admin;
@@ -35,14 +35,14 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@ModelAttribute EntrantLoginDto entrantloginDto, HttpServletRequest request){
+    public String login(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request){
 
         HttpSession session = request.getSession(true);
 
-        Entrant entrant = entrantService.findByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
+        Entrant entrant = entrantService.findByEmailAndPassword(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword());
 
         if (entrant == null){
-            Admin admin = adminService.findByEmailAndPassword(entrantloginDto.getEmail(), entrantloginDto.getPassword());
+            Admin admin = adminService.findByEmailAndPassword(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword());
 
             if (admin != null){
                 session.setAttribute("UserId", admin.getId());
