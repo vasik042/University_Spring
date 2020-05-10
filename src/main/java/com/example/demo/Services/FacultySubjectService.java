@@ -40,10 +40,14 @@ public class FacultySubjectService {
 
         for (Subjects s: Subjects.values()) {
             if (s.name().equals(facultyDto.getSubjectName4())) {
-                subjects.add(new FacultySubject(facultyDto.getSubjectName4(), facultyDto.getSubjectCoef4(), faculty));
+                subjects.add(new FacultySubject(facultyDto.getSubjectName4(), Float.parseFloat(facultyDto.getSubjectCoef4()), faculty));
             }
         }
 
         facultySubjectRepo.saveAll(subjects);
+    }
+
+    public void deleteByFacultyId(int id) {
+        facultySubjectRepo.deleteByFacultyId(id);
     }
 }

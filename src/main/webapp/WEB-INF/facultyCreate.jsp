@@ -57,7 +57,6 @@
     <c:if test="${!create}">
     <form action="/editFaculty" method ="post">
     </c:if>
-        <input type="hidden" id="dtoId" name ="dtoId" value="${faculty.id}">
         <div style="background-color: white; width: 500px; height: 600px; margin: auto; margin-top: 20px; border-radius: 10px; border: 2px solid grey">
 
             <c:if test="${create}">
@@ -66,6 +65,7 @@
 
             <c:if test="${!create}">
               <p style="text-align: center; font-size: 28px">Редагування факультету</p>
+              <input type="hidden" id="dtoId" name ="dtoId" value="${faculty.id}">
             </c:if>
 
             <label for="Name">Назва

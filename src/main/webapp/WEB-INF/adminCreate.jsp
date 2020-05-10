@@ -65,9 +65,9 @@
 
               <c:if test="${!create}">
                 <p style="text-align: center; font-size: 28px">Редагування адміністратора</p>
+                <input type="hidden" id="dtoId" name ="dtoId" value="${admin.id}">
               </c:if>
 
-            <input type="hidden" id="dtoId" name ="dtoId" value="${admin.id}">
             <label for="email">Електронна пошта
                <br>
                 <input class="inp1" type="email" required id="email" name ="email" value="${admin.email}">

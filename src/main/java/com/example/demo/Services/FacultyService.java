@@ -45,12 +45,18 @@ public class FacultyService {
         subjects.add(new FacultySubject(facultyDto.getSubjectName2(), facultyDto.getSubjectCoef2(), faculty));
         subjects.add(new FacultySubject(facultyDto.getSubjectName3(), facultyDto.getSubjectCoef3(), faculty));
 
-        for (Subjects s: Subjects.values()) {
-            if (s.name().equals(facultyDto.getSubjectName4())) {
-                subjects.add(new FacultySubject(facultyDto.getSubjectName4(), facultyDto.getSubjectCoef4(), faculty));
+        if(!facultyDto.getSubjectCoef4().isEmpty()) {
+            for (Subjects s : Subjects.values()) {
+                if (s.name().equals(facultyDto.getSubjectName4())) {
+                    subjects.add(new FacultySubject(facultyDto.getSubjectName4(), Float.parseFloat(facultyDto.getSubjectCoef4()), faculty));
+                }
             }
         }
 
         facultySubjectRepository.saveAll(subjects);
+    }
+
+    public void deleteById(int id) {
+        facultyRepo.deleteById(id);
     }
 }

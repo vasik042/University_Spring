@@ -119,6 +119,16 @@ public class SuperAdminController {
         return superAdminCabinetFaculties(request);
     }
 
+    @RequestMapping(value = "/deleteFaculty", method = RequestMethod.GET)
+    public String deleteFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
+        facultySubjectService.deleteByFacultyId(id);
+        applicationService.deleteByFacultyId(id);
+        facultyService.deleteById(id);
+
+        return superAdminCabinetFaculties(request);
+    }
+
     @RequestMapping(value = "/addAdmin", method = RequestMethod.GET)
     public String addAdmin(HttpServletRequest request) {
 

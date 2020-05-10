@@ -28,4 +28,8 @@ public class EntrantSubjectService {
     public List<EntrantSubject> findAll() {
         return entrantSubjectRepo.findAll();
     }
+
+    public void deleteByEntrantId(int id) {
+        entrantSubjectRepo.deleteByEntrantId(id);
+    }
 }

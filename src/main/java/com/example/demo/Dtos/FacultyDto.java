@@ -13,7 +13,7 @@ public class FacultyDto {
     private float subjectCoef1;
     private float subjectCoef2;
     private float subjectCoef3;
-    private float subjectCoef4;
+    private String subjectCoef4;
 
     FacultyDto(){}
 
@@ -89,11 +89,11 @@ public class FacultyDto {
         this.subjectCoef3 = subjectCoef3;
     }
 
-    public float getSubjectCoef4() {
+    public String getSubjectCoef4() {
         return subjectCoef4;
     }
 
-    public void setSubjectCoef4(float subjectCoef4) {
+    public void setSubjectCoef4(String subjectCoef4) {
         this.subjectCoef4 = subjectCoef4;
     }
 

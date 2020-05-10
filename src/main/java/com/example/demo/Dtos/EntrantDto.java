@@ -17,7 +17,7 @@ public class EntrantDto {
     private int subjectGrade1;
     private int subjectGrade2;
     private int subjectGrade3;
-    private int subjectGrade4;
+    private String subjectGrade4;
 
     public EntrantDto() {
     }
@@ -102,11 +102,11 @@ public class EntrantDto {
         this.subjectGrade3 = subjectGrade3;
     }
 
-    public int getSubjectGrade4() {
+    public String getSubjectGrade4() {
         return subjectGrade4;
     }
 
-    public void setSubjectGrade4(int subjectGrade4) {
+    public void setSubjectGrade4(String subjectGrade4) {
         this.subjectGrade4 = subjectGrade4;
     }
 

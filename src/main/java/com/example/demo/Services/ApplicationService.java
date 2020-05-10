@@ -57,4 +57,12 @@ public class ApplicationService {
     public void deleteAll(List<Application> applications) {
         applicationRepo.deleteAll(applications);
     }
+
+    public void deleteByFacultyId(int id) {
+        applicationRepo.deleteByFacultyId(id);
+    }
+
+    public void deleteByEntrantId(int id) {
+        applicationRepo.deleteByEntrantId(id);
+    }
 }

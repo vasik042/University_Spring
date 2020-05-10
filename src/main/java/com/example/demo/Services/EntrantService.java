@@ -54,9 +54,12 @@ public class EntrantService {
         EntrantSubject sub2 = new EntrantSubject(entrantDto.getSubjectName2(), entrantDto.getSubjectGrade2(), entrant);
         EntrantSubject sub3 = new EntrantSubject(entrantDto.getSubjectName3(), entrantDto.getSubjectGrade3(), entrant);
         EntrantSubject sub4 = null;
-        for (Subjects s: Subjects.values()) {
-            if (s.name().equals(entrantDto.getSubjectName4())) {
-                sub4 = new EntrantSubject(entrantDto.getSubjectName4(), entrantDto.getSubjectGrade4(), entrant);
+        if(!entrantDto.getSubjectGrade4().isEmpty()){
+            for (Subjects s: Subjects.values()) {
+                if (s.name().equals(entrantDto.getSubjectName4())) {
+                    sub4 = new EntrantSubject(entrantDto.getSubjectName4(),
+                            Integer.parseInt(entrantDto.getSubjectGrade4()), entrant);
+                }
             }
         }
 

@@ -88,9 +88,11 @@ public class CabinetController {
     @RequestMapping(value = "/deleteEntrant", method = RequestMethod.GET)
     public String deleteEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
-        entrantService.deleteById(id);
-
         String email = entrantService.findEmailById(id);
+
+        entrantSubjectService.deleteByEntrantId(id);
+        applicationService.deleteByEntrantId(id);
+        entrantService.deleteById(id);
 
         String subject = "Вашу анкету відхилено";
         String text = "Ваша анкета була неправильно заповнена або містила неправдиві данні.";
