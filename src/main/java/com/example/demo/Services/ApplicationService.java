@@ -65,4 +65,8 @@ public class ApplicationService {
     public void deleteByEntrantId(int id) {
         applicationRepo.deleteByEntrantId(id);
     }
+
+    public List<Application> findAll() {
+        return applicationRepo.findAll();
+    }
 }

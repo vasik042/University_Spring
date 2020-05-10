@@ -108,7 +108,12 @@ public class CabinetController {
 
     @RequestMapping(value = "/deleteApplication", method = RequestMethod.GET)
     public String deleteApplication(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
         applicationService.deleteById(id);
+        Entrant entrant = entrantService.findById((Integer) request.getSession().getAttribute("UserId"));
+        entrantService.changeApplicationsLeft(entrant.getId(), entrant.getApplicationsLeft()+1);
+        request.getSession().setAttribute("applicationsLeft", entrant.getApplicationsLeft()+1);
+
         return getCabinet(request);
     }
 }

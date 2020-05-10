@@ -33,7 +33,6 @@
 
                 }.p{
                     float: left;
-                    float: left;
                     margin-top: 5px;
                     color: firebrick;
                 }.span{
@@ -95,14 +94,14 @@
     <c:choose>
             <c:when test="${canReg == 0}">
                <div class="ok">
-                <a  class="a" href="/makeApplication?id=${faculty.faculty_id}">Подати заявку на вступ </a>
+                <a  class="a" href="/makeApplication?id=${faculty.id}">Подати заявку на вступ </a>
                </div>
             </c:when>
             <c:when test="${canReg == 1}">
                <div class="someProblems" style="width: 420px; height: 55px">
                 <img class="img" src="exclamationMark.png" alt="" style="margin-top: 8px;">
-                    <div style="width: 420px; height: 80px">
-                        <span class="span"> Почекайте, поки адміністратор підтвердить вашу анкету і тоді ви зможете подавати заявки на всуп</span>
+                    <div style="width: 400px; height: 80px">
+                        <span> Почекайте, поки адміністратор підтвердить вашу анкету і тоді ви зможете подавати заявки на всуп</span>
                     </div>
                 </div>
             </c:when>
@@ -119,10 +118,12 @@
                 </div>
             </c:when>
             <c:when test="${canReg == 4}">
-               <div class="someProblems" style="width: 434px; height: 55px;">
+               <div class="someProblems" style="width: 450px; height: 55px;">
                <img class="img" src="exclamationMark.png" alt="" style="margin-top: 8px;">
-                <span class="span">Ви не здали предметів, потрібних для вступу на цей факультет</span>
-                </div>
+                    <div style="width: 500px; height: 50px; margin-top:5px;">
+                        <span class="span" style="width: 390px; height: 50px">Ви не здали предметів, потрібних для вступу на цей факультет</span>
+                    </div>
+               </div>
             </c:when>
             <c:otherwise>
                <div class="someProblems" style="width: 380px;">
@@ -132,6 +133,7 @@
             </c:otherwise>
         </c:choose>
         <br>
+        <p style="font-size: 30px">Подані заявки:</p>
      <table>
      <tr>
         <th style="width: 40px">№</th>

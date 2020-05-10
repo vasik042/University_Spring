@@ -16,7 +16,7 @@ import java.util.Set;
 public class Entrant{
 
     @Id
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "entrant_id", unique = true, nullable = false)
     @GeneratedValue(generator = "gen")
     @GenericGenerator(name = "gen", strategy = "foreign", parameters = {@Parameter(name = "property", value = "entrantPhoto")})
     int id;

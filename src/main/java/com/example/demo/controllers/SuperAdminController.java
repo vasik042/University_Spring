@@ -67,6 +67,7 @@ public class SuperAdminController {
         request.setAttribute("faculties", facultyService.findAll());
         request.setAttribute("subjects", entrantSubjectService.findAll());
         request.setAttribute("entrants", entrantService.findAll());
+        request.setAttribute("applications", applicationService.findAll());
 
         return "superAdminCabinet";
     }

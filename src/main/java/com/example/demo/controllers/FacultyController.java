@@ -47,16 +47,7 @@ public class FacultyController {
         request.setAttribute("faculties", facultyService.findAll());
         request.setAttribute("faculty", facultyService.findById(id));
 
-        //Translate subject name
-        List<FacultySubject> facSubjects = facultySubjectService.getFacultySubjects(id);
-        for (FacultySubject fs: facSubjects) {
-            for (Subjects subject: Subjects.values()) {
-                if(fs.getSubjectName().equals(subject.name())){
-                    fs.setSubjectName(subject.getUkrName());
-                }
-            }
-        }
-        request.setAttribute("subjects", facSubjects);
+        List<FacultySubject> facultySubjects = facultySubjectService.getFacultySubjects(id);
 
         String role = (String) request.getSession().getAttribute("role");
 
@@ -71,7 +62,6 @@ public class FacultyController {
                 if (applicationsLeft > 0) {
                     //check if entrant have necessary subjects
                     int i = 0;
-                    List<FacultySubject> facultySubjects = facultySubjectService.getFacultySubjects(id);
                     List<EntrantSubject> entrantSubjects = entrantSubjectService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
 
                     for (FacultySubject fs : facultySubjects) {
@@ -101,6 +91,17 @@ public class FacultyController {
         }else {
             request.setAttribute("canReg", 5);
         }
+
+        //translate subject names
+        for (FacultySubject fs: facultySubjects) {
+            for (Subjects subject: Subjects.values()) {
+                if(fs.getSubjectName().equals(subject.name())){
+                    fs.setSubjectName(subject.getUkrName());
+                }
+            }
+        }
+        request.setAttribute("subjects", facultySubjects);
+
         return "faculty";
     }
 
@@ -121,6 +122,8 @@ public class FacultyController {
         applicationService.save(entrant, faculty);
 
         entrantService.changeApplicationsLeft(entrant.getId(), entrant.getApplicationsLeft()-1);
+        request.getSession(true).setAttribute("applicationsLeft", entrant.getApplicationsLeft()-1);
+
 
         return getFaculty(id, request);
     }

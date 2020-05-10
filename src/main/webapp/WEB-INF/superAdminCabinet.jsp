@@ -41,7 +41,7 @@
                 position: absolute;
                 background-color: lightgray;
                 width: 600px;
-                height: 400px;
+                height: 330px;
                 border-radius: 10px;
                 border: 2px solid black;
             }.infoHolder{
@@ -124,13 +124,19 @@
                       <td>${entrant.email}</td>
 
                       <td>
-                      <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}',
-                                             '${entrant.name} ${entrant.surname}', '${entrant.email}', '${entrant.schoolGPA}')">
+                      <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.name} ${entrant.surname}', '${entrant.email}', '${entrant.schoolGPA}')">
 
                         <c:forEach var="subject" items="${subjects}">
                             <c:if test="${entrant.id == subject.entrantSavedId}">
-                                <input type="hidden" class="${entrant.id}Name" value="${subject.subjectName}">
-                                <input type="hidden" class="${entrant.id}Grade" value="${subject.grade}">
+                                <input type="hidden" class="${entrant.id}subName" value="${subject.subjectName}">
+                                <input type="hidden" class="${entrant.id}subGrade" value="${subject.grade}">
+                            </c:if>
+                        </c:forEach>
+
+                        <c:forEach var="application" items="${applications}">
+                            <c:if test="${entrant.id == application.entrant.id}">
+                                <input type="hidden" class="${entrant.id}appName" value="${application.facultyName}">
+                                <input type="hidden" class="${entrant.id}appGrade" value="${application.GPA}">
                             </c:if>
                         </c:forEach>
                       </td>
@@ -174,8 +180,7 @@
                   <tr>
                       <td class ="number">${сounter.count}</td>
                       <td><a href="/faculty?id=${faculty.id}">${faculty.name}</a></td>
-                      <td><input class="facBtn" type="button" value="Детальніше" onClick="showFaculty('${faculty.id}',
-                       '${faculty.name}', '${faculty.places}', '${faculty.description}')"></td>
+                      <td><input class="facBtn" type="button" value="Детальніше" onClick="showFaculty('${faculty.id}','${faculty.name}', '${faculty.places}', '${faculty.description}')"></td>
                       <td><a href="/editFaculty?id=${faculty.id}" style="color: blue">Редагувати</a></td>
                       <td><a href="/deleteFaculty?id=${faculty.id}" style="color: red">Видалити</a></td>
 
@@ -239,32 +244,36 @@
           function showEntrant(id, name, email, gpa){
                 var newDiv = document.createElement("div");
 
-                var subNames = document.getElementsByClassName(id+"Name");
-                var subGrades = document.getElementsByClassName(id+"Grade");
+                var subNames = document.getElementsByClassName(id+"subName");
+                var subGrades = document.getElementsByClassName(id+"subGrade");
+
+                var appNames = document.getElementsByClassName(id+"appName");
+                var appGrades = document.getElementsByClassName(id+"appGrade");
 
                 var str1 = "<div class='infoHolder'><div class='info'>" +
                     "<input id='out' type='button' value='' onClick='out()' style='width: 20px;" +
                     "height: 20px; background-color: red; float: right'>" +
+                    "<div style='float: right; width: 150px'>" +
+                    "<img src='/getPhoto?id=" + id + "' style='width:150px'></img></div>"+
                     "<h1>"+ name +"</h1>" +
                     "<h5>" + "Email - " + email + "</h5>" +
                     "<h5>" + "Середня оцінка - " + gpa + "</h5>" +
-                    "<table>" + "<tr><th style='width: 150px;'>Здані предмети</th>" +
-                    "<th style='width: 50px;'>Оцінки</th></tr>" +
-                    "<div><tr><td>" + subNames[0].value + "</td>" +
-                    "<td>" + subGrades[0].value + "</td></tr>" +
-                    "<tr><td>" + subNames[1].value + "</td>" +
-                    "<td>" + subGrades[1].value + "</td></tr>" +
-                    "<tr><td>" + subNames[2].value + "</td>" +
-                    "<td>" + subGrades[2].value + "</td></tr>";
+                    "<table style='float: left'>" + "<tr><th style='width: 150px; border: 1px solid black;'>Здані предмети</th>" +
+                    "<th style='width: 50px;'>Оцінки</th></tr>";
 
-                if(subNames.length == 4){
-                    str1 = str1 + "<tr><td>" + subNames[3].value + "</td>" +
-                        "<td>" + subGrades[3].value + "</td></tr></div>" +
-                        "</div></div>";
-                }else{
-                    str1 = str1 + "</div>" +
-                        "</div></div>";
+                for (let i = 0; i < subNames.length; i++) {
+                    str1 = str1 + "<tr><td>" + subNames[i].value + "</td><td>" + subGrades[i].value + "</td></tr>";
                 }
+
+                str1 = str1 + "</table><table style='float: right'>" + "<tr><th style='width: 150px; border: 1px solid black;'>Заявка на:</th>" +
+                              "<th style='width: 50px;'>Оцінка</th></tr>";
+
+                for (let i = 0; i < appNames.length; i++) {
+                    console.log(appNames[i].value);
+                    str1 = str1 + "<tr><td>" + appNames[i].value + "</td><td>" + appGrades[i].value + "</td></tr>";
+                }
+
+                str1 = str1 + "</table></div></div>";
 
                 newDiv.innerHTML = str1;
 
