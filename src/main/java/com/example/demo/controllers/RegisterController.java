@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Dtos.EntrantDto;
+import com.example.demo.Services.AdminService;
 import com.example.demo.Services.EntrantService;
 import com.example.demo.Services.MailSenderService;
+import com.example.demo.Services.PhotoService;
 import com.example.demo.Subjects;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -34,7 +37,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerEntrant(@ModelAttribute EntrantDto entrantDto, HttpServletRequest request) {
+    public String registerEntrant(@ModelAttribute EntrantDto entrantDto, HttpServletRequest request, @RequestParam("photo") MultipartFile file) {
 
         boolean sec = false;
         boolean thr = false;
@@ -52,7 +55,7 @@ public class RegisterController {
             String uuid = UUID.randomUUID().toString();
 
             entrantDto.setEmailHash(uuid);
-            entrantService.save(entrantDto);
+            entrantService.save(entrantDto, file);
 
             mailSenderService.sendVerificationEmail(entrantDto.getEmail(), uuid);
 

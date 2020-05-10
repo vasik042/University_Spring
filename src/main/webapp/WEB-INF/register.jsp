@@ -50,11 +50,13 @@
     </style>
 </head>
 <body>
-    <form action="/register" method ="post">
+    <form action="/register" method ="post" enctype="multipart/form-data">
         <div style="background-color: white; width: 500px; height: 600px; margin: auto; margin-top: 20px; border-radius: 10px; border: 2px solid grey">
             
-              <p style="margin-left: 130px; font-size: 28px">Реєстраційна форма</p>
-               
+            <p style="margin-left: 130px; font-size: 28px">Реєстраційна форма</p>
+            <label for="Photo">Photo
+                <input id="photo" type="file" name="photo" value="">
+            </label>
             <label for="Name">Ім'я
                <br>
                 <input class="inp1" type="text" required id="name" name ="name" value="${entrant.name}">

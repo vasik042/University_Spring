@@ -2,6 +2,10 @@ package com.example.demo.entities.userEntities;
 
 import com.example.demo.entities.Application;
 import com.example.demo.entities.EntrantSubject;
+import com.example.demo.entities.Photo;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,8 +16,9 @@ import java.util.Set;
 public class Entrant{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "entrant_id")
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "gen")
+    @GenericGenerator(name = "gen", strategy = "foreign", parameters = {@Parameter(name = "property", value = "entrantPhoto")})
     int id;
 
     @Column(name = "name")
@@ -37,6 +42,10 @@ public class Entrant{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
     Set<Application> applications;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private Photo entrantPhoto;
 
     public Entrant(String name, String surname, String dateOfBirth, float schoolGPA,
                    String email, String password, String emailHash) {
@@ -157,5 +166,13 @@ public class Entrant{
 
     public void setEmailHash(String emailHash) {
         this.emailHash = emailHash;
+    }
+
+    public Photo getEntrantPhoto() {
+        return entrantPhoto;
+    }
+
+    public void setEntrantPhoto(Photo entrantPhoto) {
+        this.entrantPhoto = entrantPhoto;
     }
 }
