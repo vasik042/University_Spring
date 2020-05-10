@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Services.*;
+import com.example.demo.Subjects;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.EntrantSubject;
 import com.example.demo.entities.Faculty;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -43,7 +45,18 @@ public class FacultyController {
 
         request.setAttribute("entrants", applicationService.findByFacultyId(id));
         request.setAttribute("faculties", facultyService.findAll());
-        request.setAttribute("facultyId", id);
+        request.setAttribute("faculty", facultyService.findById(id));
+
+        //Translate subject name
+        List<FacultySubject> facSubjects = facultySubjectService.getFacultySubjects(id);
+        for (FacultySubject fs: facSubjects) {
+            for (Subjects subject: Subjects.values()) {
+                if(fs.getSubjectName().equals(subject.name())){
+                    fs.setSubjectName(subject.getUkrName());
+                }
+            }
+        }
+        request.setAttribute("subjects", facSubjects);
 
         String role = (String) request.getSession().getAttribute("role");
 

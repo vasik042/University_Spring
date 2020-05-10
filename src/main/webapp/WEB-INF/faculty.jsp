@@ -54,16 +54,48 @@
                 }table{
                     border: 2px solid black;
                     border-radius: 20px;
+                }.mainInfoHolder{
+                    width: 56%;
+                    margin-left: 22%;
+                }.mainInfo{
+                    margin: auto;
+                    width: 440px;
+                }.mainInfo2{
+                    margin: auto;
+                    width: 440px;
                 }
             </style>
 </head>
 <body>
     <jsp:include page="header.jsp"></jsp:include>
 
+    <div class="mainInfoHolder">
+
+    <div class="mainInfo">
+        <h2>${faculty.name}</h2>
+        <p>${faculty.description}</p>
+        <h6>Місць - ${faculty.places}</h6>
+        <table style="margin: 0;">
+            <tr>
+                <th style='width: 280px;'>Необхідні предмети</th>
+                <th style='width: 160px;'>Коефіціенти</th>
+            </tr>
+            <tr>
+                <c:forEach var="subject" items="${subjects}">
+                    <tr>
+                        <td>${subject.subjectName}</td>
+                        <td>${subject.coefficient}</td>
+                    </tr>
+                </c:forEach>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div class="mainInfo">
     <c:choose>
             <c:when test="${canReg == 0}">
                <div class="ok">
-                <a  class="a" href="/makeApplication?id=${facultyId}">Подати заявку на вступ </a>
+                <a  class="a" href="/makeApplication?id=${faculty.faculty_id}">Подати заявку на вступ </a>
                </div>
             </c:when>
             <c:when test="${canReg == 1}">
@@ -99,12 +131,12 @@
                 </div>
             </c:otherwise>
         </c:choose>
-
+        <br>
      <table>
      <tr>
-        <th>№</th>
-        <th>Імя</th>
-        <th>Кількість балів</th>
+        <th style="width: 40px">№</th>
+        <th style="width: 260px">Імя</th>
+        <th style="width: 140px">Кількість балів</th>
      </tr>
      <c:forEach var="entrant" items="${entrants}" varStatus="сounter">
             <c:if test="${сounter.count <= entrant.places}">
@@ -123,5 +155,7 @@
             </c:if>
      </c:forEach>
      </table>
+     </div>
+     </div>
 </body>
 </html>
