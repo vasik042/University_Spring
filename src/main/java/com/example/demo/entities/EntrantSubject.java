@@ -11,24 +11,21 @@ public class EntrantSubject {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
-    int id;
+    private int id;
 
     @Column(name="subject_name")
-    String subjectName;
+    private String subjectName;
     @Column(name="grade")
-    int grade;
-    @Column(name="entrantSavedId")
-    int entrantSavedId;
+    private int grade;
 
     @ManyToOne
     @JoinColumn(name="entrant_id", nullable=false)
-    Entrant entrant;
+    private Entrant entrant;
 
     public EntrantSubject(String subjectName, int grade, Entrant entrant) {
         this.subjectName = subjectName;
         this.grade = grade;
         this.entrant = entrant;
-        this.entrantSavedId = entrant.getId();
     }
 
     public EntrantSubject(){}
@@ -63,13 +60,5 @@ public class EntrantSubject {
 
     public void setEntrant(Entrant entrant) {
         this.entrant = entrant;
-    }
-
-    public int getEntrantSavedId() {
-        return entrantSavedId;
-    }
-
-    public void setEntrantSavedId(int entrantSavedId) {
-        this.entrantSavedId = entrantSavedId;
     }
 }

@@ -20,11 +20,19 @@
     </style>
 </head>
 <body>
+    <c:if test="${verified}">
     <form action="/login" method ="get">
         <div style="background-color: white; width: 500px; height: 260px; margin: auto; margin-top: 15px; border-radius: 10px; border: 2px solid grey">
             <p>Ваша електронна пошта підтверджена</p>
             <input id="btn" type="submit" value="Ввійти" style="float: left; clear: both">
         </div>
     </form>
+    </c:if>
+
+    <c:if test="${!verified}">
+        <div style="background-color: white; width: 500px; height: 260px; margin: auto; margin-top: 15px; border-radius: 10px; border: 2px solid grey">
+             <p>Підтвердіть ваш емейл через свою пошту</p>
+        </div>
+    </c:if>
 </body>
 </html>

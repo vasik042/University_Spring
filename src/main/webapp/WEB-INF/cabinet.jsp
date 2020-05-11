@@ -59,6 +59,8 @@
               margin-left: 22%;
           }.mainInfoHolder2{
               width: 100%;
+          }.studentPhoto{
+              height: 120px;
           }
       </style>
 </head>
@@ -66,9 +68,10 @@
 
     <jsp:include page="header.jsp"></jsp:include>
 
-     <c:if test="${role == 'NOT_VERIFIED_ENTRANT'}">
-        <p>Для подачі заявок адміністратр повинен підтвердити вашу заяву</p>
+    <c:if test="${role == 'NOT_VERIFIED_ENTRANT'}">
+        <p>Для подачі заявок адміністратр повинен підтвердити вашу анкету</p>
     </c:if>
+
     <c:if test="${role == 'ENTRANT'}">
      <div class="mainInfoHolder1">
         <table>
@@ -82,7 +85,7 @@
              <c:forEach var="application" items="${applications}" varStatus="counter">
                   <tr>
                       <td class ="number">${counter.count}</td>
-                      <td><a href="/faculty?id=${application.facultySavedId}">${application.facultyName}</a></td>
+                      <td><a href="/faculty?id=${application.faculty.id}">${application.faculty.name}</a></td>
                       <td>${application.GPA}</td><td><a href="/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
                   </tr>
              </c:forEach>
@@ -90,7 +93,7 @@
         </div>
     </c:if>
     <c:if test="${role == 'ADMIN'}">
-       <div class="mainInfoHolder2">
+        <div class="mainInfoHolder2">
         <table>
         <p style="font-size: 30px">Вступники:</p>
              <tr>
@@ -98,7 +101,7 @@
                 <th style="width: 180px;">Прізвище та ім'я</th>
                 <th style="width: 150px;">Електронна пошта</th>
                 <th style="width: 50px;">Детальніше</th>
-                <th style="width: 150px;"></th>
+                <th style="width: 150px;">Статус</th>
                 <th style="width: 150px;"></th>
              </tr>
 
@@ -109,18 +112,25 @@
                       <td>${entrant.email}</td>
 
                       <td>
-                      <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}',
-                                             '${entrant.name} ${entrant.surname}', '${entrant.email}', '${entrant.schoolGPA}')">
+                      <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.surname} ${entrant.name}', '${entrant.email}', '${entrant.schoolGPA}')">
 
                         <c:forEach var="subject" items="${subjects}">
-                            <c:if test="${entrant.id == subject.entrantSavedId}">
-                                <input type="hidden" class="${entrant.id}Name" value="${subject.subjectName}">
-                                <input type="hidden" class="${entrant.id}Grade" value="${subject.grade}">
+                            <c:if test="${entrant.id == subject.entrant.id}">
+                                <input type="hidden" class="${entrant.id}subName" value="${subject.subjectName}">
+                                <input type="hidden" class="${entrant.id}subGrade" value="${subject.grade}">
                             </c:if>
                         </c:forEach>
                       </td>
 
-                      <td><a href="/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
+                      <c:if  test="${entrant.role == 'NOT_VERIFIED_ENTRANT'}">
+                          <td><a href="/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
+                      </c:if>
+                      <c:if  test="${entrant.role == 'NOT_VERIFIED_EMAIL_ENTRANT'}">
+                          <td>Емейл не підтверджено</td>
+                      </c:if>
+                      <c:if  test="${entrant.role == 'ENTRANT'}">
+                          <td>Підтверджено</td>
+                      </c:if>
                       <td><a href="/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
                   </tr>
              </c:forEach>
@@ -137,32 +147,25 @@
           function showEntrant(id, name, email, gpa){
                 var newDiv = document.createElement("div");
 
-                var subNames = document.getElementsByClassName(id+"Name");
-                var subGrades = document.getElementsByClassName(id+"Grade");
+                var subNames = document.getElementsByClassName(id+"subName");
+                var subGrades = document.getElementsByClassName(id+"subGrade");
 
                 var str1 = "<div class='infoHolder'><div class='info'>" +
                     "<input id='out' type='button' value='' onClick='out()' style='width: 20px;" +
                     "height: 20px; background-color: red; float: right'>" +
+                    "<div style='float: right; width: 150px'>" +
+                    "<img src='/getPhoto?id=" + id + "' class = 'studentPhoto'></img></div>"+
                     "<h1>"+ name +"</h1>" +
                     "<h5>" + "Email - " + email + "</h5>" +
                     "<h5>" + "Середня оцінка - " + gpa + "</h5>" +
-                    "<table>" + "<tr><th style='width: 150px;'>Здані предмети</th>" +
-                    "<th style='width: 50px;'>Оцінки</th></tr>" +
-                    "<div><tr><td>" + subNames[0].value + "</td>" +
-                    "<td>" + subGrades[0].value + "</td></tr>" +
-                    "<tr><td>" + subNames[1].value + "</td>" +
-                    "<td>" + subGrades[1].value + "</td></tr>" +
-                    "<tr><td>" + subNames[2].value + "</td>" +
-                    "<td>" + subGrades[2].value + "</td></tr>";
+                    "<table style='float: left'>" + "<tr><th style='width: 150px; border: 1px solid black;'>Здані предмети</th>" +
+                    "<th style='width: 50px;'>Оцінки</th></tr>";
 
-                if(subNames.length == 4){
-                    str1 = str1 + "<tr><td>" + subNames[3].value + "</td>" +
-                        "<td>" + subGrades[3].value + "</td></tr></div>" +
-                        "</div></div>";
-                }else{
-                    str1 = str1 + "</div>" +
-                        "</div></div>";
+                for (let i = 0; i < subNames.length; i++) {
+                    str1 = str1 + "<tr><td>" + subNames[i].value + "</td><td>" + subGrades[i].value + "</td></tr>";
                 }
+
+                str1 = str1 + "</table></div></div>";
 
                 newDiv.innerHTML = str1;
 

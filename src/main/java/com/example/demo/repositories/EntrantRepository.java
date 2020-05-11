@@ -12,15 +12,15 @@ import java.util.List;
 @Repository
 public interface EntrantRepository  extends JpaRepository<Entrant, Integer> {
 
-    public Entrant findByEmailAndPassword(String email, String password);
+    Entrant findByEmailAndPassword(String email, String password);
 
-    public List<Entrant> findByRole(String role);
+    List<Entrant> findByRole(String role);
 
     @Query(value = "SELECT email FROM entrant WHERE entrant_id = ?1", nativeQuery = true)
-    public String findEmailById(int id);
+    String findEmailById(int id);
 
     @Query(value = "SELECT entrant_id FROM entrant WHERE email_verify_hash = ?1", nativeQuery = true)
-    public Integer findIdByHash(String hash);
+    Integer findIdByHash(String hash);
 
     @Transactional
     @Modifying

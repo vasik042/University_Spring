@@ -9,24 +9,21 @@ public class FacultySubject {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
-    int id;
+    private int id;
 
     @Column(name="subject_name")
-    String subjectName;
+    private String subjectName;
     @Column(name="coefficient")
-    float coefficient;
-    @Column(name="facultySavedId")
-    int facultySavedId;
+    private float coefficient;
 
     @ManyToOne
     @JoinColumn(name="faculty_id", nullable=false)
-    Faculty faculty;
+    private Faculty faculty;
 
     public FacultySubject(String subjectName, float coef, Faculty faculty) {
         this.subjectName = subjectName;
         this.coefficient = coef;
         this.faculty = faculty;
-        this.facultySavedId = faculty.getId();
     }
 
     public FacultySubject(){}
@@ -61,13 +58,5 @@ public class FacultySubject {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
-    }
-
-    public int getFacultySavedId() {
-        return facultySavedId;
-    }
-
-    public void setFacultySavedId(int facultySavedId) {
-        this.facultySavedId = facultySavedId;
     }
 }

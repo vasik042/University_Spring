@@ -8,11 +8,11 @@ public class Admin{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admin_id")
-    int id;
+    private int id;
 
-    String email;
-    String password;
-    String role;
+    private String email;
+    private String password;
+    private String role;
 
     public Admin(String email, String password){
         this.email = email;

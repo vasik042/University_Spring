@@ -2,8 +2,6 @@ package com.example.demo.entities;
 
 import com.example.demo.entities.userEntities.Entrant;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 
@@ -14,7 +12,7 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    private int id;
 
     @Column(name = "file_name")
     private String fileName;

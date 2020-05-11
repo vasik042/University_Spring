@@ -11,33 +11,27 @@ public class Application {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="application_id")
-    int id;
+    private int id;
 
     @Column(name="name")
-    String name;
-    @Column(name="faculty_name")
-    String facultyName;
-    @Column(name="faculty_saved_id")
-    int facultySavedId;
+    private String name;
     @Column(name="faculty_places")
-    int places;
+    private int places;
     @Column(name="GPA")
-    float GPA;
+    private float GPA;
 
     @ManyToOne
     @JoinColumn(name="entrant_id", nullable=false)
-    Entrant entrant;
+    private Entrant entrant;
 
     @ManyToOne
     @JoinColumn(name="faculty_id", nullable=false)
-    Faculty faculty;
+    private Faculty faculty;
 
     public Application(float GPA, Entrant entrant, Faculty faculty) {
         this.GPA = GPA;
         this.name = entrant.getSurname() + " " + entrant.getName();
-        this.places = faculty.places;
-        this.facultyName = faculty.getName();
-        this.facultySavedId = faculty.getId();
+        this.places = faculty.getPlaces();
         this.entrant = entrant;
         this.faculty = faculty;
     }
@@ -90,21 +84,5 @@ public class Application {
 
     public void setPlaces(int places) {
         this.places = places;
-    }
-
-    public String getFacultyName() {
-        return facultyName;
-    }
-
-    public void setFacultyName(String facultyName) {
-        this.facultyName = facultyName;
-    }
-
-    public int getFacultySavedId() {
-        return facultySavedId;
-    }
-
-    public void setFacultySavedId(int facultyId) {
-        this.facultySavedId = facultyId;
     }
 }

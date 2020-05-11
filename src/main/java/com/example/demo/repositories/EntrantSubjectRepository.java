@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface EntrantSubjectRepository  extends JpaRepository<EntrantSubject, Integer> {
 
-    public List<EntrantSubject> findByEntrantId(int id);
+    List<EntrantSubject> findByEntrantId(int id);
 
     @Transactional
     @Modifying

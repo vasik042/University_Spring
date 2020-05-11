@@ -1,6 +1,5 @@
 package com.example.demo.Services;
 
-import com.example.demo.Dtos.FacultyDto;
 import com.example.demo.entities.*;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.repositories.ApplicationRepository;

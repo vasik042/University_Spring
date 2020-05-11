@@ -3,12 +3,10 @@ package com.example.demo.entities.userEntities;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.EntrantSubject;
 import com.example.demo.entities.Photo;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,28 +17,28 @@ public class Entrant{
     @Column(name = "entrant_id", unique = true, nullable = false)
     @GeneratedValue(generator = "gen")
     @GenericGenerator(name = "gen", strategy = "foreign", parameters = {@Parameter(name = "property", value = "entrantPhoto")})
-    int id;
+    private int id;
 
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "surname")
-    String surname;
-    String email;
-    String password;
-    String role;
+    private String surname;
+    private String email;
+    private String password;
+    private String role;
     @Column(name = "date_of_birth")
-    String dateOfBirth;
+    private String dateOfBirth;
     @Column(name = "school_GPA")
-    float schoolGPA;
+    private float schoolGPA;
     @Column(name = "applications_left")
-    int applicationsLeft;
+    private int applicationsLeft;
     @Column(name = "email_verify_hash")
-    String emailHash;
+    private String emailHash;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
+    @OneToMany(mappedBy = "entrant")
     Set<EntrantSubject> subjects;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entrant")
+    @OneToMany(mappedBy = "entrant")
     Set<Application> applications;
 
     @OneToOne
@@ -61,16 +59,6 @@ public class Entrant{
     }
 
     public Entrant(){}
-
-    public void setSubjects(EntrantSubject es1, EntrantSubject es2, EntrantSubject es3, EntrantSubject es4) {
-        subjects = new HashSet<>();
-        subjects.add(es1);
-        subjects.add(es2);
-        subjects.add(es3);
-        if(es4 != null){
-            subjects.add(es4);
-        }
-    }
 
     public int getId() {
         return id;

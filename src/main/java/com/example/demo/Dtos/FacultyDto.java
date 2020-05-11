@@ -1,10 +1,10 @@
 package com.example.demo.Dtos;
 
 public class FacultyDto {
-    String name;
-    String description;
-    int places;
-    int dtoId;
+    private String name;
+    private String description;
+    private int places;
+    private int dtoId;
 
     private String subjectName2;
     private String subjectName3;

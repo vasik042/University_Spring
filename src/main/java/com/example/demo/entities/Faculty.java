@@ -1,7 +1,6 @@
 package com.example.demo.entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,17 +10,17 @@ public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "faculty_id")
-    int id;
+    private int id;
 
-    String name;
-    String description;
-    int places;
+    private String name;
+    private String description;
+    private int places;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
-    Set<Application> applications;
+    @OneToMany(mappedBy = "faculty")
+    private Set<Application> applications;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
-    Set<FacultySubject> facultySubjects;
+    @OneToMany(mappedBy = "faculty")
+    private Set<FacultySubject> facultySubjects;
 
     public Faculty(String name, String description, int places) {
         this.name = name;
@@ -30,16 +29,6 @@ public class Faculty {
     }
 
     public Faculty(){}
-
-    public void setNecessarySubjects(FacultySubject fs1, FacultySubject fs2, FacultySubject fs3, FacultySubject fs4) {
-        facultySubjects = new HashSet<>();
-        facultySubjects.add(fs1);
-        facultySubjects.add(fs2);
-        facultySubjects.add(fs3);
-        if (fs4 != null){
-            facultySubjects.add(fs4);
-        }
-    }
 
     public int getId() {
         return id;

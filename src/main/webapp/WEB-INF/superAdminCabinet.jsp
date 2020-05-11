@@ -36,7 +36,6 @@
 
             }table{
                 border: 2px solid black;
-                border-collapse: collapse;
             }.info{
                 position: absolute;
                 background-color: lightgray;
@@ -54,6 +53,8 @@
             }.mainInfoHolder{
                 width: 56%;
                 margin-left: 22%;
+            }.studentPhoto{
+                height: 120px;
             }
         </style>
 </head>
@@ -124,10 +125,10 @@
                       <td>${entrant.email}</td>
 
                       <td>
-                      <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.name} ${entrant.surname}', '${entrant.email}', '${entrant.schoolGPA}')">
+                      <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.surname} ${entrant.name}', '${entrant.email}', '${entrant.schoolGPA}')">
 
                         <c:forEach var="subject" items="${subjects}">
-                            <c:if test="${entrant.id == subject.entrantSavedId}">
+                            <c:if test="${entrant.id == subject.entrant.id}">
                                 <input type="hidden" class="${entrant.id}subName" value="${subject.subjectName}">
                                 <input type="hidden" class="${entrant.id}subGrade" value="${subject.grade}">
                             </c:if>
@@ -135,8 +136,9 @@
 
                         <c:forEach var="application" items="${applications}">
                             <c:if test="${entrant.id == application.entrant.id}">
-                                <input type="hidden" class="${entrant.id}appName" value="${application.facultyName}">
+                                <input type="hidden" class="${entrant.id}appName" value="${application.faculty.name}">
                                 <input type="hidden" class="${entrant.id}appGrade" value="${application.GPA}">
+                                <input type="hidden" class="${entrant.id}facId" value="${application.faculty.id}">
                             </c:if>
                         </c:forEach>
                       </td>
@@ -185,7 +187,7 @@
                       <td><a href="/deleteFaculty?id=${faculty.id}" style="color: red">Видалити</a></td>
 
                       <c:forEach var="subject" items="${subjects}">
-                        <c:if test="${faculty.id == subject.facultySavedId}">
+                        <c:if test="${faculty.id == subject.faculty.id}">
                             <input type="hidden" class="${faculty.id}Name" value="${subject.subjectName}">
                             <input type="hidden" class="${faculty.id}Coef" value="${subject.coefficient}">
                         </c:if>
@@ -249,12 +251,13 @@
 
                 var appNames = document.getElementsByClassName(id+"appName");
                 var appGrades = document.getElementsByClassName(id+"appGrade");
+                var facId = document.getElementsByClassName(id+"facId");
 
                 var str1 = "<div class='infoHolder'><div class='info'>" +
                     "<input id='out' type='button' value='' onClick='out()' style='width: 20px;" +
                     "height: 20px; background-color: red; float: right'>" +
                     "<div style='float: right; width: 150px'>" +
-                    "<img src='/getPhoto?id=" + id + "' style='width:150px'></img></div>"+
+                    "<img src='/getPhoto?id=" + id + "' class = 'studentPhoto'></img></div>"+
                     "<h1>"+ name +"</h1>" +
                     "<h5>" + "Email - " + email + "</h5>" +
                     "<h5>" + "Середня оцінка - " + gpa + "</h5>" +
@@ -269,8 +272,7 @@
                               "<th style='width: 50px;'>Оцінка</th></tr>";
 
                 for (let i = 0; i < appNames.length; i++) {
-                    console.log(appNames[i].value);
-                    str1 = str1 + "<tr><td>" + appNames[i].value + "</td><td>" + appGrades[i].value + "</td></tr>";
+                    str1 = str1 + "<tr><td><a href='/faculty?id=" + facId[i].value + "'>" + appNames[i].value + "</a></td><td>" + appGrades[i].value + "</td></tr>";
                 }
 
                 str1 = str1 + "</table></div></div>";

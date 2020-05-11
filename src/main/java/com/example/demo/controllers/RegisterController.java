@@ -1,12 +1,9 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Dtos.EntrantDto;
-import com.example.demo.Services.AdminService;
 import com.example.demo.Services.EntrantService;
 import com.example.demo.Services.MailSenderService;
-import com.example.demo.Services.PhotoService;
 import com.example.demo.Subjects;
-import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,7 +56,9 @@ public class RegisterController {
 
             mailSenderService.sendVerificationEmail(entrantDto.getEmail(), uuid);
 
-            return "login";
+            request.setAttribute("verified", false);
+
+            return "emailVerifiedPage";
         }else {
             return "register";
         }
@@ -69,8 +68,11 @@ public class RegisterController {
     public String verifyEmail(@RequestParam(name = "hash") String hash, HttpServletRequest request){
 
         Integer id = entrantService.findIdByHash(hash);
+
         if (id != null){
             entrantService.changeRole(id, Roles.NOT_VERIFIED_ENTRANT.name());
+
+            request.setAttribute("verified", true);
 
             return "emailVerifiedPage";
         }else {

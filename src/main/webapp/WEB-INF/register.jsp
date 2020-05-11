@@ -80,20 +80,20 @@
 
             <label for="schoolGPA">Середня оцінка в атестаті
                <br>
-                <input class="inp1" type="number"  required id="schoolGPA" name ="schoolGPA" value="${entrant.schoolGPA}">
+                <input min="1" max="12" step="0.1" class="inp1" type="number"  required id="schoolGPA" name ="schoolGPA" value="${entrant.schoolGPA}">
             </label>
             <div class="znoBox">
             <br>
             <span style="width: 100%">ЗНО</span>
             <label for="subject1">Українська мова
-                <input type="number" style="margin-left: 25px" placeholder="Оцінка" required id="subjectGrade1" name ="subjectGrade1" value="${entrant.subjectGrade1}">
+                <input min="100" max="200" step="1" type="number" style="margin-left: 25px" placeholder="Оцінка" required id="subjectGrade1" name ="subjectGrade1" value="${entrant.subjectGrade1}">
             </label>
             <label for="subject2">
                 <select name="subjectName2" id ="subjectName2" value="${entrant.subjectName2}" style ="width: 155px">
                     <option value="MATH">Математика</option>
                     <option value="HISTORY">Історія України</option>
                 </select>
-                <input type="number" placeholder="Оцінка" required id="subjectGrade2" name ="subjectGrade2" value="${entrant.subjectGrade2}">
+                <input min="100" max="200" step="1"  type="number" placeholder="Оцінка" required id="subjectGrade2" name ="subjectGrade2" value="${entrant.subjectGrade2}">
             </label>
             <label for="subject3">
                 <select name="subjectName3" id ="subjectName3" value="${entrant.subjectName3}">
@@ -108,7 +108,7 @@
                     <option value="GERMAN">Німецька мова</option>
                     <option value="FRENCH">Французька мова</option>
                 </select>
-                <input type="number" placeholder="Оцінка" required id="subjectGrade3" name ="subjectGrade3" value="${entrant.subjectGrade3}">
+                <input min="100" max="200" step="1" type="number" placeholder="Оцінка" required id="subjectGrade3" name ="subjectGrade3" value="${entrant.subjectGrade3}">
             </label>
             <label for="subject4">
                 <select name="subjectName4" id ="subjectName4" value="${entrant.subjectName4}">
@@ -124,7 +124,7 @@
                     <option value="GERMAN">Німецька мова</option>
                     <option value="FRENCH">Французька мова</option>
                 </select>
-                <input type="number" placeholder="Оцінка" id="subjectGrade4" name ="subjectGrade4" value="${entrant.subjectGrade4}">
+                <input min="100" max="200" step="1" type="number" placeholder="Оцінка" id="subjectGrade4" name ="subjectGrade4" value="${entrant.subjectGrade4}">
             </label>
             </div>
             

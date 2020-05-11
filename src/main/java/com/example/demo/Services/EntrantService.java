@@ -19,13 +19,11 @@ public class EntrantService {
 
     private EntrantRepository entrantRepo;
     private EntrantSubjectService entrantSubjectService;
-    private PhotoService photoService;
 
     @Autowired
-    public EntrantService(EntrantRepository entrantRepo, EntrantSubjectService entrantSubjectService, PhotoService photoService) {
+    public EntrantService(EntrantRepository entrantRepo, EntrantSubjectService entrantSubjectService) {
         this.entrantRepo = entrantRepo;
         this.entrantSubjectService = entrantSubjectService;
-        this.photoService = photoService;
     }
 
     public void deleteById(int id){

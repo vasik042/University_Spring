@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -80,7 +79,7 @@ public class FacultyController {
                     //check if entrant already have application
                     List<Application> applications = applicationService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
                     for (Application a : applications) {
-                        if (a.getFacultySavedId() == id) {
+                        if (a.getFaculty().getId() == id) {
                             request.setAttribute("canReg", 3);
                         }
                     }
@@ -112,7 +111,7 @@ public class FacultyController {
         List<Application> applications = applicationService.findByEntrantId(entrant.getId());
 
         for (Application a: applications) {
-            if(a.getFacultySavedId() == id){
+            if(a.getFaculty().getId() == id){
                 return getFaculty(id, request);
             }
         }

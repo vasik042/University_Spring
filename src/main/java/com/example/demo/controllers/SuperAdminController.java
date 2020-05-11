@@ -6,7 +6,6 @@ import com.example.demo.Services.*;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.Faculty;
 import com.example.demo.entities.userEntities.Entrant;
-import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -91,7 +90,9 @@ public class SuperAdminController {
     @RequestMapping(value = "/editFaculty", method = RequestMethod.GET)
     public String editFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
-        request.setAttribute("faculty", facultyService.findById(id));
+        Faculty faculty = facultyService.findById(id);
+
+        request.setAttribute("faculty", faculty);
         request.setAttribute("subjects", facultySubjectService.getFacultySubjects(id));
         request.setAttribute("create", false);
 
@@ -157,10 +158,6 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
     public String editAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
-
-        System.out.println(emailAndPasswordDto.getEmail());
-        System.out.println(emailAndPasswordDto.getPassword());
-        System.out.println(emailAndPasswordDto.getDtoId());
 
         adminService.edit(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword(), emailAndPasswordDto.getDtoId());
 

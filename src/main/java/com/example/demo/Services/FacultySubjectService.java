@@ -25,10 +25,6 @@ public class FacultySubjectService {
         return facultySubjectRepo.findAll();
     }
 
-    public List<FacultySubject> getFacultySubjects(int id){
-        return facultySubjectRepo.findByFacultyId(id);
-    }
-
     public void edit(FacultyDto facultyDto, Faculty faculty) {
         facultySubjectRepo.deleteByFacultyId(faculty.getId());
 
@@ -49,5 +45,9 @@ public class FacultySubjectService {
 
     public void deleteByFacultyId(int id) {
         facultySubjectRepo.deleteByFacultyId(id);
+    }
+
+    public List<FacultySubject> getFacultySubjects(int id) {
+        return facultySubjectRepo.findByFacultyId(id);
     }
 }
