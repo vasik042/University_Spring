@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
+@RequestMapping("/superAdminCabinet")
 public class SuperAdminController {
 
     private EntrantService entrantService;
@@ -44,31 +44,49 @@ public class SuperAdminController {
         this.mailSender = mailSender;
     }
 
-    @RequestMapping(value = "/superAdminCabinetFaculties", method = RequestMethod.GET)
+    @RequestMapping(value = "/Faculties", method = RequestMethod.GET)
     public String superAdminCabinetFaculties(HttpServletRequest request) {
 
-        request.setAttribute("choose", "faculties");
         request.setAttribute("faculties", facultyService.findAll());
+
+        System.out.println(request.getSession().getAttribute("role"));
+        System.out.println(request.getAttribute("role"));
+
+        if (security(request)){
+            return "index";
+        }
+
+        request.setAttribute("choose", "faculties");
         request.setAttribute("subjects", facultySubjectService.findAll());
 
         return "superAdminCabinet";
     }
 
-    @RequestMapping(value = "/superAdminCabinetAdmins", method = RequestMethod.GET)
+    @RequestMapping(value = "/Admins", method = RequestMethod.GET)
     public String superAdminCabinetAdmins(HttpServletRequest request) {
 
-        request.setAttribute("choose", "admins");
         request.setAttribute("faculties", facultyService.findAll());
+
+        if (security(request)){
+            return "index";
+        }
+
+        request.setAttribute("choose", "admins");
         request.setAttribute("admins", adminService.findAll());
 
         return "superAdminCabinet";
     }
 
-    @RequestMapping(value = "/superAdminCabinetEntrants", method = RequestMethod.GET)
+    @RequestMapping(value = "/Entrants", method = RequestMethod.GET)
     public String superAdminCabinetEntrants(HttpServletRequest request) {
 
-        request.setAttribute("choose", "entrants");
         request.setAttribute("faculties", facultyService.findAll());
+
+        if (security(request)){
+            return "index";
+        }
+
+        request.setAttribute("choose", "entrants");
         request.setAttribute("subjects", entrantSubjectService.findAll());
         request.setAttribute("entrants", entrantService.findAll());
         request.setAttribute("applications", applicationService.findAll());
@@ -79,6 +97,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/addFaculty", method = RequestMethod.GET)
     public String addFaculty(HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         request.setAttribute("create", true);
 
         return "facultyCreate";
@@ -87,6 +109,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/addFaculty", method = RequestMethod.POST)
     public String addFaculty(@ModelAttribute FacultyDto facultyDto, HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         facultyService.save(facultyDto);
 
         return superAdminCabinetFaculties(request);
@@ -94,6 +120,10 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/editFaculty", method = RequestMethod.GET)
     public String editFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
+        if (security(request)){
+            return "index";
+        }
 
         Faculty faculty = facultyService.findById(id);
 
@@ -106,6 +136,10 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/editFaculty", method = RequestMethod.POST)
     public String editFaculty(@ModelAttribute FacultyDto facultyDto, HttpServletRequest request) {
+
+        if (security(request)){
+            return "index";
+        }
 
         facultyService.edit(facultyDto);
         Faculty faculty = facultyService.findById(facultyDto.getDtoId());
@@ -129,6 +163,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/deleteFaculty", method = RequestMethod.GET)
     public String deleteFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         facultySubjectService.deleteByFacultyId(id);
         applicationService.deleteByFacultyId(id);
         facultyService.deleteById(id);
@@ -139,6 +177,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/addAdmin", method = RequestMethod.GET)
     public String addAdmin(HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         request.setAttribute("create", true);
 
         return "adminCreate";
@@ -147,6 +189,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
     public String addAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         adminService.save(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword());
 
         return superAdminCabinetAdmins(request);
@@ -154,6 +200,10 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/editAdmin", method = RequestMethod.GET)
     public String editAdmin(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
+        if (security(request)){
+            return "index";
+        }
 
         request.setAttribute("admin", adminService.findById(id));
         request.setAttribute("create", false);
@@ -164,6 +214,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
     public String editAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         adminService.edit(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword(), emailAndPasswordDto.getDtoId());
 
         return superAdminCabinetAdmins(request);
@@ -172,6 +226,10 @@ public class SuperAdminController {
     @RequestMapping(value = "/deleteAdmin", method = RequestMethod.GET)
     public String deleteAdmin(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
+        if (security(request)){
+            return "index";
+        }
+
         adminService.deleteById(id);
 
         return superAdminCabinetAdmins(request);
@@ -179,6 +237,10 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/theEnd", method = RequestMethod.GET)
     public String theEnd(HttpServletRequest request) {
+
+        if (security(request)){
+            return "index";
+        }
 
         List<Faculty> faculties = facultyService.findAll();
         List<Application> applications = new ArrayList<>();
@@ -194,6 +256,7 @@ public class SuperAdminController {
                     List<Application> fApplication = applicationService.findByFacultyId(f.getId());
 
                     int placesLeft = f.getPlaces();
+                    int places = f.getPlaces();
 
                     for (Application a: fApplication) {
                         if(placesLeft > 0 && a.getPriority() == i && !applications.contains(a)){
@@ -206,6 +269,7 @@ public class SuperAdminController {
                             placesLeft--;
                         }
                     }
+                    f.setPlaces(places);
                 }
             }
         }
@@ -232,5 +296,8 @@ public class SuperAdminController {
         applicationService.addAll(applications);
 
         return superAdminCabinetFaculties(request);
+    }
+    public boolean security(HttpServletRequest request){
+        return !request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name());
     }
 }

@@ -36,10 +36,10 @@ public class Entrant{
     private String emailHash;
 
     @OneToMany(mappedBy = "entrant")
-    Set<EntrantSubject> subjects;
+    private Set<EntrantSubject> subjects;
 
     @OneToMany(mappedBy = "entrant")
-    Set<Application> applications;
+    private Set<Application> applications;
 
     @OneToOne
     @PrimaryKeyJoinColumn

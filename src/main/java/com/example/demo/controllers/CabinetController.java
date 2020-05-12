@@ -71,6 +71,10 @@ public class CabinetController {
     @RequestMapping(value = "/activateEntrant", method = RequestMethod.GET)
     public String activateEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
+        if(!request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name()) || !request.getSession().getAttribute("role").equals(Roles.ADMIN.name())){
+            return "index";
+        }
+
         entrantService.changeRole(id, Roles.ENTRANT.name());
 
         String email = entrantService.findEmailById(id);
@@ -89,6 +93,10 @@ public class CabinetController {
 
     @RequestMapping(value = "/deleteEntrant", method = RequestMethod.GET)
     public String deleteEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
+        if(!request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name()) || !request.getAttribute("role").equals(Roles.ADMIN.name())){
+            return "index";
+        }
 
         String email = entrantService.findEmailById(id);
 
@@ -110,6 +118,10 @@ public class CabinetController {
 
     @RequestMapping(value = "/deleteApplication", method = RequestMethod.GET)
     public String deleteApplication(@RequestParam(name = "id") int id, HttpServletRequest request) {
+
+        if(!request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
+            return "index";
+        }
 
         Integer priority = applicationService.findPriorityById(id);
         applicationService.deleteById(id);
@@ -135,6 +147,10 @@ public class CabinetController {
     @RequestMapping(value = "/increasePriority", method = RequestMethod.GET)
     public String increasePriority(@RequestParam(name = "id") int id, HttpServletRequest request){
 
+        if(!request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
+            return "index";
+        }
+
         changePriority(id, request, 1);
 
         return "cabinet";
@@ -142,6 +158,10 @@ public class CabinetController {
 
     @RequestMapping(value = "/reducePriority", method = RequestMethod.GET)
     public String reducePriority(@RequestParam(name = "id") int id, HttpServletRequest request){
+
+        if(!request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
+            return "index";
+        }
 
         changePriority(id, request, -1);
 

@@ -62,13 +62,13 @@
    <jsp:include page="header.jsp"></jsp:include>
 
    <div class="menu">
-    <form action="/superAdminCabinetFaculties" method ="get">
+    <form action="/superAdminCabinet/Faculties" method ="get">
         <input class="btn" type="submit" value="Факультети">
     </form>
-    <form action="/superAdminCabinetAdmins" method ="get">
+    <form action="/superAdminCabinet/Admins" method ="get">
         <input class="btn" type="submit" value="Адміністратори">
     </form>
-    <form action="/superAdminCabinetEntrants" method ="get">
+    <form action="/superAdminCabinet/Entrants" method ="get">
         <input class="btn" type="submit" value="Вступники">
     </form>
 
@@ -98,8 +98,8 @@
                       <td>${admin.email}</td>
                       <td>${admin.password}</td>
                       <td>${admin.role}</td>
-                      <td><a href="/editAdmin?id=${admin.id}" style="color: blue">Редагувати</a></td>
-                      <td><a href="/deleteAdmin?id=${admin.id}" style="color: red">Видалити</a></td>
+                      <td><a href="/superAdminCabinet/editAdmin?id=${admin.id}" style="color: blue">Редагувати</a></td>
+                      <td><a href="/superAdminCabinet/deleteAdmin?id=${admin.id}" style="color: red">Видалити</a></td>
                   </tr>
              </c:forEach>
         </table>
@@ -164,7 +164,7 @@
         <table>
             <p style="font-size: 30px">Факультети:</p>
 
-            <form action="/addFaculty" method ="get">
+            <form action="/superAdminCabinet/addFaculty" method ="get">
                 <input class="btn" type="submit" value="Додати факультет"  style="background-color: lightgreen; border-radius: 5px;">
             </form>
             <br>
@@ -184,8 +184,8 @@
                       <td class ="number">${сounter.count}</td>
                       <td><a href="/faculty?id=${faculty.id}">${faculty.name}</a></td>
                       <td><input class="facBtn" type="button" value="Детальніше" onClick="showFaculty('${faculty.id}','${faculty.name}', '${faculty.places}', '${faculty.description}')"></td>
-                      <td><a href="/editFaculty?id=${faculty.id}" style="color: blue">Редагувати</a></td>
-                      <td><a href="/deleteFaculty?id=${faculty.id}" style="color: red">Видалити</a></td>
+                      <td><a href="/superAdminCabinet/editFaculty?id=${faculty.id}" style="color: blue">Редагувати</a></td>
+                      <td><a href="/superAdminCabinet/deleteFaculty?id=${faculty.id}" style="color: red">Видалити</a></td>
 
                       <c:forEach var="subject" items="${subjects}">
                         <c:if test="${faculty.id == subject.faculty.id}">
