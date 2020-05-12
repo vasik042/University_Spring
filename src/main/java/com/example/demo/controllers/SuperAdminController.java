@@ -49,9 +49,6 @@ public class SuperAdminController {
 
         request.setAttribute("faculties", facultyService.findAll());
 
-        System.out.println(request.getSession().getAttribute("role"));
-        System.out.println(request.getAttribute("role"));
-
         if (security(request)){
             return "index";
         }

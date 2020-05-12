@@ -19,7 +19,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <img src="logo.png" style="height: 40px; float: left">
+      <img src="/logo.png" style="height: 40px; float: left">
       <a class="brand" href="/" style="margin-left: -10px">НУЛО</a>
       <div class="nav-collapse">
         <ul class="nav">

@@ -24,7 +24,7 @@
                 height: 30px;
                 font-size: 15px;
             }.menu{
-                widows: 100%;
+                width: 100%;
                 justify-content: center;
                 display: flex;
             }th{
@@ -71,6 +71,9 @@
     <form action="/superAdminCabinet/Entrants" method ="get">
         <input class="btn" type="submit" value="Вступники">
     </form>
+    <form action="/superAdminCabinet/theEnd" method ="get">
+        <input type="submit" value="Кінець" style="background-color: red; font-weight: 900; float: left; width: 90px; height: 30px; font-size: 18px; border-radius: 50px;">
+    </form>
 
    </div>
    <c:choose>
@@ -78,7 +81,7 @@
        <div class="mainInfoHolder">
         <table>
             <p style="font-size: 30px">Адміністратори:</p>
-            <form action="/addAdmin" method ="get">
+            <form action="/superAdminCabinet/addAdmin" method ="get">
                 <input class="btn" type="submit" value="Додати адміністратора"  style="background-color: lightgreen; border-radius: 5px;">
             </form>
             <br>

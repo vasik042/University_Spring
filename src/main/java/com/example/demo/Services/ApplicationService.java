@@ -12,10 +12,12 @@ import java.util.List;
 public class ApplicationService {
 
     private ApplicationRepository applicationRepo;
+    private MailSenderService mailSender;
 
     @Autowired
-    public ApplicationService(ApplicationRepository applicationRepo) {
+    public ApplicationService(ApplicationRepository applicationRepo, MailSenderService mailSender) {
         this.applicationRepo = applicationRepo;
+        this.mailSender = mailSender;
     }
 
     public void save(Entrant entrant, Faculty faculty){
@@ -37,7 +39,8 @@ public class ApplicationService {
             Application application = new Application(gpa, entrant, faculty);
             applicationRepo.save(application);
         }else {
-            //TODO mail send
+            mailSender.message(entrant.getEmail(), "Вашу заяву було видаленно",
+                    "В звязку зі зміною предметів, необхідних для вступу на факультет, вашу заяву було видаленно.");
         }
     }
 

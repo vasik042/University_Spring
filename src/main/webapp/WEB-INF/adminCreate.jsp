@@ -51,11 +51,11 @@
 </head>
 <body>
        <c:if test="${create}">
-       <form action="/addAdmin" method ="post">
+       <form action="/superAdminCabinet/addAdmin" method ="post">
        </c:if>
 
        <c:if test="${!create}">
-       <form action="/editAdmin" method ="post">
+       <form action="/superAdminCabinet/editAdmin" method ="post">
        </c:if>
         <div style="background-color: white; width: 500px; height: 300px; margin: auto; margin-top: 20px; border-radius: 10px; border: 2px solid grey">
 
@@ -81,6 +81,6 @@
             <input id="btn" type="submit" value="Відправити" style="float: left; clear: both">
         </div>
     </form>
-    <script src="js/login.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Services.*;
+import com.example.demo.Subjects;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.EntrantSubject;
+import com.example.demo.entities.FacultySubject;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +45,32 @@ public class CabinetController {
 
     @RequestMapping(value = "/cabinet", method = RequestMethod.GET)
     public String getCabinet(HttpServletRequest request) {
+
         request.setAttribute("faculties", facultyService.findAll());
 
-        if (request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name())){
-            return "superAdminCabinet";
-        }
+        String role = (String) request.getSession().getAttribute("role");
 
-        if(request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
-            request.setAttribute("applications", applicationService.findByEntrantId((Integer)request.getSession().getAttribute("UserId")));
-        }else if (request.getSession().getAttribute("role").equals(Roles.ADMIN.name())){
+        if (role.equals(Roles.SUPER_ADMIN.name())){
+            return "superAdminCabinet";
+        }else if(role.equals(Roles.ENTRANT.name())){
+
+            Entrant entrant = entrantService.findById((Integer) request.getSession().getAttribute("UserId"));
+
+            request.setAttribute("entrant", entrant);
+            request.setAttribute("applications", applicationService.findByEntrantId(entrant.getId()));
+
+            List<EntrantSubject> subjects = entrantSubjectService.findByEntrantId(entrant.getId());
+            for (EntrantSubject es: subjects) {
+                for (Subjects subject: Subjects.values()) {
+                    if(es.getSubjectName().equals(subject.name())){
+                        es.setSubjectName(subject.getUkrName());
+                    }
+                }
+            }
+
+            request.setAttribute("subjects", subjects);
+
+        }else if (role.equals(Roles.ADMIN.name())){
 
             List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIED_ENTRANT.name());
             List<EntrantSubject> subjects = new ArrayList<>();
@@ -63,6 +82,8 @@ public class CabinetController {
             }
 
             request.setAttribute("subjects", subjects);
+        }else {
+            return "index";
         }
 
         return "cabinet";
@@ -141,7 +162,7 @@ public class CabinetController {
         entrantService.changeApplicationsLeft(entrant.getId(), entrant.getApplicationsLeft()+1);
         request.getSession().setAttribute("applicationsLeft", entrant.getApplicationsLeft()+1);
 
-        return "cabinet";
+        return getCabinet(request);
     }
 
     @RequestMapping(value = "/increasePriority", method = RequestMethod.GET)
@@ -153,7 +174,7 @@ public class CabinetController {
 
         changePriority(id, request, 1);
 
-        return "cabinet";
+        return getCabinet(request);
     }
 
     @RequestMapping(value = "/reducePriority", method = RequestMethod.GET)
@@ -165,7 +186,7 @@ public class CabinetController {
 
         changePriority(id, request, -1);
 
-        return "cabinet";
+        return getCabinet(request);
     }
 
     private void changePriority(int id, HttpServletRequest request, int i){

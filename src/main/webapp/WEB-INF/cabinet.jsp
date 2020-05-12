@@ -62,12 +62,46 @@
           }.priority{
               float: left;
               width: 30px;
+          }.mainInfo{
+              margin: auto;
+              width: 440px;
+          }.mainInfoHolder{
+              width: 56%;
+              margin-left: 22%;
           }
       </style>
 </head>
 <body>
 
     <jsp:include page="header.jsp"></jsp:include>
+
+    <div class="mainInfoHolder">
+    <c:if test="${role == 'ENTRANT'}">
+        <div class="mainInfo">
+            <div style='float: right; width: 150px'><img src='/getPhoto?id=${entrant.id}' class = 'studentPhoto'></img></div>
+            <h3>${entrant.surname} ${entrant.name}</h2>
+            <p>Пошта - ${entrant.email}</p>
+            <p>Дата народження - ${entrant.dateOfBirth}</p>
+            <p>Оцінка в атестаті - ${entrant.schoolGPA}</p>
+            <p>Залишилось заявок - ${entrant.applicationsLeft}</p>
+
+            <table style="margin: 0;">
+                <tr>
+                    <th style='width: 280px;'>Зданний предмет</th>
+                    <th style='width: 160px;'>Оцінка</th>
+                </tr>
+                <tr>
+                    <c:forEach var="subject" items="${subjects}">
+                        <tr>
+                            <td>${subject.subjectName}</td>
+                            <td>${subject.grade}</td>
+                        </tr>
+                    </c:forEach>
+                </tr>
+            </table>
+        </div>
+        <br>
+    </c:if>
 
     <c:if test="${role == 'NOT_VERIFIED_ENTRANT'}">
         <p>Для подачі заявок адміністратр повинен підтвердити вашу анкету</p>
@@ -178,7 +212,7 @@
         </table>
         </div>
     </c:if>
-
+</div>
     <script>
           function out(){
                 var element = document.getElementsByClassName("infoHolder")[0];

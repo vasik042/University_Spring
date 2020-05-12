@@ -51,11 +51,11 @@
 </head>
 <body>
     <c:if test="${create}">
-    <form action="/addFaculty" method ="post">
+    <form action="/superAdminCabinet/addFaculty" method ="post">
     </c:if>
 
     <c:if test="${!create}">
-    <form action="/editFaculty" method ="post">
+    <form action="/superAdminCabinet/editFaculty" method ="post">
     </c:if>
         <div style="background-color: white; width: 500px; height: 600px; margin: auto; margin-top: 20px; border-radius: 10px; border: 2px solid grey">
 
@@ -173,6 +173,24 @@
                             </select>
                             <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${subject.coefficient}">
                         </label>
+                        <c:if test="${subjects.size() == 3}">
+                            <label for="subject4">
+                                <select name="subjectName4" id ="subjectName4" value="">
+                                    <option>Немає</option>
+                                    <option value="MATH">Математика</option>
+                                    <option value="HISTORY">Історія України</option>
+                                    <option value="BIOLOGY">Біологія</option>
+                                    <option value="GEOGRAPHY">Географія</option>
+                                    <option value="PHYSICS">Фізика</option>
+                                    <option value="CHEMISTRY">Хімія</option>
+                                    <option value="ENGLISH">Англійська мова</option>
+                                    <option value="SPANISH">Іспанська мова</option>
+                                    <option value="GERMAN">Німецька мова</option>
+                                    <option value="FRENCH">Французька мова</option>
+                                </select>
+                                <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef4" name ="subjectCoef4" value="">
+                            </label>
+                        </c:if>
                     </c:when>
                 </c:choose>
                 <c:choose>
@@ -187,6 +205,6 @@
             <input id="btn" type="submit" value="Відправити" style="float: left; clear: both">
         </div>
     </form>
-    <script src="js/facultyCreate.js"></script>
+    <script src="/js/facultyCreate.js"></script>
 </body>
 </html>

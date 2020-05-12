@@ -1,14 +1,14 @@
-let name = false;
-let places = false;
-let description = false;
+let name = document.getElementById('name').value;
+let places = document.getElementById('places').value;
+let description = document.getElementById('description').value;
 
-let subjectCoef1 = false;
+let subjectCoef1 = document.getElementById('subjectCoef1').value;
 let subjectName2 = "MATH";
-let subjectCoef2 = false;
+let subjectCoef2 = document.getElementById('subjectCoef2').value;
 let subjectName3 = "HISTORY";
-let subjectCoef3 = false;
+let subjectCoef3 = document.getElementById('subjectCoef3').value;
 let subjectName4 = false;
-let subjectCoef3 = false;
+let subjectCoef4 = false;
 
 
 
@@ -17,17 +17,17 @@ document.getElementById('name').onchange = function(){
 }
 
 document.getElementById('places').onchange = function(){
-    surname = document.getElementById('places').value;
+    places = document.getElementById('places').value;
 }
 
 document.getElementById('description').onchange = function(){
-    date = document.getElementById('description').value;
+    description = document.getElementById('description').value;
 }
 
 document.getElementById('subjectCoef1').onchange = function(){
     subjectCoef1 = document.getElementById('subjectCoef1').value;
 
-    if (subjectCoef1 > 0.8 || subjectCoef1 < 0.05  || subjectCoef1%0.05 != 0){
+    if (subjectCoef1 > 0.8 || subjectCoef1 < 0.05){
         alert("Коефіціент повинен бути числом від 0.05 до 0.8");
         document.getElementById('subjectCoef1').value = false;
         subjectCoef1 = false;
@@ -37,7 +37,7 @@ document.getElementById('subjectCoef1').onchange = function(){
 document.getElementById('subjectCoef2').onchange = function(){
     subjectCoef2 = document.getElementById('subjectCoef2').value;
 
-    if (subjectCoef2 > 0.8 || subjectCoef2 < 0.05  || subjectCoef2%0.05 != 0){
+    if (subjectCoef2 > 0.8 || subjectCoef2 < 0.05){
         alert("Коефіціент повинен бути числом від 0.05 до 0.8");
         document.getElementById('subjectCoef2').value = false;
         subjectCoef2 = false;
@@ -47,7 +47,7 @@ document.getElementById('subjectCoef2').onchange = function(){
 document.getElementById('subjectCoef3').onchange = function(){
     subjectCoef3 = document.getElementById('subjectCoef3').value;
 
-    if (subjectCoef3 > 0.8 || subjectCoef3 < 0.05  || subjectCoef3%0.05 != 0){
+    if (subjectCoef3 > 0.8 || subjectCoef3 < 0.05){
         alert("Коефіціент повинен бути числом від 0.05 до 0.8");
         document.getElementById('subjectCoef3').value = false;
         subjectCoef3 = false;
@@ -57,7 +57,7 @@ document.getElementById('subjectCoef3').onchange = function(){
 document.getElementById('subjectCoef4').onchange = function(){
     subjectCoef4 = document.getElementById('subjectCoef4').value;
 
-    if (subjectCoef4 > 0.8 || subjectCoef4 < 0.05  || subjectCoef4%0.05 != 0){
+    if (subjectCoef4 > 0.8 || subjectCoef4 < 0.05){
         alert("Коефіціент повинен бути числом від 0.05 до 0.8");
         document.getElementById('subjectCoef4').value = false;
         subjectCoef4 = false;
@@ -96,8 +96,13 @@ document.getElementById('subjectName4').onchange = function(){
 
 document.body.onmousemove = function(){
     if (name && places && description && subjectCoef1 && subjectName2 && subjectCoef2 && subjectName3 && subjectCoef3){
-        if(subjectName3 == null || subjectCoef3 == null){
-            if((subjectCoef1 + subjectCoef2 + subjectCoef3) != 0.9){
+        if(subjectName4 == false || subjectCoef4 == false){
+            var sum = parseFloat(subjectCoef1) + parseFloat(subjectCoef2) + parseFloat(subjectCoef3);
+            if (sum > 0.89 && sum < 0.91){
+                sum = 0.9;
+            }
+
+            if(sum != 0.9){
                 alert("Сумма коефіціентів повинна бути рівна 0.9!");
                 document.getElementById('subjectCoef1').value = false;
                 subjectCoef1 = false;
@@ -106,7 +111,12 @@ document.body.onmousemove = function(){
                 document.getElementById('btn').style.color = "black";
             }
         }else{
-            if((subjectCoef1 + subjectCoef2 + subjectCoef3 + subjectCoef4) != 0.9){
+            var sum = parseFloat(subjectCoef1) + parseFloat(subjectCoef2) + parseFloat(subjectCoef3) + parseFloat(subjectCoef4);
+            if (sum > 0.89 && sum < 0.91){
+                sum = 0.9;
+            }
+
+            if(sum != 0.9){
                 alert("Сумма коефіціентів повинна бути рівна 0.9!");
                 document.getElementById('subjectCoef1').value = false;
                 subjectCoef1 = false;
