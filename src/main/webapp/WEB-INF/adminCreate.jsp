@@ -81,6 +81,6 @@
             <input id="btn" type="submit" value="Відправити" style="float: left; clear: both">
         </div>
     </form>
-    <script src="js/adminCreate.js"></script>
+    <script src="js/login.js"></script>
 </body>
 </html>

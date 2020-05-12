@@ -76,7 +76,17 @@
     <c:if test="${role == 'ENTRANT'}">
      <div class="mainInfoHolder1">
         <table>
-            <p style="font-size: 30px">Подані заявки:</p>
+            <c:if test="${role == 'ENTRANT'}">
+                <p style="font-size: 30px">Подані заявки:</p>
+            </c:if>
+            <c:if test="${role == 'PAST'}">
+                <p style="font-size: 30px">Ви пройшли на:</p>
+            </c:if>
+            <c:if test="${role == 'NOT_PAST'}">
+                <p style="font-size: 30px">Ви не пройшли ні на один факультет =(</p>
+            </c:if>
+
+            <c:if test="${role == 'ENTRANT'}">
              <tr>
                 <th style="width: 50px;">Пріорітет</th>
                 <th style="width: 300px;">Факультет</th>
@@ -104,6 +114,22 @@
                       <td><a href="/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
                   </tr>
              </c:forEach>
+             </c:if>
+
+            <c:if test="${role == 'PAST'}">
+             <tr>
+                <th style="width: 50px;">Пріорітет</th>
+                <th style="width: 300px;">Факультет</th>
+                <th style="width: 150px;">Кількість балів</th>
+             </tr>
+             <c:forEach var="application" items="${applications}">
+                  <tr>
+                      <td class ="number">${application.priority}</td>
+                      <td><a href="/faculty?id=${application.faculty.id}">${application.faculty.name}</a></td>
+                      <td>${application.GPA}</td>
+                  </tr>
+             </c:forEach>
+             </c:if>
         </table>
         </div>
     </c:if>
