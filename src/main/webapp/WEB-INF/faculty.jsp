@@ -94,7 +94,7 @@
     <c:choose>
             <c:when test="${canReg == 0}">
                <div class="ok">
-                <a  class="a" href="/makeApplication?id=${faculty.id}">Подати заявку на вступ </a>
+                    <a  class="a" href="/makeApplication?id=${faculty.id}">Подати заявку на вступ </a>
                </div>
             </c:when>
             <c:when test="${canReg == 1}">
@@ -137,22 +137,25 @@
      <table>
      <tr>
         <th style="width: 40px">№</th>
+        <th style="width: 40px">Пріорітет</th>
         <th style="width: 260px">Імя</th>
         <th style="width: 140px">Кількість балів</th>
      </tr>
-     <c:forEach var="entrant" items="${entrants}" varStatus="сounter">
-            <c:if test="${сounter.count <= entrant.places}">
+     <c:forEach var="application" items="${applications}" varStatus="сounter">
+            <c:if test="${сounter.count <= application.places}">
                 <tr style = "background-color: green">
                     <td class ="number">${сounter.count}</td>
-                    <td>${entrant.name}</td>
-                    <td>${entrant.GPA}</td>
+                    <td>${application.priority}</td>
+                    <td>${application.name}</td>
+                    <td>${application.GPA}</td>
                 </tr>
             </c:if>
-            <c:if test="${сounter.count > entrant.places}">
+            <c:if test="${сounter.count > application.places}">
                 <tr  style = "background-color: orange">
                     <td class ="number">${сounter.count}</td>
-                    <td>${entrant.name}</td>
-                    <td>${entrant.GPA}</td>
+                    <td>${application.priority}</td>
+                    <td>${application.name}</td>
+                    <td>${application.GPA}</td>
                 </tr>
             </c:if>
      </c:forEach>

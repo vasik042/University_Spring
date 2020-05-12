@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.Dtos.EmailAndPasswordDto;
 import com.example.demo.Services.AdminService;
 import com.example.demo.Services.EntrantService;
+import com.example.demo.Services.FacultyService;
 import com.example.demo.entities.userEntities.Admin;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
@@ -21,12 +22,15 @@ public class LoginController {
     private EntrantService entrantService;
     private AdminService adminService;
     private CabinetController cabinetController;
+    private FacultyService facultyService;
 
     @Autowired
-    public LoginController(EntrantService entrantService, AdminService adminService, CabinetController cabinetController) {
+    public LoginController(EntrantService entrantService, AdminService adminService,
+                           CabinetController cabinetController, FacultyService facultyService) {
         this.entrantService = entrantService;
         this.adminService = adminService;
         this.cabinetController = cabinetController;
+        this.facultyService = facultyService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -71,6 +75,8 @@ public class LoginController {
         HttpSession session = request.getSession(true);
         session.setAttribute("UserId", null);
         session.setAttribute("role", null);
+
+        request.setAttribute("faculties", facultyService.findAll());
 
         return "index";
     }

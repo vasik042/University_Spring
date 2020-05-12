@@ -17,6 +17,8 @@ public class Application {
     private String name;
     @Column(name="faculty_places")
     private int places;
+    @Column(name="priority")
+    private int priority;
     @Column(name="GPA")
     private float GPA;
 
@@ -33,6 +35,18 @@ public class Application {
         this.name = entrant.getSurname() + " " + entrant.getName();
         this.places = faculty.getPlaces();
         this.entrant = entrant;
+
+        int priority = 0;
+
+        for (Application a: entrant.getApplications()) {
+            if(a.getPriority() >= priority){
+                priority = a.getPriority();
+            }
+        }
+
+        priority++;
+        this.priority = priority;
+
         this.faculty = faculty;
     }
 
@@ -84,5 +98,13 @@ public class Application {
 
     public void setPlaces(int places) {
         this.places = places;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

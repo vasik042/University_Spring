@@ -139,6 +139,7 @@
                                 <input type="hidden" class="${entrant.id}appName" value="${application.faculty.name}">
                                 <input type="hidden" class="${entrant.id}appGrade" value="${application.GPA}">
                                 <input type="hidden" class="${entrant.id}facId" value="${application.faculty.id}">
+                                <input type="hidden" class="${entrant.id}priority" value="${application.priority}">
                             </c:if>
                         </c:forEach>
                       </td>
@@ -251,6 +252,7 @@
 
                 var appNames = document.getElementsByClassName(id+"appName");
                 var appGrades = document.getElementsByClassName(id+"appGrade");
+                var priority = document.getElementsByClassName(id+"priority");
                 var facId = document.getElementsByClassName(id+"facId");
 
                 var str1 = "<div class='infoHolder'><div class='info'>" +
@@ -261,18 +263,18 @@
                     "<h1>"+ name +"</h1>" +
                     "<h5>" + "Email - " + email + "</h5>" +
                     "<h5>" + "Середня оцінка - " + gpa + "</h5>" +
-                    "<table style='float: left'>" + "<tr><th style='width: 150px; border: 1px solid black;'>Здані предмети</th>" +
+                    "<table style='float: left'>" + "<tr><th style='width: 150px;'>Здані предмети</th>" +
                     "<th style='width: 50px;'>Оцінки</th></tr>";
 
                 for (let i = 0; i < subNames.length; i++) {
                     str1 = str1 + "<tr><td>" + subNames[i].value + "</td><td>" + subGrades[i].value + "</td></tr>";
                 }
 
-                str1 = str1 + "</table><table style='float: right'>" + "<tr><th style='width: 150px; border: 1px solid black;'>Заявка на:</th>" +
+                str1 = str1 + "</table><table style='float: right'>" + "<tr><th style='width: 50px;'>Пріорітет</th><th style='width: 150px;'>Заявка на:</th>" +
                               "<th style='width: 50px;'>Оцінка</th></tr>";
 
                 for (let i = 0; i < appNames.length; i++) {
-                    str1 = str1 + "<tr><td><a href='/faculty?id=" + facId[i].value + "'>" + appNames[i].value + "</a></td><td>" + appGrades[i].value + "</td></tr>";
+                    str1 = str1 + "<tr><td>" + priority[i].value + "</td><td><a href='/faculty?id=" + facId[i].value + "'>" + appNames[i].value + "</a></td><td>" + appGrades[i].value + "</td></tr>";
                 }
 
                 str1 = str1 + "</table></div></div>";

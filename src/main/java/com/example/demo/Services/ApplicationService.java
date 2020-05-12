@@ -68,4 +68,12 @@ public class ApplicationService {
     public List<Application> findAll() {
         return applicationRepo.findAll();
     }
+
+    public Integer findPriorityById(int id){
+        return applicationRepo.findPriorityById(id);
+    }
+
+    public void changePriority(int id, int priority) {
+        applicationRepo.changePriority(priority, id);
+    }
 }

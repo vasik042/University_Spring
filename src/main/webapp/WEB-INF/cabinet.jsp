@@ -59,8 +59,9 @@
               margin-left: 22%;
           }.mainInfoHolder2{
               width: 100%;
-          }.studentPhoto{
-              height: 120px;
+          }.priority{
+              float: left;
+              width: 30px;
           }
       </style>
 </head>
@@ -77,16 +78,30 @@
         <table>
             <p style="font-size: 30px">Подані заявки:</p>
              <tr>
-                <th style="width: 50px;">№</th>
+                <th style="width: 50px;">Пріорітет</th>
                 <th style="width: 300px;">Факультет</th>
                 <th style="width: 150px;">Кількість балів</th>
+                <th style="width: 150px;">Змінити пріорітет</th>
                 <th style="width: 150px;"></th>
              </tr>
-             <c:forEach var="application" items="${applications}" varStatus="counter">
+             <c:forEach var="application" items="${applications}">
                   <tr>
-                      <td class ="number">${counter.count}</td>
+                      <td class ="number">${application.priority}</td>
                       <td><a href="/faculty?id=${application.faculty.id}">${application.faculty.name}</a></td>
-                      <td>${application.GPA}</td><td><a href="/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
+                      <td>${application.GPA}</td>
+                      <td>
+                        <c:if test="${application.priority > 1}">
+                            <div class="priority">
+                                <a  style="font-size:25px; color: green" href="/increasePriority?id=${application.id}">↑</a>
+                            </div>
+                        </c:if>
+                        <c:if test="${application.priority < applications.size()}">
+                            <div class="priority">
+                                <a  style="font-size:25px; color: red" href="/reducePriority?id=${application.id}">↓</a>
+                            </div>
+                        </c:if>
+                      </td>
+                      <td><a href="/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
                   </tr>
              </c:forEach>
         </table>

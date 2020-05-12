@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Services.*;
+import com.example.demo.entities.Application;
 import com.example.demo.entities.EntrantSubject;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -109,12 +111,62 @@ public class CabinetController {
     @RequestMapping(value = "/deleteApplication", method = RequestMethod.GET)
     public String deleteApplication(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
+        Integer priority = applicationService.findPriorityById(id);
         applicationService.deleteById(id);
 
         Entrant entrant = entrantService.findById((Integer) request.getSession().getAttribute("UserId"));
+
+        for (Application a: entrant.getApplications()) {
+            if (a.getPriority() > priority){
+                applicationService.changePriority(a.getId(), a.getPriority()-1);
+                a.setPriority(a.getPriority() - 1);
+            }
+        }
+
+        request.setAttribute("faculties", facultyService.findAll());
+        request.setAttribute("applications", null);
+        request.setAttribute("applications", applicationService.findByEntrantId((Integer)request.getSession().getAttribute("UserId")));
+
         entrantService.changeApplicationsLeft(entrant.getId(), entrant.getApplicationsLeft()+1);
         request.getSession().setAttribute("applicationsLeft", entrant.getApplicationsLeft()+1);
 
-        return getCabinet(request);
+        return "cabinet";
+    }
+
+    @RequestMapping(value = "/increasePriority", method = RequestMethod.GET)
+    public String increasePriority(@RequestParam(name = "id") int id, HttpServletRequest request){
+
+        changePriority(id, request, 1);
+
+        return "cabinet";
+    }
+
+    @RequestMapping(value = "/reducePriority", method = RequestMethod.GET)
+    public String reducePriority(@RequestParam(name = "id") int id, HttpServletRequest request){
+
+        changePriority(id, request, -1);
+
+        return "cabinet";
+    }
+
+    private void changePriority(int id, HttpServletRequest request, int i){
+        Integer priority = applicationService.findPriorityById(id);
+        List<Application> applications = applicationService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
+
+        for (Application a: applications) {
+            if (a.getPriority() == priority - i){
+                applicationService.changePriority(a.getId(), priority);
+                a.setPriority(priority);
+            }
+            if (a.getId() == id){
+                a.setPriority(priority - i);
+            }
+        }
+        applicationService.changePriority(id, priority - i);
+
+        applications.sort(Comparator.comparing(Application::getPriority));
+
+        request.setAttribute("faculties", facultyService.findAll());
+        request.setAttribute("applications", applications);
     }
 }

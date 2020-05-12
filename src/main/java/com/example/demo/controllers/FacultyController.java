@@ -42,7 +42,7 @@ public class FacultyController {
     @RequestMapping(value = "/faculty", method = RequestMethod.GET)
     public String getFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
-        request.setAttribute("entrants", applicationService.findByFacultyId(id));
+        request.setAttribute("applications", applicationService.findByFacultyId(id));
         request.setAttribute("faculties", facultyService.findAll());
         request.setAttribute("faculty", facultyService.findById(id));
 
