@@ -76,4 +76,8 @@ public class ApplicationService {
     public void changePriority(int id, int priority) {
         applicationRepo.changePriority(priority, id);
     }
+
+    public void addAll(List<Application> applications) {
+        applicationRepo.saveAll(applications);
+    }
 }

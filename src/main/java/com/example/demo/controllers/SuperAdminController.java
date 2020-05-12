@@ -6,6 +6,7 @@ import com.example.demo.Services.*;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.Faculty;
 import com.example.demo.entities.userEntities.Entrant;
+import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class SuperAdminController {
@@ -26,17 +28,20 @@ public class SuperAdminController {
     private FacultySubjectService facultySubjectService;
     private AdminService adminService;
     private ApplicationService applicationService;
+    private MailSenderService mailSender;
 
     @Autowired
     public SuperAdminController(EntrantService entrantService, EntrantSubjectService entrantSubjectService,
                                 FacultyService facultyService, FacultySubjectService facultySubjectService,
-                                AdminService adminService, ApplicationService applicationService) {
+                                AdminService adminService, ApplicationService applicationService,
+                                MailSenderService mailSender) {
         this.entrantService = entrantService;
         this.entrantSubjectService = entrantSubjectService;
         this.facultyService = facultyService;
         this.facultySubjectService = facultySubjectService;
         this.adminService = adminService;
         this.applicationService = applicationService;
+        this.mailSender = mailSender;
     }
 
     @RequestMapping(value = "/superAdminCabinetFaculties", method = RequestMethod.GET)
@@ -170,5 +175,62 @@ public class SuperAdminController {
         adminService.deleteById(id);
 
         return superAdminCabinetAdmins(request);
+    }
+
+    @RequestMapping(value = "/theEnd", method = RequestMethod.GET)
+    public String theEnd(HttpServletRequest request) {
+
+        List<Faculty> faculties = facultyService.findAll();
+        List<Application> applications = new ArrayList<>();
+
+        //find applications where priority = i
+        for (int i = 1; i <= 3; i++) {
+            boolean oneMore = true;
+
+            while (oneMore){
+                oneMore = false;
+                for (Faculty f: faculties) {
+                    //Sorted by GPA
+                    List<Application> fApplication = applicationService.findByFacultyId(f.getId());
+
+                    int placesLeft = f.getPlaces();
+
+                    for (Application a: fApplication) {
+                        if(placesLeft > 0 && a.getPriority() == i && !applications.contains(a)){
+                            oneMore = true;
+                            f.setPlaces(f.getPlaces() - 1);
+
+                            applications.add(a);
+                            applicationService.deleteByEntrantId(a.getEntrant().getId());
+
+                            placesLeft--;
+                        }
+                    }
+                }
+            }
+        }
+
+        List<Entrant> all = entrantService.findAll();
+        List<Entrant> entrants = new ArrayList<>();
+
+        for (Application a: applications) {
+            entrants.add(a.getEntrant());
+        }
+
+        for (Entrant e: all) {
+            if(entrants.contains(e)){
+                entrantService.changeRole(e.getId(), Roles.PAST.name());
+                mailSender.message(e.getEmail(), "Закінчення реєстрації", "Васи за численно на факультет: '" +
+                        applicationService.findByEntrantId(e.getId()).get(0).getFaculty().getName() +"'!");
+            }else {
+                entrantService.changeRole(e.getId(), Roles.NOT_PAST.name());
+                mailSender.message(e.getEmail(), "Закінчення реєстрації", "Нажаль ви не зачислені ні на один факультет");
+            }
+        }
+
+        applicationService.deleteAll(applicationService.findAll());
+        applicationService.addAll(applications);
+
+        return superAdminCabinetFaculties(request);
     }
 }

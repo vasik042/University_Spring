@@ -124,7 +124,6 @@ public class CabinetController {
         }
 
         request.setAttribute("faculties", facultyService.findAll());
-        request.setAttribute("applications", null);
         request.setAttribute("applications", applicationService.findByEntrantId((Integer)request.getSession().getAttribute("UserId")));
 
         entrantService.changeApplicationsLeft(entrant.getId(), entrant.getApplicationsLeft()+1);
