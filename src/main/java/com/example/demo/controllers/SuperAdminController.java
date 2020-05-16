@@ -28,20 +28,20 @@ public class SuperAdminController {
     private FacultySubjectService facultySubjectService;
     private AdminService adminService;
     private ApplicationService applicationService;
-    private MailSenderService mailSender;
+    private TheEndService theEndService;
 
     @Autowired
     public SuperAdminController(EntrantService entrantService, EntrantSubjectService entrantSubjectService,
                                 FacultyService facultyService, FacultySubjectService facultySubjectService,
                                 AdminService adminService, ApplicationService applicationService,
-                                MailSenderService mailSender) {
+                                TheEndService theEndService) {
         this.entrantService = entrantService;
         this.entrantSubjectService = entrantSubjectService;
         this.facultyService = facultyService;
         this.facultySubjectService = facultySubjectService;
         this.adminService = adminService;
         this.applicationService = applicationService;
-        this.mailSender = mailSender;
+        this.theEndService = theEndService;
     }
 
     @RequestMapping(value = "/Faculties", method = RequestMethod.GET)
@@ -239,61 +239,11 @@ public class SuperAdminController {
             return "index";
         }
 
-        List<Faculty> faculties = facultyService.findAll();
-        List<Application> applications = new ArrayList<>();
-
-        //find applications where priority = i
-        for (int i = 1; i <= 3; i++) {
-            boolean oneMore = true;
-
-            while (oneMore){
-                oneMore = false;
-                for (Faculty f: faculties) {
-                    //Sorted by GPA
-                    List<Application> fApplication = applicationService.findByFacultyId(f.getId());
-
-                    int placesLeft = f.getPlaces();
-                    int places = f.getPlaces();
-
-                    for (Application a: fApplication) {
-                        if(placesLeft > 0 && a.getPriority() == i && !applications.contains(a)){
-                            oneMore = true;
-                            f.setPlaces(f.getPlaces() - 1);
-
-                            applications.add(a);
-                            applicationService.deleteByEntrantId(a.getEntrant().getId());
-
-                            placesLeft--;
-                        }
-                    }
-                    f.setPlaces(places);
-                }
-            }
-        }
-
-        List<Entrant> all = entrantService.findAll();
-        List<Entrant> entrants = new ArrayList<>();
-
-        for (Application a: applications) {
-            entrants.add(a.getEntrant());
-        }
-
-        for (Entrant e: all) {
-            if(entrants.contains(e)){
-                entrantService.changeRole(e.getId(), Roles.PAST.name());
-                mailSender.message(e.getEmail(), "Закінчення реєстрації", "Васи за численно на факультет: '" +
-                        applicationService.findByEntrantId(e.getId()).get(0).getFaculty().getName() +"'!");
-            }else {
-                entrantService.changeRole(e.getId(), Roles.NOT_PAST.name());
-                mailSender.message(e.getEmail(), "Закінчення реєстрації", "Нажаль ви не зачислені ні на один факультет");
-            }
-        }
-
-        applicationService.deleteAll(applicationService.findAll());
-        applicationService.addAll(applications);
+        theEndService.theEnd();
 
         return superAdminCabinetFaculties(request);
     }
+
     public boolean security(HttpServletRequest request){
         return !request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name());
     }

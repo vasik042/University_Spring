@@ -13,10 +13,6 @@ public class Application {
     @Column(name="application_id")
     private int id;
 
-    @Column(name="name")
-    private String name;
-    @Column(name="faculty_places")
-    private int places;
     @Column(name="priority")
     private int priority;
     @Column(name="GPA")
@@ -32,8 +28,6 @@ public class Application {
 
     public Application(float GPA, Entrant entrant, Faculty faculty) {
         this.GPA = GPA;
-        this.name = entrant.getSurname() + " " + entrant.getName();
-        this.places = faculty.getPlaces();
         this.entrant = entrant;
 
         int priority = 0;
@@ -82,22 +76,6 @@ public class Application {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPlaces() {
-        return places;
-    }
-
-    public void setPlaces(int places) {
-        this.places = places;
     }
 
     public int getPriority() {

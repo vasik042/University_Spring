@@ -26,6 +26,14 @@ public class EntrantService {
         this.entrantSubjectService = entrantSubjectService;
     }
 
+    public void setRoles(String role) {
+        List<Entrant> entrants = entrantRepo.findAll();
+
+        for (Entrant entrant: entrants) {
+            changeRole(entrant.getId(), role);
+        }
+    }
+
     public void deleteById(int id){
         entrantRepo.deleteById(id);
     }
