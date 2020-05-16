@@ -76,7 +76,7 @@
     <jsp:include page="header.jsp"></jsp:include>
 
     <div class="mainInfoHolder">
-    <c:if test="${role == 'ENTRANT'}">
+    <c:if test="${role == 'ENTRANT' || role == 'PAST' || role == 'NOT_PAST'}">
         <div class="mainInfo">
             <div style='float: right; width: 150px'><img src='/getPhoto?id=${entrant.id}' class = 'studentPhoto'></img></div>
             <h3>${entrant.surname} ${entrant.name}</h2>
@@ -107,7 +107,7 @@
         <p>Для подачі заявок адміністратр повинен підтвердити вашу анкету</p>
     </c:if>
 
-    <c:if test="${role == 'ENTRANT'}">
+    <c:if test="${role == 'ENTRANT' || role == 'PAST' || role == 'NOT_PAST'}">
      <div class="mainInfoHolder1">
         <table>
             <c:if test="${role == 'ENTRANT'}">
@@ -248,6 +248,5 @@
                 document.body.insertBefore(newDiv, menu);
           }
     </script>
-
 </body>
 </html>

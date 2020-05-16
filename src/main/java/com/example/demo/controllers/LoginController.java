@@ -4,6 +4,7 @@ import com.example.demo.Dtos.EmailAndPasswordDto;
 import com.example.demo.Services.AdminService;
 import com.example.demo.Services.EntrantService;
 import com.example.demo.Services.FacultyService;
+import com.example.demo.entities.Application;
 import com.example.demo.entities.userEntities.Admin;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;

@@ -156,6 +156,12 @@
                       <c:if  test="${entrant.role == 'ENTRANT'}">
                           <td>Підтверджено</td>
                       </c:if>
+                      <c:if  test="${entrant.role == 'PAST'}">
+                           <td>Пройшов</td>
+                      </c:if>
+                      <c:if  test="${entrant.role == 'NOT_PAST'}">
+                           <td>Не пройшов</td>
+                      </c:if>
                       <td><a href="/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
                   </tr>
              </c:forEach>

@@ -37,12 +37,12 @@
             <ul class="nav pull-right">
           <li class="divider-vertical"></li>
             <c:if test="${UserId == null}">
-                <li class=""><a href="/register">Реєстрація</a></li>
-                <li class=""><a href="/login">Вхід</a></li>
+                <li id="reg"><a href="/register">Реєстрація</a></li>
+                <li><a href="/login">Вхід</a></li>
             </c:if>
             <c:if test="${UserId != null}">
-                <li class=""><a href="/cabinet">Кабінет</a></li>
-                <li class=""><a href="/logout">Вихід</a></li>
+                <li><a href="/cabinet">Кабінет</a></li>
+                <li><a href="/logout">Вихід</a></li>
             </c:if>
         </ul>
       </div><!-- /.nav-collapse -->

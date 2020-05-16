@@ -30,7 +30,15 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegister(HttpServletRequest request) {
-        return "register";
+
+        String role = entrantService.findAll().get(0).getRole();
+
+        if(role.equals(Roles.NOT_PAST.name()) || role.equals(Roles.PAST.name())){
+            request.setAttribute("end", true);
+            return "index";
+        }else {
+            return "register";
+        }
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

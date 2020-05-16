@@ -52,7 +52,10 @@ public class CabinetController {
 
         if (role.equals(Roles.SUPER_ADMIN.name())){
             return "superAdminCabinet";
-        }else if(role.equals(Roles.ENTRANT.name())){
+        }else if(role.equals(Roles.ENTRANT.name())
+                || role.equals(Roles.PAST.name())
+                || role.equals(Roles.NOT_VERIFIED_ENTRANT.name())
+                || role.equals(Roles.NOT_PAST.name())){
 
             Entrant entrant = entrantService.findById((Integer) request.getSession().getAttribute("UserId"));
 

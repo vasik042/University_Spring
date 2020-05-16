@@ -20,5 +20,10 @@
         <p>Про нас: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, qui, odio. Quas commodi necessitatibus facilis adipisci assumenda voluptatum mollitia dicta libero, quod at voluptates perferendis quisquam reiciendis! Minus quaerat vero eaque non laborum, ratione delectus ex quos excepturi dolore exercitationem nam ipsum quasi voluptas cupiditate cum. Quasi ipsam nulla cum velit omnis. Corporis minima nihil illum accusamus perferendis deleniti, modi, a eligendi quam, perspiciatis ipsum laborum consectetur. Nam assumenda necessitatibus placeat autem vero non consequuntur, earum praesentium obcaecati, quod ad. Magni expedita nostrum cum in, culpa ex officiis eum perspiciatis iure numquam, dolore, inventore. Quis, nemo, soluta. Optio, eligendi, facilis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit dolorum sunt praesentium, ut iure eius sed expedita. Iste eaque aut voluptates porro nobis nulla fuga ut molestias consectetur, sint enim magnam ipsam saepe ipsum accusantium adipisci dolor iure repudiandae. Omnis reprehenderit odio nulla vero. Deserunt cum neque velit, sequi pariatur quod debitis recusandae porro provident placeat excepturi quibusdam, tempora, ipsa corrupti voluptates veniam. Suscipit dolores, laboriosam quo hic ipsa aliquam blanditiis unde doloremque dolor </p>
     </div>
 
+    <c:if test="${end}">
+        <script>
+            alert("Час реєстрації та подачі заявок пройшов!");
+        </script>
+    </c:if>
 </body>
 </html>

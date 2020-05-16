@@ -2,7 +2,6 @@ package com.example.demo.Services;
 
 import com.example.demo.entities.Application;
 import com.example.demo.entities.Faculty;
-import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,18 +83,17 @@ public class TheEndService {
 
         boolean haveChance = false;
         for (Application application: facultyApplications) {
-            System.out.println("priority " + priority + "; entrant" + application.getEntrant().getName() + "; role" + application.getEntrant().getRole()+ "; placesLeft" + placesLeft + "; pasted " + passedApplications.contains(application) );
             if(placesLeft == 0){
                 break;
             }
 
-            //to prevent situations when entrant may pass to first priority faculty,
+            //to prevent situations when entrant can pass to first priority faculty,
             //but there is one application with higher priority that is not deleted yet
             if((application.getPriority() > priority && !passedApplications.contains(application))){
                 haveChance = true;
             }
 
-            if(application.getPriority() == priority && !passedApplications.contains(application) && !application.getEntrant().getRole().equals("HAVE_CHANCE")){
+            if(application.getPriority() == priority && !passedApplications.contains(application) && !application.getEntrant().getRole().equals("HAS_CHANCE")){
 
                 passedApplications.add(application);
                 applicationService.deleteByEntrantId(application.getEntrant().getId());
@@ -103,7 +101,7 @@ public class TheEndService {
                 placesLeft--;
                 noMoreApplications = false;
             }else if(application.getPriority() == priority && !passedApplications.contains(application) && haveChance){
-                application.getEntrant().setRole("HAVE_CHANCE");
+                application.getEntrant().setRole("HAS_CHANCE");
             }
         }
 

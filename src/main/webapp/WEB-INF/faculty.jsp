@@ -125,12 +125,7 @@
                     </div>
                </div>
             </c:when>
-            <c:otherwise>
-               <div class="someProblems" style="width: 380px;">
-               <img class="img" src="exclamationMark.png" alt="">
-                <p class="p">Для подачі заявок потрібно зареєструватись</p>
-                </div>
-            </c:otherwise>
+
         </c:choose>
         <br>
         <p style="font-size: 30px">Подані заявки:</p>
@@ -142,22 +137,17 @@
         <th style="width: 140px">Кількість балів</th>
      </tr>
      <c:forEach var="application" items="${applications}" varStatus="сounter">
-            <c:if test="${сounter.count <= application.places}">
+            <c:if test="${сounter.count <= application.faculty.places}">
                 <tr style = "background-color: green">
-                    <td class ="number">${сounter.count}</td>
-                    <td>${application.priority}</td>
-                    <td>${application.name}</td>
-                    <td>${application.GPA}</td>
-                </tr>
             </c:if>
-            <c:if test="${сounter.count > application.places}">
+            <c:if test="${сounter.count > application.faculty.places}">
                 <tr  style = "background-color: orange">
-                    <td class ="number">${сounter.count}</td>
-                    <td>${application.priority}</td>
-                    <td>${application.name}</td>
-                    <td>${application.GPA}</td>
-                </tr>
             </c:if>
+                <td class ="number">${сounter.count}</td>
+                <td>${application.priority}</td>
+                <td>${application.entrant.surname} ${application.entrant.name}</td>
+                <td>${application.GPA}</td>
+            </tr>
      </c:forEach>
      </table>
      </div>
