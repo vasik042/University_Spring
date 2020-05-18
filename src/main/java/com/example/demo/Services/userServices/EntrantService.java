@@ -9,6 +9,7 @@ import com.example.demo.entities.userEntities.Photo;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.repositories.userRepos.EntrantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,13 +24,15 @@ public class EntrantService {
     private EntrantRepository entrantRepo;
     private GradeService gradeService;
     private SubjectService subjectService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public EntrantService(EntrantRepository entrantRepo, GradeService gradeService,
-                          SubjectService subjectService) {
+                          SubjectService subjectService, PasswordEncoder passwordEncoder) {
         this.entrantRepo = entrantRepo;
         this.gradeService = gradeService;
         this.subjectService = subjectService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void setRoles(String role) {
@@ -51,7 +54,7 @@ public class EntrantService {
     public Entrant save(EntrantDto entrantDto, MultipartFile file) {
         Entrant entrant = new Entrant(entrantDto.getName(), entrantDto.getSurname(),
                 entrantDto.getDateOfBirth(), entrantDto.getSchoolGPA(), entrantDto.getEmail(),
-                entrantDto.getPassword(), entrantDto.getEmailHash());
+                passwordEncoder.encode(entrantDto.getPassword()), entrantDto.getEmailHash());
         Photo photo = null;
         try {
             photo = new Photo(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes(), entrant);
@@ -78,10 +81,6 @@ public class EntrantService {
         return entrant;
     }
 
-    public Entrant findByEmailAndPassword(String email, String password){
-        return entrantRepo.findByEmailAndPassword(email, password);
-    }
-
     public List<Entrant> findByRole(String role){
         return entrantRepo.findByRole(role);
     }
@@ -96,6 +95,10 @@ public class EntrantService {
 
     public String findEmailById(int id){
         return entrantRepo.findEmailById(id);
+    }
+
+    public Entrant findByEmail(String email){
+        return entrantRepo.findByEmail(email);
     }
 
     public Integer findIdByHash(String hash){

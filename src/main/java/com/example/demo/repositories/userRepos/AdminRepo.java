@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface AdminRepo extends JpaRepository<Admin, Integer> {
 
-    Admin findByEmailAndPassword(String email, String password);
-
     @Transactional
     @Modifying
     @Query(value = "UPDATE admin SET" +
@@ -19,4 +17,6 @@ public interface AdminRepo extends JpaRepository<Admin, Integer> {
             " password = ?2" +
             " WHERE admin_id = ?3", nativeQuery = true)
     void edit(String email, String password, int id);
+
+    Admin findByEmail(String username);
 }

@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-    <form action="/login" method ="post">
+    <form action="/login" method ="POST">
         <div style="background-color: white; width: 500px; height: 260px; margin: auto; margin-top: 15px; border-radius: 10px; border: 2px solid grey">
             
               <div style="height: 20px"></div>
@@ -45,12 +45,14 @@
               <p style="margin-left: 220px; font-size: 28px; margin-top: 0">Вхід</p>
                
             <label for="email" style="margin-top: -10px">
-                <input class="inp1" type="email" placeholder="Електронна пошта" required id="email" name ="email" value="${entrant.email}">
+                <input class="inp1" type="email" placeholder="Електронна пошта" required id="email" name ="email">
             </label>
             <div style="height: 10px; width: 100%; float: left"></div>
             <label for="password">
-                <input class="inp1" type="text" placeholder="Пароль" required id="password" name ="password" value="${entrant.password}">
+                <input class="inp1" type="text" placeholder="Пароль" required id="password" name ="password">
             </label>
+            <input type="hidden" name="${_csrf.parameterName}"
+                       value="${_csrf.token}"/>
             
             <div style="float: left; width: 100%; height: 20px"></div>
             <input id="btn" type="submit" value="Відправити" style="float: left; clear: both">

@@ -22,7 +22,7 @@ public class GradeService {
     }
 
     public List<Grade> findAll() {
-        return gradeRepo.findAll();
+        return gradeRepo.findAllOrderBySubjectId();
     }
 
     public void deleteByEntrantId(int id) {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=utf-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html lang="en">
 <head>
@@ -36,14 +37,14 @@
         </ul>    
             <ul class="nav pull-right">
           <li class="divider-vertical"></li>
-            <c:if test="${UserId == null}">
+            <sec:authorize access="!isAuthenticated()">
                 <li id="reg"><a href="/register">Реєстрація</a></li>
                 <li><a href="/login">Вхід</a></li>
-            </c:if>
-            <c:if test="${UserId != null}">
-                <li><a href="/cabinet">Кабінет</a></li>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <li><a href="/cabinet/">Кабінет</a></li>
                 <li><a href="/logout">Вихід</a></li>
-            </c:if>
+            </sec:authorize>
         </ul>
       </div><!-- /.nav-collapse -->
     </div>

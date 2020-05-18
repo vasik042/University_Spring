@@ -74,8 +74,10 @@
             </label>
             <label for="password">Пароль
                <br>
-                <input class="inp1" type="text" required id="password" name ="password" value="${admin.password}">
+                <input class="inp1" type="text" required id="password" name ="password" value="">
             </label>
+            <input type="hidden" name="${_csrf.parameterName}"
+                       value="${_csrf.token}"/>
 
             <div style="float: left; width: 100%; height: 20px"></div>
             <input id="btn" type="submit" value="Відправити" style="float: left; clear: both">

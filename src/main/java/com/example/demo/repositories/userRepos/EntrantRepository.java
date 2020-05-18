@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface EntrantRepository  extends JpaRepository<Entrant, Integer> {
 
-    Entrant findByEmailAndPassword(String email, String password);
-
     List<Entrant> findByRole(String role);
 
     @Query(value = "SELECT email FROM entrant WHERE entrant_id = ?1", nativeQuery = true)
@@ -31,4 +29,6 @@ public interface EntrantRepository  extends JpaRepository<Entrant, Integer> {
     @Modifying
     @Query(value = "UPDATE entrant SET applications_left = ?1 WHERE entrant_id = ?2", nativeQuery = true)
     void changeApplicationsLeft(int applications, int id);
+
+    Entrant findByEmail(String email);
 }

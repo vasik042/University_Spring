@@ -148,7 +148,7 @@
                       </td>
 
                       <c:if  test="${entrant.role == 'NOT_VERIFIED_ENTRANT'}">
-                          <td><a href="/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
+                          <td><a href="/cabinet/admin/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
                       </c:if>
                       <c:if  test="${entrant.role == 'NOT_VERIFIED_EMAIL_ENTRANT'}">
                           <td>Емейл не підтверджено</td>
@@ -162,7 +162,7 @@
                       <c:if  test="${entrant.role == 'NOT_PAST'}">
                            <td>Не пройшов</td>
                       </c:if>
-                      <td><a href="/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
+                      <td><a href="/cabinet/admin/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
                   </tr>
              </c:forEach>
         </table>

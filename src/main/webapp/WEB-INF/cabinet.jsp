@@ -65,10 +65,26 @@
           }.mainInfo{
               margin: auto;
               width: 440px;
-          }.mainInfoHolder{
-              width: 56%;
-              margin-left: 22%;
-          }
+          }.info{
+                position: absolute;
+                background-color: lightgray;
+                width: 600px;
+                height: 330px;
+                border-radius: 10px;
+                border: 2px solid black;
+            }.infoHolder{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                margin-left: 20px;
+            }.mainInfoHolder{
+                width: 56%;
+                margin-left: 22%;
+            }.studentPhoto{
+                height: 120px;
+            }
       </style>
 </head>
 <body>
@@ -136,16 +152,16 @@
                       <td>
                         <c:if test="${application.priority > 1}">
                             <div class="priority">
-                                <a  style="font-size:25px; color: green" href="/increasePriority?id=${application.id}">↑</a>
+                                <a  style="font-size:25px; color: green" href="/cabinet/entrant/increasePriority?id=${application.id}">↑</a>
                             </div>
                         </c:if>
                         <c:if test="${application.priority < applications.size()}">
                             <div class="priority">
-                                <a  style="font-size:25px; color: red" href="/reducePriority?id=${application.id}">↓</a>
+                                <a  style="font-size:25px; color: red" href="/cabinet/entrant/reducePriority?id=${application.id}">↓</a>
                             </div>
                         </c:if>
                       </td>
-                      <td><a href="/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
+                      <td><a href="/cabinet/entrant/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
                   </tr>
              </c:forEach>
              </c:if>
@@ -190,7 +206,7 @@
                       <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.surname} ${entrant.name}', '${entrant.email}', '${entrant.schoolGPA}')">
 
                         <c:forEach var="grade" items="${grades}">
-                            <c:if test="${entrant.id == subject.entrant.id}">
+                            <c:if test="${entrant.id == grade.entrant.id}">
                                 <input type="hidden" class="${entrant.id}subName" value="${grade.subject.ukrainianName}">
                                 <input type="hidden" class="${entrant.id}subGrade" value="${grade.grade}">
                             </c:if>
@@ -198,7 +214,7 @@
                       </td>
 
                       <c:if  test="${entrant.role == 'NOT_VERIFIED_ENTRANT'}">
-                          <td><a href="/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
+                          <td><a href="/cabinet/admin/activateEntrant?id=${entrant.id}" style="color: green">Підтвердити</a></td>
                       </c:if>
                       <c:if  test="${entrant.role == 'NOT_VERIFIED_EMAIL_ENTRANT'}">
                           <td>Емейл не підтверджено</td>
@@ -206,7 +222,7 @@
                       <c:if  test="${entrant.role == 'ENTRANT'}">
                           <td>Підтверджено</td>
                       </c:if>
-                      <td><a href="/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
+                      <td><a href="/cabinet/admin/deleteEntrant?id=${entrant.id}" style="color: red">Відхилити</a></td>
                   </tr>
              </c:forEach>
         </table>

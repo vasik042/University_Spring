@@ -1,18 +1,21 @@
 package com.example.demo.controllers;
 
-import com.example.demo.Dtos.EmailAndPasswordDto;
+import com.example.demo.Dtos.AdminDto;
 import com.example.demo.Dtos.FacultyDto;
 import com.example.demo.Services.*;
 import com.example.demo.Services.subjects.CoefficientService;
 import com.example.demo.Services.subjects.GradeService;
 import com.example.demo.Services.userServices.AdminService;
 import com.example.demo.Services.userServices.EntrantService;
+import com.example.demo.Services.userServices.MailSenderService;
 import com.example.demo.Services.userServices.TheEndService;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.Faculty;
+import com.example.demo.entities.userEntities.Admin;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +37,19 @@ public class SuperAdminController {
     private AdminService adminService;
     private ApplicationService applicationService;
     private TheEndService theEndService;
+    private PasswordEncoder passwordEncoder;
+    private MailSenderService mailSenderService;
 
     @Autowired
-    public SuperAdminController(EntrantService entrantService, GradeService gradeService,
-                                FacultyService facultyService, CoefficientService coefficientService,
-                                AdminService adminService, ApplicationService applicationService,
-                                TheEndService theEndService) {
+    public SuperAdminController(EntrantService entrantService,
+                                GradeService gradeService,
+                                FacultyService facultyService,
+                                CoefficientService coefficientService,
+                                AdminService adminService,
+                                ApplicationService applicationService,
+                                TheEndService theEndService,
+                                PasswordEncoder passwordEncoder,
+                                MailSenderService mailSenderService) {
         this.entrantService = entrantService;
         this.gradeService = gradeService;
         this.facultyService = facultyService;
@@ -47,16 +57,14 @@ public class SuperAdminController {
         this.adminService = adminService;
         this.applicationService = applicationService;
         this.theEndService = theEndService;
+        this.passwordEncoder = passwordEncoder;
+        this.mailSenderService = mailSenderService;
     }
 
     @RequestMapping(value = "/Faculties", method = RequestMethod.GET)
     public String superAdminCabinetFaculties(HttpServletRequest request) {
 
         request.setAttribute("faculties", facultyService.findAll());
-
-        if (security(request)){
-            return "index";
-        }
 
         request.setAttribute("choose", "faculties");
         request.setAttribute("coefs", coefficientService.findAll());
@@ -69,10 +77,6 @@ public class SuperAdminController {
 
         request.setAttribute("faculties", facultyService.findAll());
 
-        if (security(request)){
-            return "index";
-        }
-
         request.setAttribute("choose", "admins");
         request.setAttribute("admins", adminService.findAll());
 
@@ -83,10 +87,6 @@ public class SuperAdminController {
     public String superAdminCabinetEntrants(HttpServletRequest request) {
 
         request.setAttribute("faculties", facultyService.findAll());
-
-        if (security(request)){
-            return "index";
-        }
 
         request.setAttribute("choose", "entrants");
         request.setAttribute("grades", gradeService.findAll());
@@ -99,10 +99,6 @@ public class SuperAdminController {
     @RequestMapping(value = "/addFaculty", method = RequestMethod.GET)
     public String addFaculty(HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
         request.setAttribute("create", true);
 
         return "facultyCreate";
@@ -111,10 +107,6 @@ public class SuperAdminController {
     @RequestMapping(value = "/addFaculty", method = RequestMethod.POST)
     public String addFaculty(@ModelAttribute FacultyDto facultyDto, HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
         facultyService.save(facultyDto);
 
         return superAdminCabinetFaculties(request);
@@ -122,10 +114,6 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/editFaculty", method = RequestMethod.GET)
     public String editFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
-
-        if (security(request)){
-            return "index";
-        }
 
         Faculty faculty = facultyService.findById(id);
 
@@ -138,10 +126,6 @@ public class SuperAdminController {
 
     @RequestMapping(value = "/editFaculty", method = RequestMethod.POST)
     public String editFaculty(@ModelAttribute FacultyDto facultyDto, HttpServletRequest request) {
-
-        if (security(request)){
-            return "index";
-        }
 
         facultyService.edit(facultyDto);
         Faculty faculty = facultyService.findById(facultyDto.getDtoId());
@@ -165,10 +149,6 @@ public class SuperAdminController {
     @RequestMapping(value = "/deleteFaculty", method = RequestMethod.GET)
     public String deleteFaculty(@RequestParam(name = "id") int id, HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
         coefficientService.deleteByFacultyId(id);
         applicationService.deleteByFacultyId(id);
         facultyService.deleteById(id);
@@ -179,33 +159,21 @@ public class SuperAdminController {
     @RequestMapping(value = "/addAdmin", method = RequestMethod.GET)
     public String addAdmin(HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
         request.setAttribute("create", true);
 
         return "adminCreate";
     }
 
     @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
-    public String addAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
+    public String addAdmin(@ModelAttribute AdminDto adminDto, HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
-        adminService.save(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword());
+        adminService.save(adminDto.getEmail(), passwordEncoder.encode(adminDto.getPassword()));
 
         return superAdminCabinetAdmins(request);
     }
 
     @RequestMapping(value = "/editAdmin", method = RequestMethod.GET)
     public String editAdmin(@RequestParam(name = "id") int id, HttpServletRequest request) {
-
-        if (security(request)){
-            return "index";
-        }
 
         request.setAttribute("admin", adminService.findById(id));
         request.setAttribute("create", false);
@@ -214,23 +182,15 @@ public class SuperAdminController {
     }
 
     @RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
-    public String editAdmin(@ModelAttribute EmailAndPasswordDto emailAndPasswordDto, HttpServletRequest request) {
+    public String editAdmin(@ModelAttribute AdminDto adminDto, HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
-        adminService.edit(emailAndPasswordDto.getEmail(), emailAndPasswordDto.getPassword(), emailAndPasswordDto.getDtoId());
+        adminService.edit(adminDto.getEmail(), passwordEncoder.encode(adminDto.getPassword()), adminDto.getDtoId());
 
         return superAdminCabinetAdmins(request);
     }
 
     @RequestMapping(value = "/deleteAdmin", method = RequestMethod.GET)
     public String deleteAdmin(@RequestParam(name = "id") int id, HttpServletRequest request) {
-
-        if (security(request)){
-            return "index";
-        }
 
         adminService.deleteById(id);
 
@@ -240,16 +200,8 @@ public class SuperAdminController {
     @RequestMapping(value = "/theEnd", method = RequestMethod.GET)
     public String theEnd(HttpServletRequest request) {
 
-        if (security(request)){
-            return "index";
-        }
-
         theEndService.theEnd();
 
         return superAdminCabinetFaculties(request);
-    }
-
-    public boolean security(HttpServletRequest request){
-        return !request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name());
     }
 }

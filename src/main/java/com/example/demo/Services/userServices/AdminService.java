@@ -17,10 +17,6 @@ public class AdminService {
         this.adminRepo = adminRepo;
     }
 
-    public Admin findByEmailAndPassword(String email, String password) {
-        return adminRepo.findByEmailAndPassword(email, password);
-    }
-
     public List<Admin> findAll() {
         return adminRepo.findAll();
     }
@@ -39,5 +35,9 @@ public class AdminService {
 
     public void edit(String email, String password, int id){
         adminRepo.edit(email, password, id);
+    }
+
+    public Admin findByEmail(String email){
+        return adminRepo.findByEmail(email);
     }
 }
