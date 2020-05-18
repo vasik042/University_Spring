@@ -1,10 +1,11 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Services.*;
-import com.example.demo.Subjects;
+import com.example.demo.Services.subjects.GradeService;
+import com.example.demo.Services.userServices.EntrantService;
+import com.example.demo.Services.userServices.MailSenderService;
 import com.example.demo.entities.Application;
-import com.example.demo.entities.EntrantSubject;
-import com.example.demo.entities.FacultySubject;
+import com.example.demo.entities.subjects.Grade;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CabinetController {
 
     private EntrantService entrantService;
-    private EntrantSubjectService entrantSubjectService;
+    private GradeService gradeService;
     private ApplicationService applicationService;
     private FacultyService facultyService;
     private MailSenderService mailSenderService;
@@ -30,13 +31,13 @@ public class CabinetController {
 
     @Autowired
     public CabinetController(EntrantService entrantService,
-                             EntrantSubjectService entrantSubjectService,
+                             GradeService gradeService,
                              ApplicationService applicationService,
                              FacultyService facultyService,
                              MailSenderService mailSenderService,
                              SuperAdminController superAdminController) {
         this.entrantService = entrantService;
-        this.entrantSubjectService = entrantSubjectService;
+        this.gradeService = gradeService;
         this.applicationService = applicationService;
         this.facultyService = facultyService;
         this.mailSenderService = mailSenderService;
@@ -61,30 +62,20 @@ public class CabinetController {
 
             request.setAttribute("entrant", entrant);
             request.setAttribute("applications", applicationService.findByEntrantId(entrant.getId()));
-
-            List<EntrantSubject> subjects = entrantSubjectService.findByEntrantId(entrant.getId());
-            for (EntrantSubject es: subjects) {
-                for (Subjects subject: Subjects.values()) {
-                    if(es.getSubjectName().equals(subject.name())){
-                        es.setSubjectName(subject.getUkrName());
-                    }
-                }
-            }
-
-            request.setAttribute("subjects", subjects);
+            request.setAttribute("grades", gradeService.findByEntrantId(entrant.getId()));
 
         }else if (role.equals(Roles.ADMIN.name())){
 
             List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIED_ENTRANT.name());
-            List<EntrantSubject> subjects = new ArrayList<>();
+            List<Grade> subjects = new ArrayList<>();
 
             request.setAttribute("entrants", entrants);
 
             for (Entrant e:entrants) {
-                subjects.addAll(entrantSubjectService.findByEntrantId(e.getId()));
+                subjects.addAll(gradeService.findByEntrantId(e.getId()));
             }
 
-            request.setAttribute("subjects", subjects);
+            request.setAttribute("grades", subjects);
         }else {
             return "index";
         }
@@ -124,7 +115,7 @@ public class CabinetController {
 
         String email = entrantService.findEmailById(id);
 
-        entrantSubjectService.deleteByEntrantId(id);
+        gradeService.deleteByEntrantId(id);
         applicationService.deleteByEntrantId(id);
         entrantService.deleteById(id);
 

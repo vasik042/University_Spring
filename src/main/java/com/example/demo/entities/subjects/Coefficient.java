@@ -1,18 +1,18 @@
-package com.example.demo.entities;
+package com.example.demo.entities.subjects;
+
+import com.example.demo.entities.Faculty;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "faculty_subject")
-public class FacultySubject {
+@Table(name = "faculty_coefficient")
+public class Coefficient {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
-    @Column(name="subject_name")
-    private String subjectName;
     @Column(name="coefficient")
     private float coefficient;
 
@@ -20,13 +20,17 @@ public class FacultySubject {
     @JoinColumn(name="faculty_id", nullable=false)
     private Faculty faculty;
 
-    public FacultySubject(String subjectName, float coef, Faculty faculty) {
-        this.subjectName = subjectName;
+    @ManyToOne
+    @JoinColumn(name="subject_id", nullable=false)
+    private Subject subject;
+
+    public Coefficient(float coef, Faculty faculty, Subject subject) {
         this.coefficient = coef;
         this.faculty = faculty;
+        this.subject = subject;
     }
 
-    public FacultySubject(){}
+    public Coefficient(){}
 
     public int getId() {
         return id;
@@ -34,14 +38,6 @@ public class FacultySubject {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 
     public float getCoefficient() {
@@ -58,5 +54,13 @@ public class FacultySubject {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

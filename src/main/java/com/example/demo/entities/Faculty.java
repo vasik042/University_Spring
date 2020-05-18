@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.subjects.Coefficient;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -19,8 +21,8 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty")
     private Set<Application> applications;
 
-    @OneToMany(mappedBy = "faculty")
-    private Set<FacultySubject> facultySubjects;
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
+    private Set<Coefficient> coefficients;
 
     public Faculty(String name, String description, int places) {
         this.name = name;
@@ -62,19 +64,19 @@ public class Faculty {
         this.applications = applications;
     }
 
-    public Set<FacultySubject> getFacultySubjects() {
-        return facultySubjects;
-    }
-
-    public void setFacultySubjects(Set<FacultySubject> facultySubjects) {
-        this.facultySubjects = facultySubjects;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Coefficient> getCoefficients() {
+        return coefficients;
+    }
+
+    public void setCoefficients(Set<Coefficient> coefficients) {
+        this.coefficients = coefficients;
     }
 }

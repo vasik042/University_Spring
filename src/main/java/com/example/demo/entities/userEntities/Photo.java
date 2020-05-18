@@ -1,6 +1,5 @@
-package com.example.demo.entities;
+package com.example.demo.entities.userEntities;
 
-import com.example.demo.entities.userEntities.Entrant;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;

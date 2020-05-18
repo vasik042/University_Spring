@@ -3,6 +3,11 @@ package com.example.demo.controllers;
 import com.example.demo.Dtos.EmailAndPasswordDto;
 import com.example.demo.Dtos.FacultyDto;
 import com.example.demo.Services.*;
+import com.example.demo.Services.subjects.CoefficientService;
+import com.example.demo.Services.subjects.GradeService;
+import com.example.demo.Services.userServices.AdminService;
+import com.example.demo.Services.userServices.EntrantService;
+import com.example.demo.Services.userServices.TheEndService;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.Faculty;
 import com.example.demo.entities.userEntities.Entrant;
@@ -23,22 +28,22 @@ import java.util.List;
 public class SuperAdminController {
 
     private EntrantService entrantService;
-    private EntrantSubjectService entrantSubjectService;
+    private GradeService gradeService;
     private FacultyService facultyService;
-    private FacultySubjectService facultySubjectService;
+    private CoefficientService coefficientService;
     private AdminService adminService;
     private ApplicationService applicationService;
     private TheEndService theEndService;
 
     @Autowired
-    public SuperAdminController(EntrantService entrantService, EntrantSubjectService entrantSubjectService,
-                                FacultyService facultyService, FacultySubjectService facultySubjectService,
+    public SuperAdminController(EntrantService entrantService, GradeService gradeService,
+                                FacultyService facultyService, CoefficientService coefficientService,
                                 AdminService adminService, ApplicationService applicationService,
                                 TheEndService theEndService) {
         this.entrantService = entrantService;
-        this.entrantSubjectService = entrantSubjectService;
+        this.gradeService = gradeService;
         this.facultyService = facultyService;
-        this.facultySubjectService = facultySubjectService;
+        this.coefficientService = coefficientService;
         this.adminService = adminService;
         this.applicationService = applicationService;
         this.theEndService = theEndService;
@@ -54,7 +59,7 @@ public class SuperAdminController {
         }
 
         request.setAttribute("choose", "faculties");
-        request.setAttribute("subjects", facultySubjectService.findAll());
+        request.setAttribute("coefs", coefficientService.findAll());
 
         return "superAdminCabinet";
     }
@@ -84,7 +89,7 @@ public class SuperAdminController {
         }
 
         request.setAttribute("choose", "entrants");
-        request.setAttribute("subjects", entrantSubjectService.findAll());
+        request.setAttribute("grades", gradeService.findAll());
         request.setAttribute("entrants", entrantService.findAll());
         request.setAttribute("applications", applicationService.findAll());
 
@@ -125,7 +130,7 @@ public class SuperAdminController {
         Faculty faculty = facultyService.findById(id);
 
         request.setAttribute("faculty", faculty);
-        request.setAttribute("subjects", facultySubjectService.getFacultySubjects(id));
+        request.setAttribute("coefs", coefficientService.getCoefficients(id));
         request.setAttribute("create", false);
 
         return "facultyCreate";
@@ -140,7 +145,7 @@ public class SuperAdminController {
 
         facultyService.edit(facultyDto);
         Faculty faculty = facultyService.findById(facultyDto.getDtoId());
-        facultySubjectService.edit(facultyDto, faculty);
+        coefficientService.edit(facultyDto, faculty);
 
         List<Application> applications = applicationService.findByFacultyId(faculty.getId());
         List<Entrant> entrants = new ArrayList<>();
@@ -164,7 +169,7 @@ public class SuperAdminController {
             return "index";
         }
 
-        facultySubjectService.deleteByFacultyId(id);
+        coefficientService.deleteByFacultyId(id);
         applicationService.deleteByFacultyId(id);
         facultyService.deleteById(id);
 

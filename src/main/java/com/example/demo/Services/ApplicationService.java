@@ -1,6 +1,9 @@
 package com.example.demo.Services;
 
+import com.example.demo.Services.userServices.MailSenderService;
 import com.example.demo.entities.*;
+import com.example.demo.entities.subjects.Coefficient;
+import com.example.demo.entities.subjects.Grade;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.repositories.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +25,12 @@ public class ApplicationService {
 
     public void save(Entrant entrant, Faculty faculty){
         float gpa = 0;
-        int count = faculty.getFacultySubjects().size();
+        int count = faculty.getCoefficients().size();
 
-        for (FacultySubject fs: faculty.getFacultySubjects()) {
-            for (EntrantSubject es: entrant.getSubjects()) {
-                if(es.getSubjectName().equals(fs.getSubjectName())){
-                    gpa += es.getGrade()*fs.getCoefficient();
+        for (Coefficient c: faculty.getCoefficients()) {
+            for (Grade g: entrant.getGrades()) {
+                if(g.getSubject().equals(c.getSubject())){
+                    gpa += g.getGrade()*c.getCoefficient();
                     count--;
                 }
             }

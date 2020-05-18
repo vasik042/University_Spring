@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.Services.PhotoService;
-import com.example.demo.entities.Photo;
+import com.example.demo.Services.userServices.PhotoService;
+import com.example.demo.entities.userEntities.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;

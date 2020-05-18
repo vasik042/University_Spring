@@ -1,29 +1,35 @@
-package com.example.demo.Services;
+package com.example.demo.Services.userServices;
 
 import com.example.demo.Dtos.EntrantDto;
-import com.example.demo.Subjects;
-import com.example.demo.entities.Photo;
+import com.example.demo.Services.subjects.GradeService;
+import com.example.demo.Services.subjects.SubjectService;
+import com.example.demo.entities.subjects.Grade;
+import com.example.demo.entities.subjects.Subject;
+import com.example.demo.entities.userEntities.Photo;
 import com.example.demo.entities.userEntities.Entrant;
-import com.example.demo.entities.EntrantSubject;
-import com.example.demo.repositories.EntrantRepository;
+import com.example.demo.repositories.userRepos.EntrantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EntrantService {
 
     private EntrantRepository entrantRepo;
-    private EntrantSubjectService entrantSubjectService;
+    private GradeService gradeService;
+    private SubjectService subjectService;
 
     @Autowired
-    public EntrantService(EntrantRepository entrantRepo, EntrantSubjectService entrantSubjectService) {
+    public EntrantService(EntrantRepository entrantRepo, GradeService gradeService,
+                          SubjectService subjectService) {
         this.entrantRepo = entrantRepo;
-        this.entrantSubjectService = entrantSubjectService;
+        this.gradeService = gradeService;
+        this.subjectService = subjectService;
     }
 
     public void setRoles(String role) {
@@ -56,25 +62,19 @@ public class EntrantService {
 
         entrant = entrantRepo.save(entrant);
 
-        EntrantSubject sub1 = new EntrantSubject(Subjects.UKRAINIAN.name(), entrantDto.getSubjectGrade1(), entrant);
-        EntrantSubject sub2 = new EntrantSubject(entrantDto.getSubjectName2(), entrantDto.getSubjectGrade2(), entrant);
-        EntrantSubject sub3 = new EntrantSubject(entrantDto.getSubjectName3(), entrantDto.getSubjectGrade3(), entrant);
-        EntrantSubject sub4 = null;
-        if(!entrantDto.getSubjectGrade4().isEmpty()){
-            for (Subjects s: Subjects.values()) {
-                if (s.name().equals(entrantDto.getSubjectName4())) {
-                    sub4 = new EntrantSubject(entrantDto.getSubjectName4(),
-                            Integer.parseInt(entrantDto.getSubjectGrade4()), entrant);
-                }
-            }
+        ArrayList<Grade> grades = new ArrayList<>();
+
+        grades.add(new Grade(entrantDto.getSubjectGrade1(), entrant, subjectService.findByEnglishName("UKRAINIAN")));
+        grades.add(new Grade(entrantDto.getSubjectGrade2(), entrant, subjectService.findByEnglishName(entrantDto.getSubjectName2())));
+        grades.add(new Grade(entrantDto.getSubjectGrade3(), entrant, subjectService.findByEnglishName(entrantDto.getSubjectName3())));
+        Subject sub4 = subjectService.findByEnglishName(entrantDto.getSubjectName4());
+
+        if(!entrantDto.getSubjectGrade4().isEmpty() && sub4 != null){
+            grades.add(new Grade(Integer.parseInt(entrantDto.getSubjectGrade4()), entrant, sub4));
         }
 
-        entrantSubjectService.save(sub1);
-        entrantSubjectService.save(sub2);
-        entrantSubjectService.save(sub3);
-        if(sub4 != null){
-            entrantSubjectService.save(sub4);
-        }
+        gradeService.saveAll(grades);
+
         return entrant;
     }
 

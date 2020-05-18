@@ -1,9 +1,11 @@
-package com.example.demo.Services;
+package com.example.demo.Services.userServices;
 
-import com.example.demo.entities.Photo;
-import com.example.demo.repositories.PhotoRepository;
+import com.example.demo.entities.userEntities.Photo;
+import com.example.demo.repositories.userRepos.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PhotoService {
@@ -17,5 +19,9 @@ public class PhotoService {
 
     public Photo findByEntrantId(int id){
         return photoRepo.findByEntrantId(id);
+    }
+
+    public List<Photo> findAll() {
+        return photoRepo.findAll();
     }
 }

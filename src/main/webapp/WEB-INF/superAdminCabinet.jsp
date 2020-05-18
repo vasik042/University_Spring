@@ -130,10 +130,10 @@
                       <td>
                       <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.surname} ${entrant.name}', '${entrant.email}', '${entrant.schoolGPA}')">
 
-                        <c:forEach var="subject" items="${subjects}">
-                            <c:if test="${entrant.id == subject.entrant.id}">
-                                <input type="hidden" class="${entrant.id}subName" value="${subject.subjectName}">
-                                <input type="hidden" class="${entrant.id}subGrade" value="${subject.grade}">
+                        <c:forEach var="grade" items="${grades}">
+                            <c:if test="${entrant.id == grade.entrant.id}">
+                                <input type="hidden" class="${entrant.id}subName" value="${grade.subject.ukrainianName}">
+                                <input type="hidden" class="${entrant.id}subGrade" value="${grade.grade}">
                             </c:if>
                         </c:forEach>
 
@@ -196,10 +196,10 @@
                       <td><a href="/superAdminCabinet/editFaculty?id=${faculty.id}" style="color: blue">Редагувати</a></td>
                       <td><a href="/superAdminCabinet/deleteFaculty?id=${faculty.id}" style="color: red">Видалити</a></td>
 
-                      <c:forEach var="subject" items="${subjects}">
-                        <c:if test="${faculty.id == subject.faculty.id}">
-                            <input type="hidden" class="${faculty.id}Name" value="${subject.subjectName}">
-                            <input type="hidden" class="${faculty.id}Coef" value="${subject.coefficient}">
+                      <c:forEach var="coef" items="${coefs}">
+                        <c:if test="${faculty.id == coef.faculty.id}">
+                            <input type="hidden" class="${faculty.id}Name" value="${coef.subject.ukrainianName}">
+                            <input type="hidden" class="${faculty.id}Coef" value="${coef.coefficient}">
                         </c:if>
                       </c:forEach>
                   </tr>

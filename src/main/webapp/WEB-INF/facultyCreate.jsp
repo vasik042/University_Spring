@@ -134,32 +134,32 @@
             <br>
             <span style="width: 100%">ЗНО</span>
 
-            <c:forEach var="subject" items="${subjects}" varStatus="сounter">
+            <c:forEach var="coef" items="${coefs}" varStatus="сounter">
                 <c:choose>
                     <c:when test="${сounter.count == 1}">
                         <label for="subject1">Українська мова
-                            <input type="hidden" id="subjectName${сounter.count}" name ="subjectName${сounter.count}" value="${subject.subjectName}">
-                            <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${subject.coefficient}">
+                            <input type="hidden" id="subjectName${сounter.count}" name ="subjectName${сounter.count}" value="${coef.subject.ukrainianName}">
+                            <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${coef.coefficient}">
                         </label>
                     </c:when>
                 </c:choose>
                 <c:choose>
                     <c:when test="${сounter.count == 2}">
                         <label for="subject2">
-                            <select name="subjectName${сounter.count}" id ="subjectName${сounter.count}" value="${subject.subjectName}">
-                                <option value="${subject.subjectName}">${subject.subjectName}</option>
+                            <select name="subjectName${сounter.count}" id ="subjectName${сounter.count}" value="${coef.subject.ukrainianName}">
+                                <option value="${coef.subject.englishName}">${coef.subject.ukrainianName}</option>
                                 <option value="MATH">Математика</option>
                                 <option value="HISTORY">Історія України</option>
                             </select>
-                            <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${subject.coefficient}">
+                            <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${coef.coefficient}">
                         </label>
                     </c:when>
                 </c:choose>
                 <c:choose>
                     <c:when test="${сounter.count > 2 && сounter.count < 5}">
                         <label for="subject${сounter.count}">
-                            <select name="subjectName${сounter.count}" id ="subjectName${сounter.count}" value="${subject.subjectName}">
-                                <option value="${subject.subjectName}">${subject.subjectName}</option>
+                            <select name="subjectName${сounter.count}" id ="subjectName${сounter.count}" value="${coef.subject.ukrainianName}">
+                                <option value="${coef.subject.englishName}">${coef.subject.ukrainianName}</option>
                                 <option value="MATH">Математика</option>
                                 <option value="HISTORY">Історія України</option>
                                 <option value="BIOLOGY">Біологія</option>
@@ -171,9 +171,9 @@
                                 <option value="GERMAN">Німецька мова</option>
                                 <option value="FRENCH">Французька мова</option>
                             </select>
-                            <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${subject.coefficient}">
+                            <input min="0" max="1" step="0.05" type="number" placeholder="коефіцієнт" id="subjectCoef${сounter.count}" name ="subjectCoef${сounter.count}" value="${coef.coefficient}">
                         </label>
-                        <c:if test="${subjects.size() == 3}">
+                        <c:if test="${coefs.size() == 3}">
                             <label for="subject4">
                                 <select name="subjectName4" id ="subjectName4" value="">
                                     <option>Немає</option>

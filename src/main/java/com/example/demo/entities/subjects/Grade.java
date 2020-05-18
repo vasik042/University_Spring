@@ -1,20 +1,18 @@
-package com.example.demo.entities;
+package com.example.demo.entities.subjects;
 
 import com.example.demo.entities.userEntities.Entrant;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "entrant_subject")
-public class EntrantSubject {
+@Table(name = "entrant_grade")
+public class Grade {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
-    @Column(name="subject_name")
-    private String subjectName;
     @Column(name="grade")
     private int grade;
 
@@ -22,13 +20,17 @@ public class EntrantSubject {
     @JoinColumn(name="entrant_id", nullable=false)
     private Entrant entrant;
 
-    public EntrantSubject(String subjectName, int grade, Entrant entrant) {
-        this.subjectName = subjectName;
+    @ManyToOne
+    @JoinColumn(name="subject_id", nullable=false)
+    private Subject subject;
+
+    public Grade(int grade, Entrant entrant, Subject subject) {
         this.grade = grade;
         this.entrant = entrant;
+        this.subject = subject;
     }
 
-    public EntrantSubject(){}
+    public Grade(){}
 
     public int getId() {
         return id;
@@ -36,14 +38,6 @@ public class EntrantSubject {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 
     public int getGrade() {
@@ -60,5 +54,13 @@ public class EntrantSubject {
 
     public void setEntrant(Entrant entrant) {
         this.entrant = entrant;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

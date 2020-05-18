@@ -1,9 +1,9 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Dtos.EntrantDto;
-import com.example.demo.Services.EntrantService;
-import com.example.demo.Services.MailSenderService;
-import com.example.demo.Subjects;
+import com.example.demo.Services.userServices.EntrantService;
+import com.example.demo.Services.userServices.MailSenderService;
+import com.example.demo.Services.subjects.SubjectService;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +21,14 @@ public class RegisterController {
 
     private EntrantService entrantService;
     private MailSenderService mailSenderService;
+    private SubjectService subjectService;
 
     @Autowired
-    public RegisterController(EntrantService entrantService, MailSenderService mailSenderService) {
+    public RegisterController(EntrantService entrantService, MailSenderService mailSenderService,
+                              SubjectService subjectService) {
         this.entrantService = entrantService;
         this.mailSenderService = mailSenderService;
+        this.subjectService = subjectService;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -47,12 +50,11 @@ public class RegisterController {
         boolean sec = false;
         boolean thr = false;
 
-        for (Subjects s: Subjects.values()) {
-            if (s.name().equals(entrantDto.getSubjectName2())){
-                sec = true;
-            }else if(s.name().equals(entrantDto.getSubjectName3())) {
-                thr = true;
-            }
+        if (subjectService.findByEnglishName(entrantDto.getSubjectName2()) != null){
+            sec = true;
+        }
+        if(subjectService.findByEnglishName(entrantDto.getSubjectName3()) != null) {
+            thr = true;
         }
 
         if (sec && thr && ((!entrantDto.getSubjectName4().equals(entrantDto.getSubjectName2()))

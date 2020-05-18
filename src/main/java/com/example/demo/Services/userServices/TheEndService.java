@@ -1,7 +1,10 @@
-package com.example.demo.Services;
+package com.example.demo.Services.userServices;
 
+import com.example.demo.Services.ApplicationService;
+import com.example.demo.Services.FacultyService;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.Faculty;
+import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +41,11 @@ public class TheEndService {
 
     private void forEachPriority(List<Application> passedApplications, int maxPriority) {
         List<Faculty> faculties = facultyService.findAll();
-        entrantService.findAll();
 
         while (true){
             int beforeChecking = passedApplications.size();
 
-
+            entrantService.setRoles(Roles.ENTRANT.name());
             for (int i = 1; i <= maxPriority; i++) {
                 forEachFaculty(faculties, passedApplications, i);
             }

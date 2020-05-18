@@ -1,5 +1,6 @@
-package com.example.demo.Services;
+package com.example.demo.Services.userServices;
 
+import com.example.demo.Services.userServices.EntrantService;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;

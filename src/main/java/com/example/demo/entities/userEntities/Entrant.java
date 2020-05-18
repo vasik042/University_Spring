@@ -1,8 +1,7 @@
 package com.example.demo.entities.userEntities;
 
 import com.example.demo.entities.Application;
-import com.example.demo.entities.EntrantSubject;
-import com.example.demo.entities.Photo;
+import com.example.demo.entities.subjects.Grade;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -35,8 +34,8 @@ public class Entrant{
     @Column(name = "email_verify_hash")
     private String emailHash;
 
-    @OneToMany(mappedBy = "entrant")
-    private Set<EntrantSubject> subjects;
+    @OneToMany(mappedBy = "entrant", fetch = FetchType.EAGER)
+    private Set<Grade> grades;
 
     @OneToMany(mappedBy = "entrant")
     private Set<Application> applications;
@@ -100,14 +99,6 @@ public class Entrant{
         this.schoolGPA = schoolGPA;
     }
 
-    public Set<EntrantSubject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(Set<EntrantSubject> subjects) {
-        this.subjects = subjects;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -162,5 +153,13 @@ public class Entrant{
 
     public void setEntrantPhoto(Photo entrantPhoto) {
         this.entrantPhoto = entrantPhoto;
+    }
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 }

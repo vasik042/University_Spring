@@ -1,11 +1,13 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Services.*;
-import com.example.demo.Subjects;
+import com.example.demo.Services.subjects.CoefficientService;
+import com.example.demo.Services.subjects.GradeService;
+import com.example.demo.Services.userServices.EntrantService;
 import com.example.demo.entities.Application;
-import com.example.demo.entities.EntrantSubject;
 import com.example.demo.entities.Faculty;
-import com.example.demo.entities.FacultySubject;
+import com.example.demo.entities.subjects.Coefficient;
+import com.example.demo.entities.subjects.Grade;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +23,22 @@ import java.util.List;
 public class FacultyController {
 
     private EntrantService entrantService;
-    private EntrantSubjectService entrantSubjectService;
+    private GradeService gradeService;
     private ApplicationService applicationService;
     private FacultyService facultyService;
-    private FacultySubjectService facultySubjectService;
+    private CoefficientService coefficientService;
 
     @Autowired
     public FacultyController(EntrantService entrantService,
-                             EntrantSubjectService entrantSubjectService,
+                             GradeService gradeService,
                              ApplicationService applicationService,
                              FacultyService facultyService,
-                             FacultySubjectService facultySubjectService) {
+                             CoefficientService coefficientService) {
         this.entrantService = entrantService;
-        this.entrantSubjectService = entrantSubjectService;
+        this.gradeService = gradeService;
         this.applicationService = applicationService;
         this.facultyService = facultyService;
-        this.facultySubjectService = facultySubjectService;
+        this.coefficientService = coefficientService;
     }
 
     @RequestMapping(value = "/faculty", method = RequestMethod.GET)
@@ -46,7 +48,7 @@ public class FacultyController {
         request.setAttribute("faculties", facultyService.findAll());
         request.setAttribute("faculty", facultyService.findById(id));
 
-        List<FacultySubject> facultySubjects = facultySubjectService.getFacultySubjects(id);
+        List<Coefficient> facultyCoefficients = coefficientService.getCoefficients(id);
 
         String role = (String) request.getSession().getAttribute("role");
 
@@ -61,16 +63,16 @@ public class FacultyController {
                 if (applicationsLeft > 0) {
                     //check if entrant have necessary subjects
                     int i = 0;
-                    List<EntrantSubject> entrantSubjects = entrantSubjectService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
+                    List<Grade> grades = gradeService.findByEntrantId((Integer) request.getSession().getAttribute("UserId"));
 
-                    for (FacultySubject fs : facultySubjects) {
-                        for (EntrantSubject es : entrantSubjects) {
-                            if (fs.getSubjectName().equals(es.getSubjectName())) {
+                    for (Coefficient c : facultyCoefficients) {
+                        for (Grade g : grades) {
+                            if (c.getSubject().equals(g.getSubject())) {
                                 i++;
                             }
                         }
                     }
-                    if (i == facultySubjects.size()) {
+                    if (i == facultyCoefficients.size()) {
                         request.setAttribute("canReg", 0);
                     } else {
                         request.setAttribute("canReg", 4);
@@ -91,15 +93,7 @@ public class FacultyController {
             request.setAttribute("canReg", 5);
         }
 
-        //translate subject names
-        for (FacultySubject fs: facultySubjects) {
-            for (Subjects subject: Subjects.values()) {
-                if(fs.getSubjectName().equals(subject.name())){
-                    fs.setSubjectName(subject.getUkrName());
-                }
-            }
-        }
-        request.setAttribute("subjects", facultySubjects);
+        request.setAttribute("coefs", facultyCoefficients);
 
         return "faculty";
     }

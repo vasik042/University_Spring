@@ -80,10 +80,10 @@
                 <th style='width: 160px;'>Коефіціенти</th>
             </tr>
             <tr>
-                <c:forEach var="subject" items="${subjects}">
+                <c:forEach var="coef" items="${coefs}">
                     <tr>
-                        <td>${subject.subjectName}</td>
-                        <td>${subject.coefficient}</td>
+                        <td>${coef.subject.ukrainianName}</td>
+                        <td>${coef.coefficient}</td>
                     </tr>
                 </c:forEach>
             </tr>

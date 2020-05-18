@@ -91,10 +91,10 @@
                     <th style='width: 160px;'>Оцінка</th>
                 </tr>
                 <tr>
-                    <c:forEach var="subject" items="${subjects}">
+                    <c:forEach var="grade" items="${grades}">
                         <tr>
-                            <td>${subject.subjectName}</td>
-                            <td>${subject.grade}</td>
+                            <td>${grade.subject.ukrainianName}</td>
+                            <td>${grade.grade}</td>
                         </tr>
                     </c:forEach>
                 </tr>
@@ -189,10 +189,10 @@
                       <td>
                       <input class="facBtn" type="button" value="Детальніше" onClick="showEntrant('${entrant.id}','${entrant.surname} ${entrant.name}', '${entrant.email}', '${entrant.schoolGPA}')">
 
-                        <c:forEach var="subject" items="${subjects}">
+                        <c:forEach var="grade" items="${grades}">
                             <c:if test="${entrant.id == subject.entrant.id}">
-                                <input type="hidden" class="${entrant.id}subName" value="${subject.subjectName}">
-                                <input type="hidden" class="${entrant.id}subGrade" value="${subject.grade}">
+                                <input type="hidden" class="${entrant.id}subName" value="${grade.subject.ukrainianName}">
+                                <input type="hidden" class="${entrant.id}subGrade" value="${grade.grade}">
                             </c:if>
                         </c:forEach>
                       </td>
