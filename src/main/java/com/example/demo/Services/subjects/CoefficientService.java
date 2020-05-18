@@ -24,7 +24,7 @@ public class CoefficientService {
     }
 
     public List<Coefficient> findAll(){
-        return coefficientRepo.findAll();
+        return coefficientRepo.findAllOrderBySubjectId();
     }
 
     public void edit(FacultyDto facultyDto, Faculty faculty) {
@@ -38,7 +38,7 @@ public class CoefficientService {
         Subject sub4 = subjectService.findByEnglishName(facultyDto.getSubjectName4());
 
         if(!facultyDto.getSubjectCoef4().isEmpty() && sub4 != null){
-            coefficients.add(new Coefficient(Integer.parseInt(facultyDto.getSubjectCoef4()), faculty, sub4));
+            coefficients.add(new Coefficient(Float.parseFloat(facultyDto.getSubjectCoef4()), faculty, sub4));
         }
 
         coefficientRepo.saveAll(coefficients);
@@ -50,9 +50,5 @@ public class CoefficientService {
 
     public List<Coefficient> getCoefficients(int id) {
         return coefficientRepo.findByFacultyId(id);
-    }
-
-    public void saveAll(List<Coefficient> grades) {
-        coefficientRepo.saveAll(grades);
     }
 }

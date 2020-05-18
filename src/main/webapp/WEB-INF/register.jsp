@@ -51,10 +51,11 @@
 </head>
 <body>
     <form action="/register" method ="post" enctype="multipart/form-data">
-        <div style="background-color: white; width: 500px; height: 600px; margin: auto; margin-top: 20px; border-radius: 10px; border: 2px solid grey">
+        <div style="background-color: white; width: 500px; height: 640px; margin: auto; margin-top: 20px; border-radius: 10px; border: 2px solid grey">
             
             <p style="margin-left: 130px; font-size: 28px">Реєстраційна форма</p>
-            <label for="Photo">Photo
+            <label for="Photo">Фото
+                <br>
                 <input id="photo" type="file" name="photo" value="">
             </label>
             <label for="Name">Ім'я
@@ -82,6 +83,8 @@
                <br>
                 <input min="1" max="12" step="0.1" class="inp1" type="number"  required id="schoolGPA" name ="schoolGPA" value="${entrant.schoolGPA}">
             </label>
+            <input type="hidden" name="${_csrf.parameterName}"
+                       value="${_csrf.token}"/>
             <div class="znoBox">
             <br>
             <span style="width: 100%">ЗНО</span>

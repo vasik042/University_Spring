@@ -138,10 +138,10 @@
      </tr>
      <c:forEach var="application" items="${applications}" varStatus="сounter">
             <c:if test="${сounter.count <= application.faculty.places}">
-                <tr style = "background-color: green">
+                <tr style = "background-color: rgb(150, 255, 150)">
             </c:if>
             <c:if test="${сounter.count > application.faculty.places}">
-                <tr  style = "background-color: orange">
+                <tr  style = "background-color: rgb(255, 180, 130)">
             </c:if>
                 <td class ="number">${сounter.count}</td>
                 <td>${application.priority}</td>

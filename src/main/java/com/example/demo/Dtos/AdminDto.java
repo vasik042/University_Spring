@@ -1,12 +1,12 @@
 package com.example.demo.Dtos;
 
-public class EmailAndPasswordDto {
+public class AdminDto {
 
     private String email;
     private String password;
     private int dtoId;
 
-    public EmailAndPasswordDto(){}
+    public AdminDto(){}
 
     public String getEmail() {
         return email;

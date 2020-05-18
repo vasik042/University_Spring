@@ -57,6 +57,13 @@ public class Entrant{
         this.applicationsLeft = 3;
     }
 
+    public Entrant(int id, String email, String password, String role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public Entrant(){}
 
     public int getId() {

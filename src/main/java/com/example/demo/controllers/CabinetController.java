@@ -1,25 +1,32 @@
 package com.example.demo.controllers;
 
+import com.example.demo.Dtos.CustomUserDetails;
 import com.example.demo.Services.*;
 import com.example.demo.Services.subjects.GradeService;
+import com.example.demo.Services.userServices.AdminService;
 import com.example.demo.Services.userServices.EntrantService;
 import com.example.demo.Services.userServices.MailSenderService;
 import com.example.demo.entities.Application;
 import com.example.demo.entities.subjects.Grade;
+import com.example.demo.entities.userEntities.Admin;
 import com.example.demo.entities.userEntities.Entrant;
 import com.example.demo.entities.userEntities.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 @Controller
+@RequestMapping("/cabinet")
 public class CabinetController {
 
     private EntrantService entrantService;
@@ -28,6 +35,7 @@ public class CabinetController {
     private FacultyService facultyService;
     private MailSenderService mailSenderService;
     private SuperAdminController superAdminController;
+    private AdminService adminService;
 
     @Autowired
     public CabinetController(EntrantService entrantService,
@@ -35,21 +43,55 @@ public class CabinetController {
                              ApplicationService applicationService,
                              FacultyService facultyService,
                              MailSenderService mailSenderService,
-                             SuperAdminController superAdminController) {
+                             SuperAdminController superAdminController,
+                             AdminService adminService) {
         this.entrantService = entrantService;
         this.gradeService = gradeService;
         this.applicationService = applicationService;
         this.facultyService = facultyService;
         this.mailSenderService = mailSenderService;
         this.superAdminController = superAdminController;
+        this.adminService = adminService;
     }
 
-    @RequestMapping(value = "/cabinet", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getCabinet(HttpServletRequest request) {
 
         request.setAttribute("faculties", facultyService.findAll());
 
-        String role = (String) request.getSession().getAttribute("role");
+        if (request.getSession().getAttribute("role") == null){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUser = (CustomUserDetails)authentication.getPrincipal();
+
+            HttpSession session = request.getSession(true);
+
+            Entrant entrant = entrantService.findByEmail(customUser.getUsername());
+
+            if (entrant == null){
+                Admin admin = adminService.findByEmail(customUser.getUsername());
+
+                if (admin != null){
+                    session.setAttribute("UserId", admin.getId());
+                    session.setAttribute("role", admin.getRole());
+
+                    return getCabinet(request);
+                }else {
+                    return "login";
+                }
+            }else {
+                if(entrant.getRole().equals(Roles.NOT_VERIFIED_EMAIL_ENTRANT.name())){
+                    return "login";
+                }else {
+                    session.setAttribute("UserId", entrant.getId());
+                    session.setAttribute("role", entrant.getRole());
+                    session.setAttribute("applicationsLeft", entrant.getApplicationsLeft());
+
+                    return getCabinet(request);
+                }
+            }
+        }
+
+        String role = (String) request.getSession(true).getAttribute("role");
 
         if (role.equals(Roles.SUPER_ADMIN.name())){
             return "superAdminCabinet";
@@ -58,7 +100,9 @@ public class CabinetController {
                 || role.equals(Roles.NOT_VERIFIED_ENTRANT.name())
                 || role.equals(Roles.NOT_PAST.name())){
 
-            Entrant entrant = entrantService.findById((Integer) request.getSession().getAttribute("UserId"));
+            Integer id = (Integer) request.getSession().getAttribute("UserId");
+
+            Entrant entrant = entrantService.findById(id);
 
             request.setAttribute("entrant", entrant);
             request.setAttribute("applications", applicationService.findByEntrantId(entrant.getId()));
@@ -67,15 +111,10 @@ public class CabinetController {
         }else if (role.equals(Roles.ADMIN.name())){
 
             List<Entrant> entrants = entrantService.findByRole(Roles.NOT_VERIFIED_ENTRANT.name());
-            List<Grade> subjects = new ArrayList<>();
+            List<Grade> grades = gradeService.findAll();
 
             request.setAttribute("entrants", entrants);
-
-            for (Entrant e:entrants) {
-                subjects.addAll(gradeService.findByEntrantId(e.getId()));
-            }
-
-            request.setAttribute("grades", subjects);
+            request.setAttribute("grades", grades);
         }else {
             return "index";
         }
@@ -83,12 +122,8 @@ public class CabinetController {
         return "cabinet";
     }
 
-    @RequestMapping(value = "/activateEntrant", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/activateEntrant", method = RequestMethod.GET)
     public String activateEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
-
-        if(!request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name()) || !request.getSession().getAttribute("role").equals(Roles.ADMIN.name())){
-            return "index";
-        }
 
         entrantService.changeRole(id, Roles.ENTRANT.name());
 
@@ -106,12 +141,8 @@ public class CabinetController {
         }
     }
 
-    @RequestMapping(value = "/deleteEntrant", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/deleteEntrant", method = RequestMethod.GET)
     public String deleteEntrant(@RequestParam(name = "id") int id, HttpServletRequest request) {
-
-        if(!request.getSession().getAttribute("role").equals(Roles.SUPER_ADMIN.name()) || !request.getAttribute("role").equals(Roles.ADMIN.name())){
-            return "index";
-        }
 
         String email = entrantService.findEmailById(id);
 
@@ -131,12 +162,8 @@ public class CabinetController {
         }
     }
 
-    @RequestMapping(value = "/deleteApplication", method = RequestMethod.GET)
+    @RequestMapping(value = "/entrant/deleteApplication", method = RequestMethod.GET)
     public String deleteApplication(@RequestParam(name = "id") int id, HttpServletRequest request) {
-
-        if(!request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
-            return "index";
-        }
 
         Integer priority = applicationService.findPriorityById(id);
         applicationService.deleteById(id);
@@ -159,24 +186,16 @@ public class CabinetController {
         return getCabinet(request);
     }
 
-    @RequestMapping(value = "/increasePriority", method = RequestMethod.GET)
+    @RequestMapping(value = "/entrant/increasePriority", method = RequestMethod.GET)
     public String increasePriority(@RequestParam(name = "id") int id, HttpServletRequest request){
-
-        if(!request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
-            return "index";
-        }
 
         changePriority(id, request, 1);
 
         return getCabinet(request);
     }
 
-    @RequestMapping(value = "/reducePriority", method = RequestMethod.GET)
+    @RequestMapping(value = "/entrant/reducePriority", method = RequestMethod.GET)
     public String reducePriority(@RequestParam(name = "id") int id, HttpServletRequest request){
-
-        if(!request.getSession().getAttribute("role").equals(Roles.ENTRANT.name())){
-            return "index";
-        }
 
         changePriority(id, request, -1);
 
