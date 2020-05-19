@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=utf-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html lang="en">
 <head>
@@ -42,20 +43,20 @@
             
               <div style="height: 20px"></div>
               
-              <p style="margin-left: 220px; font-size: 28px; margin-top: 0">Вхід</p>
+              <p style="margin-left: 220px; font-size: 28px; margin-top: 0"><spring:message code="login.login" /></p>
                
             <label for="email" style="margin-top: -10px">
-                <input class="inp1" type="email" placeholder="Електронна пошта" required id="email" name ="email">
+                <input class="inp1" type="email" placeholder="Email" required id="email" name ="email">
             </label>
             <div style="height: 10px; width: 100%; float: left"></div>
             <label for="password">
-                <input class="inp1" type="text" placeholder="Пароль" required id="password" name ="password">
+                <input class="inp1" type="text" placeholder="Password" required id="password" name ="password">
             </label>
             <input type="hidden" name="${_csrf.parameterName}"
                        value="${_csrf.token}"/>
             
             <div style="float: left; width: 100%; height: 20px"></div>
-            <input id="btn" type="submit" value="Відправити" style="float: left; clear: both">
+            <input id="btn" type="submit" value="Submit" style="float: left; clear: both">
         </div>
     </form>
     <script src="js/login.js"></script>
