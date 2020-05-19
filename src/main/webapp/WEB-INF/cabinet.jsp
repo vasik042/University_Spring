@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=utf-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html lang="en">
 <head>
@@ -96,20 +97,20 @@
         <div class="mainInfo">
             <div style='float: right; width: 150px'><img src='/getPhoto?id=${entrant.id}' class = 'studentPhoto'></img></div>
             <h3>${entrant.surname} ${entrant.name}</h2>
-            <p>Пошта - ${entrant.email}</p>
-            <p>Дата народження - ${entrant.dateOfBirth}</p>
-            <p>Оцінка в атестаті - ${entrant.schoolGPA}</p>
-            <p>Залишилось заявок - ${entrant.applicationsLeft}</p>
+            <p><spring:message code="cabinet.email" /> - ${entrant.email}</p>
+            <p><spring:message code="cabinet.dateOfBirth" /> - ${entrant.dateOfBirth}</p>
+            <p><spring:message code="cabinet.schoolGpa" /> - ${entrant.schoolGPA}</p>
+            <p><spring:message code="cabinet.applicationsLeft" /> - ${entrant.applicationsLeft}</p>
 
             <table style="margin: 0;">
                 <tr>
-                    <th style='width: 280px;'>Зданний предмет</th>
-                    <th style='width: 160px;'>Оцінка</th>
+                    <th style='width: 280px;'><spring:message code="cabinet.subject" /></th>
+                    <th style='width: 160px;'><spring:message code="cabinet.grade" /></th>
                 </tr>
                 <tr>
                     <c:forEach var="grade" items="${grades}">
                         <tr>
-                            <td>${grade.subject.ukrainianName}</td>
+                            <td><spring:message code="subject.${grade.subject.englishName}" /></td>
                             <td>${grade.grade}</td>
                         </tr>
                     </c:forEach>
@@ -120,28 +121,28 @@
     </c:if>
 
     <c:if test="${role == 'NOT_VERIFIED_ENTRANT'}">
-        <p>Для подачі заявок адміністратр повинен підтвердити вашу анкету</p>
+        <p><spring:message code="cabinet.notVerified" /></p>
     </c:if>
 
     <c:if test="${role == 'ENTRANT' || role == 'PAST' || role == 'NOT_PAST'}">
      <div class="mainInfoHolder1">
         <table>
             <c:if test="${role == 'ENTRANT'}">
-                <p style="font-size: 30px">Подані заявки:</p>
+                <p style="font-size: 30px"><spring:message code="cabinet.applications" /></p>
             </c:if>
             <c:if test="${role == 'PAST'}">
-                <p style="font-size: 30px">Ви пройшли на:</p>
+                <p style="font-size: 30px"><spring:message code="cabinet.past" /></p>
             </c:if>
             <c:if test="${role == 'NOT_PAST'}">
-                <p style="font-size: 30px">Ви не пройшли ні на один факультет =(</p>
+                <p style="font-size: 30px"><spring:message code="cabinet.notPast" /></p>
             </c:if>
 
             <c:if test="${role == 'ENTRANT'}">
              <tr>
-                <th style="width: 50px;">Пріорітет</th>
-                <th style="width: 300px;">Факультет</th>
-                <th style="width: 150px;">Кількість балів</th>
-                <th style="width: 150px;">Змінити пріорітет</th>
+                <th style="width: 50px;"><spring:message code="cabinet.priority" /></th>
+                <th style="width: 300px;"><spring:message code="cabinet.faculty" /></th>
+                <th style="width: 150px;"><spring:message code="cabinet.gpa" /></th>
+                <th style="width: 150px;"><spring:message code="cabinet.changePriority" /></th>
                 <th style="width: 150px;"></th>
              </tr>
              <c:forEach var="application" items="${applications}">
@@ -161,16 +162,16 @@
                             </div>
                         </c:if>
                       </td>
-                      <td><a href="/cabinet/entrant/deleteApplication?id=${application.id}" style="color: red">Відхилити заявку</a></td>
+                      <td><a href="/cabinet/entrant/deleteApplication?id=${application.id}" style="color: red"><spring:message code="cabinet.deleteApplication" /></a></td>
                   </tr>
              </c:forEach>
              </c:if>
 
             <c:if test="${role == 'PAST'}">
              <tr>
-                <th style="width: 50px;">Пріорітет</th>
-                <th style="width: 300px;">Факультет</th>
-                <th style="width: 150px;">Кількість балів</th>
+                <th style="width: 50px;"><spring:message code="cabinet.priority" /></th>
+                <th style="width: 300px;"><spring:message code="cabinet.faculty" /></th>
+                <th style="width: 150px;"><spring:message code="cabinet.gpa" /></th>
              </tr>
              <c:forEach var="application" items="${applications}">
                   <tr>
